@@ -1,0 +1,8 @@
+import React from 'react';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
+
+const HistoryContext = React.createContext(history);
+
+export default HistoryContext;

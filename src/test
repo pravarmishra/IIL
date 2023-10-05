@@ -1,0 +1,48 @@
+// import React from 'react';
+// import { DataGrid } from '@mui/x-data-grid';
+// import { Checkbox } from '@mui/material';
+
+// const columns = [
+//   {
+//     field: 'id',
+//     headerName: 'ID',
+//     width: 100
+//   },
+//   {
+//     field: 'name',
+//     headerName: 'Name',
+//     width: 200
+//   },
+//   {
+//     field: 'checkbox',
+//     headerName: 'Checkbox',
+//     width: 120,
+//     renderCell: (params) => (
+//       <Checkbox
+//         checked={params.row.checkbox}
+//         onChange={(event) => {
+//           params.row.checkbox = event.target.checked;
+//         }}
+//       />
+//     )
+//   }
+// ];
+
+// const rows = [
+//   { id: 1, name: 'John Doe', checkbox: false },
+//   { id: 2, name: 'Jane Smith', checkbox: false },
+//   { id: 3, name: 'Bob Johnson', checkbox: false }
+// ];
+
+// const MyDataGrid = () => {
+//   return (
+//     <div style={{ height: 300, width: '100%' }}>
+//       <DataGrid
+//         columns={columns}
+//         rows={rows}
+//       />
+//     </div>
+//   );
+// };
+
+// export default MyDataGrid;

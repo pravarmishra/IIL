@@ -1,0 +1,187 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.AppContainer{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar:horizontal{
+  height: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 5px rgba(110, 109, 109, 0.582);
+          box-shadow: inset 0 0 5px rgba(110, 109, 109, 0.582);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(110, 109, 109, 0.452);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #77727293;
+}
+
+.loadingCentered{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+*:focus {
+  outline: none !important;
+}
+
+.nav-link {
+  padding: 0;
+  font-size:0.875rem;
+}
+
+.nav-link.active {
+  box-shadow: initial !important;
+  background: transparent !important;
+  color: #E1714C !important;
+  border-radius: 0 !important;
+}
+
+/* ChangePasswordModal */
+
+.crossIcon {
+  position: absolute;
+  top: -37px;
+  right: 10px;
+  font-size: 1rem;
+}
+
+.changePasswordInputField{
+  margin-bottom: 20px !important;
+}
+
+/* OpaqueLoading */
+
+.opaqueLoading {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.18);
+  /* pointer-events: none; */
+  z-index: 9999;
+}
+
+.lighterBackdrop{
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+#proofEditorDialog .MuiDialog-paper{
+  overflow-y:hidden;
+}
+
+.cursorPointer{
+  cursor: pointer;
+}
+
+.payrollGrid .MuiDataGrid-row{
+  cursor: pointer;
+}
+
+.successRow{
+  background-color: #55efc4 !important; 
+}
+.selected_employee_row{
+  background-color: #e1714c !important;
+    color: white !important;
+}
+
+.employee_row{
+  cursor: pointer;
+}
+
+.employee_row:hover{
+  background: #ffe2d8 !important;
+}
+
+.failureRow{
+  background-color: #fab1a0 !important;
+}
+
+.dataGridStyleChanges .MuiDataGrid-cell	{
+  font-family: "Montserrat";
+  font-size: 13px;
+}
+
+.dataGridStyleChanges .MuiDataGrid-columnHeaderTitle{
+  font-family: "Montserrat";
+  font-size: 13px;
+}
+
+@media (min-width:900px) {
+  .nav-link.active{
+    border-bottom: 1px solid #E1714C !important;
+    font-weight: 500;
+  }
+}
+
+.active_row{
+  background: #d1e7dd !important;
+    color: #146c43 !important;
+}
+.effectStyle {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
