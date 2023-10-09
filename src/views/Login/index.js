@@ -145,6 +145,7 @@ const [loading,setLoading]=useState(false)
         // setIsloader(true)
         // setShowOTPModal(true)
         const data = { username,signatureId:"t22jBsJWGmZ" }
+        console.log("DATA",data)
         const response = await window.Platform.database.sendOTP(data);
         console.log("response", response);
 

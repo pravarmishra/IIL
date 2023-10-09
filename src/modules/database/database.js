@@ -2,7 +2,7 @@ import * as Parse from "parse";
 
 Parse.initialize(process.env.REACT_APP_PARSE_APP_ID);
 Parse.serverURL = process.env.REACT_APP_SERVER_URL;
-
+console.log("reading env",process.env.REACT_APP_SERVER_URL )
 const logOut = async () => {
     try {
        const res= await Parse.User.logOut();
