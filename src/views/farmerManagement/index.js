@@ -373,16 +373,16 @@ fetchData()}
             }, 
             {
               field: "category__c",
-              headerName: "Crop Category",
+              headerName: "Category",
               width: 200,
               sortable: false,
               valueGetter: params => {
-                  const value =  params.row?.category__c||"N/A"
+                  const value =  params.row?.farmer_range__c||"N/A"
                   return value
               },
               renderCell: params => {
                 // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row?.category__c||"N/A"
+                const value =  params.row?.farmer_range__c||"N/A"
                 return <Tooltip title={value}>{value}</Tooltip>
               },filterOperators: stringOperators 
           }, 
@@ -400,14 +400,14 @@ fetchData()}
         
             },
             {
-              field: "irrigation_method__c ",
+              field: "irrigation_method__c",
               headerName: "Irrigation Method ",
               width: 200,
               sortable: false,
               // filterable: false, 
-              valueGetter: params => params.row?.irrigation_method__c || 'N/A',
+              valueGetter: params => params.row?.irrigation__c || 'N/A',
               renderCell: params => {
-                const value = params.row?.irrigation_method__c || 'N/A'
+                const value = params.row?.irrigation__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 
@@ -486,7 +486,7 @@ fetchData()}
               console.log("vvvv",val);
           //     setQueryOptions(val);
           //     if(activeTab === 0)
-          if(val?.items[0]?.field==="farmer_category__c"){
+          if(val?.items[0]?.field==="farmer_category__c"||"category__c"){
               if(val?.items[0]?.value?.length>0){
             onFilterChange1(val.items[0])
             setSearchTerm(val.items[0])
