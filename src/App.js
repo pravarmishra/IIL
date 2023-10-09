@@ -742,16 +742,16 @@ function App({ setShowNotifications, showNotifications }) {
       }
     }
   }
-  const fetchNotifications = async () => {
-    try {
-      // let results = await window.Platform.database.fetchNotifications(auth.user.role);
-      // console.log('notification frontend started',results);
-// setNotificationCount(results.length)
-    } catch (error) {
-      console.error(error);
-      window.NotificationUtils.showError("Error fetching Notifications");
-    }
-  };
+//   const fetchNotifications = async () => {
+//     try {
+//       // let results = await window.Platform.database.fetchNotifications(auth.user.role);
+//       // console.log('notification frontend started',results);
+// // setNotificationCount(results.length)
+//     } catch (error) {
+//       console.error(error);
+//       window.NotificationUtils.showError("Error fetching Notifications");
+//     }
+//   };
   // let a = user;
   useEffect(()=>{
     // console.log('workingggggg....')
@@ -1081,7 +1081,7 @@ const getRolesAccess = async () => {
                               showNotifications={showNotifications}
                               setShowNotifications={setShowNotifications}
                               notificationCount={notificationCount}
-                              fetchNotifications={fetchNotifications}
+                              // fetchNotifications={fetchNotifications}
                             />
                           </PrivateRoute>
                         </div>

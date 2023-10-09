@@ -468,7 +468,7 @@ fetchData()}
           rows={data|| []}
           columns={getColumns1()}
           rowHeight={50}
-          checkboxSelection={true}
+          checkboxSelection={false}
           
           onRowSelectionModelChange={(selectedRowIndices) => {
             // console.log("Selected Row Indices:", selectedRowIndices);
@@ -512,7 +512,7 @@ fetchData()}
               }
           }
           else{
-          if(val?.items[0]?.value?.length>2){
+          if(val?.items[0]?.value?.length>0){
             onFilterChange1(val.items[0])
             setSearchTerm(val.items[0])
           // else
@@ -551,7 +551,7 @@ fetchData()}
           paginationModel={paginationModel}
           paginationMode="server"
           onPaginationModelChange={setPaginationModel}
-          autoPageSize
+          // autoPageSize
           components={{
             Toolbar: CustomToolbar,
           }}
@@ -723,7 +723,7 @@ catch(err){
 
 }
 }
-const formatDate=(data)=>{
+const formatDate=async(data)=>{
   setDateRange1(true)
   const datePickerResponse = new Date(data);
 
@@ -734,6 +734,34 @@ const day = String(datePickerResponse.getDate()).padStart(2, '0');
 const formattedDate = `${year}/${month}/${day}`;
 setStartDate1(formattedDate)
 setStartDate(formattedDate)
+if(endDate){
+  setLoading(true)
+  try{
+console.log("checkFirstDate")
+if(searchTerm){
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+  setData(jsonArrayWithId)
+  // setData(response.items);
+  setRowCount(response.count[0].count)
+}
+else{
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+  setData(jsonArrayWithId)
+  // setData(response.items);
+  setRowCount(response.count[0].count)
+}
+setLoading(false)
+}
+catch(e){
+  console.log(e)
+  setLoading(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+
+  fetchData()
+}
+}
 
 }
 const finalDateRangeFilter=async(data)=>{

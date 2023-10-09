@@ -178,7 +178,7 @@ useEffect(()=>{
   // fetchNotifications()
   setTimeout(() => {
     
-  props.props.fetchNotifications()
+  // props.props.fetchNotifications()
   // console.log(props.props.notificationCount + " notifications")
   }, 1000);
 },[props.props.showNotifications])

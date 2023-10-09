@@ -101,10 +101,10 @@ setLoading(true)
     }
   }
 
-  useEffect(() => {
-    fetchNotifications();
-    ref.current = fetchNotifications;
-  },[])
+  // useEffect(() => {
+  //   fetchNotifications();
+  //   ref.current = fetchNotifications;
+  // },[])
 
   useEffect(() => {
     if (props.showNotifications !== showNotifications) {
