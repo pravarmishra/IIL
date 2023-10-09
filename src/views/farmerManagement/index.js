@@ -11,6 +11,8 @@ import {
   getGridStringOperators,
 } from "@mui/x-data-grid";
 import styled from "styled-components";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import Drawer from "../../components/common/drawer/drawer";
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import {
@@ -22,6 +24,10 @@ import {
   Tab,
   Icon,
   Stack,
+  Autocomplete,
+  TextField,
+  Divider,
+  MenuItem,
 } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { SaveAlt } from "@mui/icons-material";
@@ -33,6 +39,9 @@ import moment from "moment";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import ViewComfyAltIcon from "@mui/icons-material/ViewComfyAlt";
 import PreviewIcon from '@mui/icons-material/Preview';
+
+import { DateField, DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { set } from "date-fns";
 
 const isMobile = window.innerWidth < 900;
 
@@ -86,189 +95,125 @@ const StyledCardHeading = styled(Typography)`
   letter-spacing: 0.5px;
 `;
 
-const StyledCardHeading1 = ({ icon, children, value, sx, bgColor }) => (
-  <Box
-    sx={{
-      display: "flex",
-      alignItems: "center",
-      ...sx,
-      transition: "transform 0.2s", // Add transition property for smooth effect
-      ":hover": {
-        transform: "scale(1.1)", // Scale up on hover
-      },
-    }}
-  >
-    <Icon
-      sx={{
-        color: "#ffffff",
-        background: bgColor,
-        width: "38px",
-        height: "38px",
-        fontSize: 24,
-        marginRight: 2,
-        padding: "7px",
-        borderRadius: "5px",
-      }}
-    >
-      {icon}
-    </Icon>
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
-      {/* <Typography variant="h6" sx={{ fontSize:"12px" }}>
-        {children}
-      </Typography> */}
-      <StyledCardHeading variant="h6" align="center" sx={{ fontSize: "12px" }}>
-        {children}
-      </StyledCardHeading>
-      <Typography variant="h6" align="left" sx={{ marginTop: "0px" }}>
-        <strong>{value}</strong>
-      </Typography>
-    </Box>
-  </Box>
-);
+
 
 export default function FarmerManagement(props) {
   const [loading, setLoading] = useState(false);
-  const [accessChanges, setAccessChanges] = useState("");
-  const [showItemsModal, setShowItemsModal] = useState();
-  const [rejectionReason, setRejectionReason] = useState(false);
-  const [approvalModal, setApprovalModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
-  //
-  const [bulkApprovalModal, setBulkApprovalModal] = useState(false);
-  const [isDataOnReasonModal, setDataOnReasonModal] = useState();
+
   const [selectedRowIds, setSelectedRowIds] = useState([]);
-  const [activeTab, setActiveTab] = useState(0);
   const [data, setData] = useState([]);
-  const [data1, setData1] = useState([]);
-  const [costingModal,setCostingModal]=useState(false)
-  const [containerDetails,setContainerDetails]=useState()
-  const [modal,setModal]=useState();
+  
   const [rowCount, setRowCount] = useState(0);
 const [currentPage, setCurrentPage] = useState(1);
 const [paginationModel, setPaginationModel] = useState({
   page: currentPage - 1,
   pageSize: 7,
 });
+const [searchTerm, setSearchTerm]=useState('')
+const optionTerritoryType=[{id:1,name:"T1"},{id:2,name:"T2"}]
+const [ytdFilter,setYtdFilter]=useState(false)
+const [mtdFilter,setmtdFilter]=useState(false)
+const [ftdFilter,setFtdFilter]=useState(false)
+const [cumalativeFilter,setCumalativeFilter]=useState(false)
+const [startDate,setStartDate]=useState()
+const [endDate,setEndDate]=useState()
+const [territoryFilter,setTerritoryFilter]=useState()
+const [territoryType,setTerritoryType]=useState([])
+const [territoryOptions,setTerritoryOptions]=useState([])
+const [selectedTeritoryType,setSelectedTerritoryType]=useState(null)
+const [dateRange1,setDateRange1]=useState(false)
+// const [dateRange2,setDateRange2]=useState('')
+const [startDate1,setStartDate1]=useState()
+const [endDate1,setEndDate1]=useState()
+
+
 
 useEffect(() => {
   // console.log('check page', paginationModel)
-  if(!queryOptions)
-  {
-    // console.log("heey")
-  fetchData(activeTab);
-  }
-  else{
-if(activeTab === 0 && queryOptions){
-// {console.log("fff", queryOptions)
-    onFilterChange1(queryOptions, paginationModel.page, paginationModel.pageSize)}
-  // console.log('Fetching details with pagination',paginationModel.page);
-  else if(activeTab === 1 && queryOptions)
-  {
-    // console.log("hhhelo")
-  onFilterChange2(queryOptions, paginationModel.page, paginationModel.pageSize)
-  }
-  }
+  // if(searchTerm){
+    onFilterChange1(searchTerm)
+  // }
 
 }, [paginationModel.page]);
 
 useEffect(() => {
   // console.log('check page', paginationModel)
-
-fetchData()
+if(!searchTerm&&!startDate&&!endDate&&!territoryFilter){
+fetchData()}
   // if(!queryOptions)
   // fetchData(activeTab);
 }, [paginationModel.page]);
 
-const [queryOptions, setQueryOptions] = React.useState(null);
 
-  // const [dashboardData, setDashboardData] = useState({
-  //   adminApproved: 0,
-  //   customerApproved: 0,
-  //   pending: 0,
-  //   totalQuotation: 0,
-  //   totalSOGenerated: 0,
-  //   totalDeliveredSo:0
-  // });
-  // console.log("ATIVE", activeTab);
 
-  const bulkApprove = (val) => {
-    // console.log("val", val);
-  };
 
-  const bulkReject = (val) => {
-    // console.log("val", val);
-  };
 
   const fetchData = async (details) => {
     try {
       setLoading(true);
       setData([]);
+      setYtdFilter(false)
+      setmtdFilter(false)
+      setFtdFilter(false)
+      setStartDate()
+      setEndDate()
+      setTerritoryFilter()
+      setDateRange1(false)
       let results = await window.Platform.database.getFarmerMappingDetails({pageNumber:paginationModel.page});
       console.log("RESPONSE", results);
       const jsonArrayWithId = results?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       setRowCount(results.count[0].count)
+      const territoryData=results?.region?.map((region,index)=>{
+        let temp={id:index+1,name:region.name,territoryMapping:region.territory_mapping1__c}
+     return temp
+      })
+      console.log("TestData",territoryData)
+      setTerritoryType(territoryData)
       
       setLoading(false);
     } catch (e) {
       console.log(e);
       setLoading(false);
+      window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+
     }
   };
 
-  console.log("DAATAA",data)
+  console.log("startDate",startDate)
+  console.log("endDate",endDate)
+  console.log("endDate",territoryFilter)
+
   const onFilterChange1 = async(filterModel) => {
 
     
     try{  
       setLoading(true);
-      // console.log(filterModel,'................................................................')
-      const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page })
+      console.log(filterModel,'................................................................')
+      if(filterModel){
+      const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
+      setRowCount(response.count[0].count)
+      }
+      else{
+        const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+      console.log("respponse",response);
+      const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+      setData(jsonArrayWithId)
+      setRowCount(response.count[0].count)
+      }
       // setData(response.items);
-      setRowCount(response.count)
       setLoading(false);
     }
     catch(err){
   console.error(err)
   setLoading(false);
-  
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");  
     }
     // setQueryOptions({ filterModel: { ...filterModel } });
   };
-  const onFilterChange2 = async(filterModel, page, pageSize) => {
-
-    if(!filterModel)
-    {
-      // console.log("queryyyyy",queryOptions.filterModel)
-      filterModel = queryOptions.filterModel
-  }
-    try{  
-      setLoading(true);
-      // console.log(paginationModel,'................................................................')
-      const response = await window.Platform.database.getFarmerMappingDetailsFilter({ ...filterModel,page:page || paginationModel.page, // Pass the current page
-      pageSize: pageSize || paginationModel.pageSize })
-      // console.log("respponse",response);
-      setData(response.items);
-      setRowCount(response.totalCount)
-      setLoading(false);
-    }
-    catch(err){
-  console.error(err)
-  setLoading(false);
-  
-    }
-    // setQueryOptions({ filterModel: { ...filterModel } });
-  };
-  // useEffect(() => {
-  //   fetchData(activeTab);
-  // }, [activeTab]);
-
-  // const currentDate = new Date();
-  // const currentTimestamp = new Date().getTime();
-  // console.log("currentDate",currentTimestamp)
 
 
         const getColumns1=()=>{
@@ -279,6 +224,7 @@ const [queryOptions, setQueryOptions] = React.useState(null);
               headerName: "SF ID",
               sortable: false,
               width: 250,
+              filterable: false,
               // editable: true,
               valueGetter:(params)=>params.row?.sfid
               ,
@@ -353,7 +299,8 @@ const [queryOptions, setQueryOptions] = React.useState(null);
                     const value =  params.row.createddate||"N/A"
                     return <Tooltip title={value}>{value}</Tooltip>
                   },
-                  filterOperators: stringOperators 
+                  filterOperators: stringOperators,
+                  filterable: false, 
               },
            
             {
@@ -491,9 +438,6 @@ const [queryOptions, setQueryOptions] = React.useState(null);
     return result;
   };
 
-  const openPackaging = (val) => {
-    window.open(val, "_blank");
-  };
 
   function CustomToolbar() {
     return (
@@ -545,21 +489,58 @@ const [queryOptions, setQueryOptions] = React.useState(null);
           if(val?.items[0]?.field==="farmer_category__c"){
               if(val?.items[0]?.value?.length>0){
             onFilterChange1(val.items[0])
-
+            setSearchTerm(val.items[0])
               }
-              else{
+              else if(!val.items?.value && !endDate && !startDate && !territoryFilter){
+                setSearchTerm(null)
                 fetchData()
+                console.log("check2")
+              }
+              else if(!val.items?.value && endDate && startDate && territoryFilter){
+                setSearchTerm(null)
+
+                onFilterChange1()
+                console.log("check2")
+              }
+              else if(!val.items?.value && endDate && startDate && !territoryFilter){
+                setSearchTerm(null)
+
+                onFilterChange1()
+                
+                console.log("check2")
+
               }
           }
           else{
           if(val?.items[0]?.value?.length>2){
             onFilterChange1(val.items[0])
+            setSearchTerm(val.items[0])
           // else
           // onFilterChange2(val)
 
           }
-          else if(!val.items?.value){
+          else if(!val.items?.value && !endDate && !startDate && !territoryFilter){
+            setSearchTerm(null)
             fetchData()
+            console.log("CHECK1")
+          }
+          else if(!val.items?.value && endDate && startDate && territoryFilter){
+            setSearchTerm(null)
+
+            onFilterChange1()
+            console.log("checkterr")
+          }
+          else if(!val.items?.value && endDate && startDate && !territoryFilter){
+            setSearchTerm(null)
+            console.log("check2")
+            onFilterChange1()
+
+
+          }
+          else{
+            setSearchTerm(null)
+            console.log("check2")
+            onFilterChange1()
           }
         }
           }
@@ -581,14 +562,487 @@ const [queryOptions, setQueryOptions] = React.useState(null);
       </DataGridContainer>
     );
   };
+  function formatDateToYYYYMMDD(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+  console.log("CurrentPage",paginationModel.page)
 
+  const YTD=async()=>{
+    try{
+setYtdFilter(true)
+setmtdFilter(false)
+setFtdFilter(false)
+setCumalativeFilter(false)
+setLoading(true)
+
+    const today = new Date();
+const startOfYear = new Date(today.getFullYear(), 0, 1); 
+
+const formattedStartDate = formatDateToYYYYMMDD(startOfYear);
+const formattedCurrentDate = formatDateToYYYYMMDD(today);
+
+console.log("Start of Current Year:", formattedStartDate);
+setStartDate(formattedStartDate)
+console.log("Current Date:", formattedCurrentDate);
+setEndDate(formattedCurrentDate)
+if(searchTerm  ){
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+  setData(jsonArrayWithId)
+  // setData(response.items);
+  setRowCount(response.count[0].count)  
+}else{
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+      setData(jsonArrayWithId)
+      // setData(response.items);
+      setRowCount(response.count[0].count)
+  }
+  setLoading(false)
+}
+catch(err){
+  console.log(err);
+  setYtdFilter(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+  setLoading(false)
+  fetchData()
+}
+  
+  }
+const MTD=async()=>{
+  try{
+    setmtdFilter(true)
+    setYtdFilter(false)
+    setFtdFilter(false)
+    setCumalativeFilter(false)
+    setLoading(true)
+  const today = new Date();
+const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+const formattedStartOfMonth = formatDateToYYYYMMDD(startOfMonth);
+const formattedCurrentDate = formatDateToYYYYMMDD(today);
+
+console.log("Start of Current Month:", formattedStartOfMonth);
+setStartDate(formattedStartOfMonth)
+console.log("Current Date:", formattedCurrentDate);
+setEndDate(formattedCurrentDate)
+if(searchTerm){
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryFilter:territoryFilter })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+  setData(jsonArrayWithId)
+  // setData(response.items);
+  setRowCount(response.count[0].count)  
+}else{
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryFilter:territoryFilter })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+      setData(jsonArrayWithId)
+      // setData(response.items);
+      setRowCount(response.count[0].count)
+  }
+  setLoading(false)
+}
+catch(err){
+  console.log(err);
+  setmtdFilter(false)
+  setLoading(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again")
+  fetchData()
+}
+}
+const FTD=async()=>{
+  try{
+    setFtdFilter(true)
+    setmtdFilter(false)
+    setYtdFilter(false)
+    setCumalativeFilter(false)
+    setLoading(true)
+  const today = new Date();
+
+const formattedCurrentDate = formatDateToYYYYMMDD(today);
+setStartDate("2023-10-06")
+
+console.log("Current Date:", formattedCurrentDate);
+if(searchTerm){
+const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryFilter:territoryFilter })
+const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+      setData(jsonArrayWithId)
+      // setData(response.items);
+      setRowCount(response.count[0].count)
+}else{
+const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryFilter:territoryFilter })
+const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+      setData(jsonArrayWithId)
+      // setData(response.items);
+      setRowCount(response.count[0].count)
+}
+console.log("Response")
+setLoading(false)
+  }
+  catch(err){
+    console.log(err)
+    setLoading(false)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+
+    setFtdFilter(false)
+    fetchData()
+  }
+}
+
+const fetchTerritoryFilter=async(data)=>{
+try{
+  setLoading(true)
+
+  console.log("SEARCH",searchTerm)
+  if(searchTerm){
+    console.log("CHECKFILTER1")
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+  setData(jsonArrayWithId)
+  // setData(response.items);
+  setRowCount(response.count[0].count)  
+}
+  else{
+    console.log("CHECKFILTER2")
+
+  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+  setData(jsonArrayWithId)
+  // setData(response.items);
+  setRowCount(response.count[0].count)
+  }
+  setLoading(false)
+}
+catch(err){
+  console.log(err)
+  setLoading(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+  fetchData()
+
+}
+}
+const formatDate=(data)=>{
+  setDateRange1(true)
+  const datePickerResponse = new Date(data);
+
+const year = datePickerResponse.getFullYear();
+const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
+const day = String(datePickerResponse.getDate()).padStart(2, '0');
+
+const formattedDate = `${year}/${month}/${day}`;
+setStartDate1(formattedDate)
+setStartDate(formattedDate)
+
+}
+const finalDateRangeFilter=async(data)=>{
+  try{
+    setLoading(true)
+    
+  const datePickerResponse = new Date(data);
+
+  const year = datePickerResponse.getFullYear();
+  const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
+  const day = String(datePickerResponse.getDate()).padStart(2, '0');
+  
+  const formattedDate = `${year}/${month}/${day}`;
+  if (data){
+  setEndDate(formattedDate)
+  setEndDate1(formattedDate)
+}
+    if(searchTerm){
+    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+    setData(jsonArrayWithId)
+    // setData(response.items);
+    setRowCount(response.count[0].count)  
+  }
+    else{
+    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+    setData(jsonArrayWithId)
+    // setData(response.items);
+    setRowCount(response.count[0].count)
+    }
+    setLoading(false)
+
+  }
+  catch(err){
+    console.log(err)
+    setLoading(false)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+
+    fetchData()
+  
+  }
+}
+
+const clearDateFilter=async()=>{
+  setStartDate(null)
+  setEndDate(null)
+  setStartDate1(null)
+  setEndDate1(null)
+  setDateRange1(false)
+  if(searchTerm||territoryFilter){
+    try{
+    setLoading(true)
+    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+    setData(jsonArrayWithId)
+    // setData(response.items);
+    setRowCount(response.count[0].count)
+    setLoading(false)
+  }
+  catch(e){
+    console.log(e)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+    fetchData()  
+
+    }
+  }
+else{
+  fetchData()
+}
+}
+
+const clearTerritoryFIlter=async()=>{
+  setTerritoryFilter(null)
+  setSelectedTerritoryType(null)
+  setTerritoryOptions()
+  console.log(territoryFilter,selectedTeritoryType)
+  if(searchTerm||startDate||endDate){
+    try{
+    setLoading(true)
+    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
+    const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+    setData(jsonArrayWithId)
+    // setData(response.items);
+    setRowCount(response.count[0].count)
+    setLoading(false)
+  }
+  catch(e){
+    console.log(e)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+    fetchData()  
+
+    }
+  }
+else{
+  fetchData()
+}
+
+
+}
+
+const CumulativeFiltefunctionr=async()=>{
+  try{
+    setLoading(true)
+    setStartDate(null)
+    setEndDate(null)
+    setYtdFilter(false)
+setmtdFilter(false)
+setFtdFilter(false)
+setCumalativeFilter(true)
+// setLoading(true)
+    if(searchTerm||territoryFilter)
+  {
+    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+    setData(jsonArrayWithId)
+    // setData(response.items);
+    setRowCount(response.count[0].count)
+    setLoading(false)
+  }
+  else{
+    fetchData()
+  }
+}
+catch(e){
+  console.log(e)
+  fetchData()
+  setLoading(false)
+
+}
+}
   return (
     <>
       {isMobile && <Drawer props={props} />}
       <StaffEditorPageContainer>
         <HeaderContainer>
-          <Typography variant="h5">Farmer Management</Typography>
+          <Typography variant="h5">Farmer Mapping</Typography>
+          <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:"15%"}}>
+            <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
+            <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>
+            <Button variant="contained" disabled={ftdFilter ||dateRange1||loading} onClick={()=>FTD()} >FTD</Button>
+            <Button variant="contained" disabled={cumalativeFilter ||dateRange1||loading} onClick={()=>CumulativeFiltefunctionr()}>Cumulative</Button>
+
+          </div>
         </HeaderContainer>
+        {/* <Stack spacing={2} direction={"row"}>
+          <Stack direction={"row"} spacing={1}> */}
+          <HeaderContainer>
+<div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px"}}>
+          {/* <Autocomplete
+              // value={cityVal.find((city) => city.id === deliveryCity) || ''}
+            //   value={deliveryCity || null}
+            clearOnBlur={false}
+  // disableClearable
+              options={territoryType}
+              value={selectedTeritoryType}
+              
+              getOptionLabel={(option) => `${option?.territoryMapping}`}
+              getOptionValue={(option) => option?.id || ''}
+              style={{ width: isMobile ? "40%" : "30%"}}
+              noOptionsText={loading ? "Loading..." : "No option"}
+              clearOnEscape={!selectedTeritoryType&&true}
+              disabled={loading}
+              onChange={async(event, value) => {
+                console.log("Autocomplete",value)
+               setSelectedTerritoryType(value)
+               let filterData=territoryType?.filter(select=>select.territoryMapping===event?.target?.innerText)
+               console.log("Autocomplete",filterData)
+               setTerritoryOptions(filterData)           
+              }}
+              onInputChange={(event, value) => {
+                // Check if the user's input matches any option
+                const matchingOption = territoryType?.find((option) => option.territoryMapping === event?.target?.innerText);
+
+                if (!matchingOption ) {
+              //     // If there's no matching option, set the otherValue to null
+              //   //   setDeliveryCity(null);
+              //   // setSelectedContainer(null);
+               setSelectedTerritoryType(null)
+               setTerritoryOptions('')           
+               setTerritoryFilter(null)
+
+                return;
+                }
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Territory Type"
+                  variant="outlined"
+                
+                  
+                  
+                />
+              )}
+            />
+            <Autocomplete
+              // value={cityVal.find((city) => city.id === deliveryCity) || ''}
+            //   value={deliveryCity || null}
+            clearOnBlur={false}
+  // disableClearable
+              options={territoryOptions}
+              value={territoryFilter}
+              getOptionLabel={(option) => `${option?.name}`}
+              getOptionValue={(option) => option?.id || ''}
+              style={{ width: isMobile ? "40%" : "40%"}}
+              noOptionsText={loading ? "Loading..." : "No option"}
+              disabled={!territoryOptions||loading}
+              onChange={async(event, value) => {
+                console.log("valueAuto",value?.name)
+                setTerritoryFilter(value?.name)
+                fetchTerritoryFilter(value?.name)
+
+               
+                
+              }}
+              onInputChange={(e, value) => {
+                const matchingOption = territoryOptions?.find((option) => option?.name === value?.name);
+
+                // Check if the user's input matches any option
+                // const matchingOption = autocomplete.find((option) => option.name === value);
+
+                if (!matchingOption ) {
+                //   // If there's no matching option, set the otherValue to null
+                // //   setDeliveryCity(null);
+                // // setSelectedContainer(null);
+                setTerritoryFilter(null)
+                return;
+                }
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Territory"
+                  variant="outlined"
+                  disabled={!territoryOptions}
+                
+                  
+                  
+                />
+              )}
+            /> */}
+             <TextField
+          id="outlined-select-currency"
+          select
+          label="Select Territory Type"
+          style={{ width: isMobile ? "40%" : "30%"}}
+          // defaultValue="EUR"
+          // helperText="Please select your currency"
+          value={selectedTeritoryType}
+          onChange={async(event, value) => {
+            console.log("Autocomplete",event?.target?.value)
+           setSelectedTerritoryType(event?.target?.value)
+           let filterData=territoryType?.filter(select=>select.territoryMapping===event?.target?.value)
+           console.log("Autocomplete",filterData)
+           setTerritoryOptions(filterData) 
+                     
+          }}
+        >
+          {territoryType?.map((option) => (
+            <MenuItem key={option.id} value={option.territoryMapping}>
+              {option.territoryMapping}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          id="outlined-select-currency"
+          select
+          label="Select Territory"
+          style={{ width: isMobile ? "40%" : "35%"}}
+          // defaultValue="EUR"
+          // helperText="Please select your currency"
+          value={territoryFilter}
+          disabled={!territoryOptions.length||loading}
+          onChange={async(event, value) => {
+            console.log("valueAuto",event?.target?.value)
+            setTerritoryFilter(event?.target?.value)
+            fetchTerritoryFilter(event?.target?.value)
+
+           
+            
+          }}
+        >
+          {territoryOptions?.map((option) => (
+            <MenuItem key={option.id} value={option.name}>
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
+          
+            <Button variant="contained"     disabled={!territoryOptions||loading}   onClick={()=>clearTerritoryFIlter()} >Clear</Button>
+            </div>
+            <Divider orientation="vertical" variant="middle" flexItem sx={{paddingLeft:"1%"}} />
+           
+            <div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px",paddingLeft:"15%",paddingTop:"4px"}}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
+            </LocalizationProvider>
+            <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
+
+
+            </div>
+            
+</HeaderContainer>
+          {/* </Stack>
+          </Stack> */}
 
         <TableContainer>
          

@@ -155,7 +155,7 @@ const Header = (props) => {
 
   const onClickLogout = async () => {
     try {
-      await window.Platform.database.signOut();
+      await window.Platform.database.logOut();
       props.onAuthUserChanged && props.onAuthUserChanged();
     } catch (error) {
       window.NotificationUtils.showError("Something Went Wrong");

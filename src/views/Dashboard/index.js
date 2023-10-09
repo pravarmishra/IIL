@@ -285,21 +285,22 @@ console.log("PROPSSSSS",props)
       link: "/category",
       role: ["SI"],
     },{
-      title: "Category Data",
+      title: "Farmer Mapping",
       icon: ManageAccounts,
-      link: "/category",
-      role: ["SI"],
-    },{
-      title: "Category Data",
-      icon: ManageAccounts,
-      link: "/category",
-      role: ["SI"],
-    },{
-      title: "Category Data",
-      icon: ManageAccounts,
-      link: "/category",
+      link: "/farmermapping",
       role: ["SI"],
     },
+    // {
+    //   title: "Category Data",
+    //   icon: ManageAccounts,
+    //   link: "/category",
+    //   role: ["SI"],
+    // },{
+    //   title: "Category Data",
+    //   icon: ManageAccounts,
+    //   link: "/category",
+    //   role: ["SI"],
+    // },
     // {
     //   title: 'Tracking',
     //   icon: TrackChanges,

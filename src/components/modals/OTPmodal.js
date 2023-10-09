@@ -22,6 +22,7 @@ import {
   Fab
 } from "@mui/material";
 import { LOCAL_STORAGE_KEYS } from "../../constants";
+import OpaqueLoading from '../opaqueLoading/opaqueLoading';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -38,7 +39,7 @@ const StyledOtpInput = styled(TextField)({
 
 export default function OTPModal({ onClose, username,props }) {
   const [open, setOpen] = React.useState(true);
-  const [isloader, setIsloader] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const { auth, setAuth } = useContext(AuthContext);
   let contextState = { ...auth };
@@ -55,11 +56,12 @@ export default function OTPModal({ onClose, username,props }) {
     // setIsloader(true)
     console.log("send data", data);
     if (password === "") {
-      setIsloader(false)
+      // setIsloader(false)
       window.NotificationUtils.showWarning("Please fill the Credentials")
     }
     else {
       try {
+        setLoading(true)
         contextState.loading = true;
         // setIsloader(true)
         const userResults = await window.Platform.database.login(data);
@@ -76,6 +78,8 @@ export default function OTPModal({ onClose, username,props }) {
           if (userResults) {
             props.onAuthUserChanged && props.onAuthUserChanged(userResults);
           }
+        setLoading(false)
+
     
           window.NotificationUtils.showSuccess("Logged In Successfully");
         } catch (error) {
@@ -86,6 +90,8 @@ export default function OTPModal({ onClose, username,props }) {
           }
         } finally {
           contextState.loading = false;
+        setLoading(false)
+
         }
       };
 
@@ -104,6 +110,8 @@ export default function OTPModal({ onClose, username,props }) {
         {/* {isloader && <SimpleBackdrop></SimpleBackdrop>} */}
         <DialogTitle>{" OTP"}</DialogTitle>
         <DialogContent>
+        {loading&&<OpaqueLoading/>}
+
 
           <DialogContentText id="alert-dialog-slide-description">
             <TextField fullWidth  type="text" onChange={handleChange} />

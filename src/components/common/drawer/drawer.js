@@ -207,7 +207,7 @@ useEffect(()=>{
 
   const onClickLogout = async () => {
     try {
-      await window.Platform.database.signOut();
+      await window.Platform.database.logOut();
 
       auth.onAuthUserChanged && auth.onAuthUserChanged();
     } catch (error) {
@@ -292,7 +292,7 @@ useEffect(()=>{
                   ? "iillogo.png"
                   : isMobile
                     ? "iillogo.png"
-                    : "logo512.png"
+                    : "Frame.png"
               }
             />
           </LogoContainer>

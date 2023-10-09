@@ -178,7 +178,7 @@ const getTargetList=async ()=>{
 }
 const getFarmerMappingDetails=async (data)=>{
     try{
-        const user= await Parse.Cloud.run("getFarmerMappingDetails",data)
+        const user= await Parse.Cloud.run("getFarmerMappingDetails1",data)
         return user;
     }
     catch (error){

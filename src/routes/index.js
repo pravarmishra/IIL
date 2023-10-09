@@ -102,7 +102,7 @@ function routes(loggedIn, user){
             //  nodeRef: createRef(),
         },
         {
-            path: "/farmermanagement",
+            path: "/farmermapping",
             name: "Farmer Management",
             component: FarmerManagement,
              hideNavBar:false,

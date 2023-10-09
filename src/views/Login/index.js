@@ -12,6 +12,7 @@ import styled from "styled-components";
 import { AuthContext } from "../../components/contextAPI/ContextAPI";
 import { LOCAL_STORAGE_KEYS } from "../../constants";
 import OTPModal from "../../components/modals/OTPmodal";
+import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
 
 const FabStyle = styled(Fab)`
   && {
@@ -83,7 +84,7 @@ const Login = (props) => {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [showOTPmodal, setShowOTPModal] = React.useState(false)
-
+const [loading,setLoading]=useState(false)
 
   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -140,6 +141,7 @@ const Login = (props) => {
     }
     else {
       try {
+        setLoading(true)
         // setIsloader(true)
         // setShowOTPModal(true)
         const data = { username,signatureId:"t22jBsJWGmZ" }
@@ -151,6 +153,7 @@ const Login = (props) => {
         if (!response.hasError) {
           setShowOTPModal(true)
         }
+        setLoading(false)
         // else {
         //   console.log("error");
         //   window.NotificationUtils.showError("username not registered ")
@@ -159,6 +162,8 @@ const Login = (props) => {
         // setIsloader(false)
         console.error(error);
         window.NotificationUtils.showError("Something went wrong, please try again ")
+        setLoading(false)
+     
       }
     }
   }
@@ -267,6 +272,7 @@ const Login = (props) => {
   return (
     <CenterContent>
       <CenterRow>
+        {loading&&<OpaqueLoading/>}
         {renderLogo()}
         {renderLoginCard()}
       </CenterRow>
