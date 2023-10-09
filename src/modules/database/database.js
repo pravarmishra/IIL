@@ -2,6 +2,7 @@ import * as Parse from "parse";
 
 Parse.initialize("9Ov2ElZ2ecmuJF3ptlUdgMLxiiL");
 Parse.serverURL ="https://iil-dev-64e66426455a.herokuapp.com/parse/";
+
 // console.log("reading env",process.env.REACT_APP_SERVER_URL )
 const logOut = async () => {
     try {
