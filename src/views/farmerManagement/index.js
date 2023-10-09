@@ -809,7 +809,7 @@ else{
 const clearTerritoryFIlter=async()=>{
   setTerritoryFilter(null)
   setSelectedTerritoryType(null)
-  setTerritoryOptions()
+  setTerritoryOptions(null)
   console.log(territoryFilter,selectedTeritoryType)
   if(searchTerm||startDate||endDate){
     try{
@@ -1007,7 +1007,7 @@ catch(e){
           // defaultValue="EUR"
           // helperText="Please select your currency"
           value={territoryFilter}
-          disabled={!territoryOptions.length||loading}
+          disabled={!territoryOptions?.length||loading}
           onChange={async(event, value) => {
             console.log("valueAuto",event?.target?.value)
             setTerritoryFilter(event?.target?.value)
