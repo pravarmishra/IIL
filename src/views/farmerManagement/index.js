@@ -169,7 +169,37 @@ fetchData()}
      return temp
       })
       console.log("TestData",territoryData)
-      setTerritoryType(territoryData)
+
+const resultMap = {};
+
+results?.region?.forEach(item => {
+  const territoryMapping = item.name;
+  const subDistrictName = item.sub_district_name__c;
+
+  if (!resultMap[territoryMapping]) {
+    resultMap[territoryMapping] = [];
+  }
+
+  resultMap[territoryMapping].push(subDistrictName);
+});
+
+const resultArray = [];
+
+for (const territoryMapping in resultMap) {
+  resultArray.push({
+    territory_mapping1__c: territoryMapping,
+    sub_district_name__c: resultMap[territoryMapping]
+  });
+}
+
+console.log(resultArray);
+
+
+
+
+
+
+      setTerritoryType(resultArray)
       
       setLoading(false);
     } catch (e) {
@@ -589,12 +619,16 @@ setStartDate(formattedStartDate)
 console.log("Current Date:", formattedCurrentDate);
 setEndDate(formattedCurrentDate)
 if(searchTerm  ){
+console.log("Current Date:check1");
+
   const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)  
 }else{
+console.log("Current Date:check2");
+
   const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
@@ -1015,15 +1049,15 @@ catch(e){
           onChange={async(event, value) => {
             console.log("Autocomplete",event?.target?.value)
            setSelectedTerritoryType(event?.target?.value)
-           let filterData=territoryType?.filter(select=>select.territoryMapping===event?.target?.value)
+           let filterData=territoryType?.filter(select=>select.territory_mapping1__c===event?.target?.value)
            console.log("Autocomplete",filterData)
-           setTerritoryOptions(filterData) 
+           setTerritoryOptions(filterData[0].sub_district_name__c) 
                      
           }}
         >
           {territoryType?.map((option) => (
-            <MenuItem key={option.id} value={option.territoryMapping}>
-              {option.territoryMapping}
+            <MenuItem key={option.territory_mapping1__c} value={option.territory_mapping1__c}>
+              {option.territory_mapping1__c}
             </MenuItem>
           ))}
         </TextField>
@@ -1045,9 +1079,10 @@ catch(e){
             
           }}
         >
-          {territoryOptions?.map((option) => (
-            <MenuItem key={option.id} value={option.name}>
-              {option.name}
+          {territoryOptions&&territoryOptions?.map((option) => (
+           
+            <MenuItem key={option} value={option}>
+              {option}
             </MenuItem>
           ))}
         </TextField>
