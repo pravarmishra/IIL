@@ -446,6 +446,8 @@ useEffect(()=>{
                 variant="h6"
               >
                 {/* {getUserName()} */}
+                {props?.user?.name__c}{"("+props?.user?.profile__c+")"}
+
               </Typography>
             <Tooltip title="Click to see Notification" placement="left">
               <IconButton
