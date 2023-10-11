@@ -80,9 +80,11 @@ const Login = (props) => {
   const { auth, setAuth } = useContext(AuthContext);
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
+  const [password, setPassword] = React.useState('')
+const [view,setView] = useState(false)
   const [username, setUserName] = React.useState()
   const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  // const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [showOTPmodal, setShowOTPModal] = React.useState(false)
 const [loading,setLoading]=useState(false)
 
@@ -152,7 +154,7 @@ const [loading,setLoading]=useState(false)
         // setIsloader(false)
 
         if (!response.hasError) {
-          setShowOTPModal(true)
+          setView(true)
         }
         setLoading(false)
         // else {
@@ -169,21 +171,75 @@ const [loading,setLoading]=useState(false)
     }
   }
 
+  const handleLogin = async () => {
+    const data = {
+      username, password:password
+    }
+    // setIsloader(true)
+    console.log("send data", data);
+    if (password.length !== 6) {
+      // setIsloader(false)
+      window.NotificationUtils.showWarning("Please fill the Credentials")
+    }
+    else {
+      try {
+        setLoading(true)
+        contextState.loading = true;
+        // setIsloader(true)
+        const userResults = await window.Platform.database.login(data);
+        window.localStorage.setItem(
+            LOCAL_STORAGE_KEYS.STORED_USER_DATA,
+            JSON.stringify(userResults)
+          );
+          setAuth(userResults.attributes);
+          contextState.loggedIn = true;
+          contextState.token = userResults.attributes.sessionToken;
+          contextState.user = userResults.attributes;
+          contextState.email = userResults.attributes.email;
+          setAuth(contextState);
+          if (userResults) {
+            props.onAuthUserChanged && props.onAuthUserChanged(userResults);
+          }
+        setLoading(false)
+
+    
+          window.NotificationUtils.showSuccess("Logged In Successfully");
+        } catch (error) {
+          if (error && error.code === 101) {
+            window.NotificationUtils.showError("Invalid Username/Password");
+          } else {
+            window.NotificationUtils.showError("Something Went Wrong");
+          }
+        } finally {
+          contextState.loading = false;
+        setLoading(false)
+
+        }
+      };
+
+  }
 
 
 
 
   const handleInputChange = (event) => {
     const value = event.target.value;
+    const sanitizedValue = value.replace(/[^0-9]/g, '');
 
-    console.log("VALUEEE",value)
-    const regex = /^[0-9]{0,10}$/;
-
-    if (regex.test(value)) {
-      setUserName(value);
-    }
+    console.log("VALUEEE",sanitizedValue)
+    // const regex = /^[0-9]{0,10}$/;
+    setUserName(sanitizedValue);
+    // if (regex.test(value)) {
+    //   setUserName(value);
+    // }
   };
-
+  const handleChange = (event) => {
+    const value = event.target.value;
+    const sanitizedValue = value.replace(/[^0-9]/g, '');
+    // console.log("newValue",e.target.value)
+    setPassword(sanitizedValue)
+  }
+console.log("USERNAMe",username)
   const renderLoginCard = () => {
     return (
       <LoginCard raised>
@@ -217,49 +273,63 @@ const [loading,setLoading]=useState(false)
               margin="normal"
               required
               fullWidth
-              type='number'
+              // type='number'
+              InputProps={{
+                inputProps: {
+                  pattern: '[0-9]*', 
+                },
+              }}
               value={username}
               label="Mobile Number"
               autoFocus
-              onChange={(event) => setUserName(event.target.value)}
-            />
-          </InputFieldContainer>
-          <InputFieldContainer>
-            {/* <TextField
-              variant="outlined"
-              fullWidth={true}
-              label="Password"
-              type="password"
-              onChange={handlePasswordChange}
               onKeyDown={(e) => {
                 if (e && e.key && e.key === "Enter") {
-                  onClickLogin();
+                  handleOTPRequest();
                 }
               }}
-              error={!isPasswordValid}
-              helperText={passwordErrorMessage}
-            /> */}
+              // onChange={(event) => setUserName(event.target.value)}
+              onChange={handleInputChange}
+      
+            />
           </InputFieldContainer>
-          {/* <InputFieldContainer>
-            <StyledForgotPassword
-              color="secondary"
-              onClick={onClickForgotPassword}
-              align="right"
-              variant="subtitle2"
-            >
-              Forgot Password ?
-            </StyledForgotPassword>
-          </InputFieldContainer> */}
+          {view&&<InputFieldContainer>
+          <TextField fullWidth    label="OTP"
+          required
+            onKeyDown={(e) => {
+              if (e && e.key && e.key === "Enter") {
+                handleLogin();
+              }
+            }}
+            InputProps={{
+              inputProps: {
+                pattern: '[0-9]*', 
+              },
+            }}
+            value={password}
+          onChange={handleChange} />
+          
+          </InputFieldContainer> }
           <LoginButtonContainer>
             {/* Disable the login button if the password is not valid */}
-            <FabStyle
+            {!view?<FabStyle
               variant="extended"
               color="primary"
               onClick={handleOTPRequest}
+              disabled={loading}
              
           >
               Send OTP
-            </FabStyle>
+            </FabStyle>:
+            <FabStyle
+              variant="extended"
+              color="primary"
+              onClick={handleLogin}
+              disabled={loading}
+
+             
+          >
+             Login
+            </FabStyle>}
           </LoginButtonContainer>
         </StyledCardContent>
       </LoginCard>

@@ -97,7 +97,7 @@ const StyledCardHeading = styled(Typography)`
 
 
 
-export default function FarmerManagement(props) {
+export default function RetailerManagement(props) {
   const [loading, setLoading] = useState(false);
 
   const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -159,9 +159,10 @@ fetchData()}
       setEndDate()
       setTerritoryFilter()
       setDateRange1(false)
-      let results = await window.Platform.database.getFarmerMappingDetails({pageNumber:paginationModel.page});
+      let results = await window.Platform.database.getRetailerMappingDetails1({pageNumber:paginationModel.page});
       console.log("RESPONSE", results);
       const jsonArrayWithId = results?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+
       setData(jsonArrayWithId)
       setRowCount(results.count[0].count)
       const territoryData=results?.region?.map((region,index)=>{
@@ -186,7 +187,7 @@ results?.region?.forEach(item => {
 const resultArray = [];
 
 for (const territoryMapping in resultMap) {
-  resultArray.push({
+  resultArray?.push({
     territory_mapping1__c: territoryMapping,
     sub_district_name__c: resultMap[territoryMapping]
   });
@@ -221,14 +222,14 @@ console.log(resultArray);
       setLoading(true);
       console.log(filterModel,'................................................................')
       if(filterModel){
-      const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+      const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       setRowCount(response.count[0].count)
       }
       else{
-        const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+        const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
@@ -269,14 +270,14 @@ console.log(resultArray);
               // filterOperators: ['Contains'],
             },
             {
-              field: "farmer_name__c",
-              headerName: "Farmer Name",
+              field: "retailer_shop_name__c",
+              headerName: "Shop Name",
               sortable: false,
               width: 200,
-              valueGetter:(params)=>params.row?.farmer_name__c
-              ,
+              filterable: false,
+              valueGetter:(params)=>params.row?.retailer_shop_name__c,
               renderCell: (params) => {
-                let val = params.row?.farmer_name__c||"N/A";
+                let val = params.row?.retailer_shop_name__c||"N/A";
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },
@@ -285,16 +286,16 @@ console.log(resultArray);
 
             },
             {
-              field: "farmer_category__c",
-              headerName: "Farmer Category",
+              field: "retailer_category__c",
+              headerName: "Retailer Category",
               width: 200,
-      // filterable: false, 
+      filterable: false, 
 
               sortable: false,
-              valueGetter: params => params.row?.farmer_category__c || 'N/A',
+              valueGetter: params => params.row?.retailer_category__c || 'N/A',
               renderCell: params => {
                 // console.log(params.row?.container?.id)
-                const value = params.row?.farmer_category__c || 'N/A'
+                const value = params.row?.retailer_category__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 
@@ -303,7 +304,7 @@ console.log(resultArray);
                 field: "mobile__c",
                 headerName: "Mobile Number",
                 width: 200,
-      // filterable: false, 
+      filterable: false, 
 
                 sortable: false,
                 valueGetter: params => params.row?.mobile__c|| 'N/A',
@@ -321,7 +322,7 @@ console.log(resultArray);
                   sortable: false,
                   filterable: false, 
                   valueGetter: params => {
-                      const value =  params.row.createddate ||"N/A"
+                      const value =  params.row?.createddate ||"N/A"
                       return value
                   },
                   renderCell: params => {
@@ -388,82 +389,64 @@ console.log(resultArray);
               },filterOperators: stringOperators 
             },
             {
-              field: "crop__c",
-              headerName: "Crop",
+              field: "iil_category__c",
+              headerName: "IIL Category",
               sortable: false,
-      // filterable: false, 
+      filterable: false, 
 
               width: 200,
-              valueGetter:(params)=>params.row?.crop__c||"N/A"              ,
+              valueGetter:(params)=>params.row?.iil_category__c||"N/A",
               renderCell: (params) => {
-                let val =  params.row?.crop__c||"N/A" ;
+                let val =  params.row?.iil_category__c ||"N/A" ;
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },filterOperators: stringOperators 
             }, 
             {
-              field: "category__c",
-              headerName: "Category",
+              field: "pesticide_sale__c",
+              headerName: "Pest Sale",
               width: 200,
+      filterable: false, 
+
               sortable: false,
               valueGetter: params => {
-                  const value =  params.row?.farmer_range__c||"N/A"
+                  const value =  params.row?.pesticide_sale__c||"N/A"
                   return value
               },
               renderCell: params => {
                 // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row?.farmer_range__c||"N/A"
+                const value =  params.row?.pesticide_sale__c||"N/A"
                 return <Tooltip title={value}>{value}</Tooltip>
               },filterOperators: stringOperators 
           }, 
             {
-              field: "season__c",
-              headerName: "Season",
+              field: "pesticide_turnover__c",
+              headerName: "Pest Turnover",
               width: 200,
               sortable: false,
-              // filterable: false, 
-              valueGetter: params => params.row?.season__c || 'N/A',
+              filterable: false, 
+              valueGetter: params => params.row?.pesticide_turnover__c || 'N/A',
               renderCell: params => {
-                const value = params.row?.season__c|| 'N/A'
+                const value = params.row?.pesticide_turnover__c|| 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },filterOperators: stringOperators 
         
             },
             {
-              field: "irrigation_method__c",
-              headerName: "Irrigation Method ",
+              field: "iil_business__c",
+              headerName: "IIL Business",
               width: 200,
               sortable: false,
-              // filterable: false, 
-              valueGetter: params => params.row?.irrigation__c || 'N/A',
+              filterable: false, 
+              valueGetter: params => params.row?.iil_business__c || 'N/A',
               renderCell: params => {
-                const value = params.row?.irrigation__c || 'N/A'
+                const value = params.row?.iil_business__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 
         
             },
-      {
-              field: "acreage__c",
-              headerName: "Total Acreage",
-              width: 200,
-              sortable: false,
-              // filterable: false, 
-              valueGetter: params => {
-                  const value =  params.row?.acreage__c||"N/A"
-                  return value
-              },
-              renderCell: params => {
-                // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row.acreage__c||"N/A"
-                return <Tooltip title={value}>{value}</Tooltip>
-              },
-              filterOperators: stringOperators 
-          },
-   
-
-          
-          ];
+  ];
 
     return result;
   };
@@ -475,7 +458,11 @@ console.log(resultArray);
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
-        
+        {/* <GridToolbarExport
+          csvOptions={{
+            fileName:"FarmerManagement",
+          }}
+        /> */}
       </GridToolbarContainer>
     );
   }
@@ -512,32 +499,7 @@ console.log(resultArray);
               console.log("vvvv",val);
           //     setQueryOptions(val);
           //     if(activeTab === 0)
-          if(val?.items[0]?.field==="farmer_category__c"||"category__c"){
-              if(val?.items[0]?.value?.length>0){
-            onFilterChange1(val.items[0])
-            setSearchTerm(val.items[0])
-              }
-              else if(!val.items?.value && !endDate && !startDate && !territoryFilter){
-                setSearchTerm(null)
-                fetchData()
-                console.log("check2")
-              }
-              else if(!val.items?.value && endDate && startDate && territoryFilter){
-                setSearchTerm(null)
-
-                onFilterChange1()
-                console.log("check2")
-              }
-              else if(!val.items?.value && endDate && startDate && !territoryFilter){
-                setSearchTerm(null)
-
-                onFilterChange1()
-                
-                console.log("check2")
-
-              }
-          }
-          else{
+          
           if(val?.items[0]?.value?.length>0){
             onFilterChange1(val.items[0])
             setSearchTerm(val.items[0])
@@ -569,7 +531,7 @@ console.log(resultArray);
             onFilterChange1()
           }
         }
-          }
+          
         }
           rowCount={rowCount}
         
@@ -617,7 +579,7 @@ setEndDate(formattedCurrentDate)
 if(searchTerm  ){
 console.log("Current Date:check1");
 
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -625,7 +587,7 @@ console.log("Current Date:check1");
 }else{
 console.log("Current Date:check2");
 
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -660,13 +622,13 @@ setStartDate(formattedStartOfMonth)
 console.log("Current Date:", formattedCurrentDate);
 setEndDate(formattedCurrentDate)
 if(searchTerm){
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)  
 }else{
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -696,13 +658,13 @@ setStartDate("2023-10-06")
 
 console.log("Current Date:", formattedCurrentDate);
 if(searchTerm){
-const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryName:territoryFilter })
+const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
       setRowCount(response.count[0].count)
 }else{
-const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryName:territoryFilter })
+const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -728,7 +690,7 @@ try{
   console.log("SEARCH",searchTerm)
   if(searchTerm){
     console.log("CHECKFILTER1")
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -737,7 +699,7 @@ try{
   else{
     console.log("CHECKFILTER2")
 
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -769,14 +731,14 @@ if(endDate){
   try{
 console.log("checkFirstDate")
 if(searchTerm){
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)
 }
 else{
-  const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -810,14 +772,14 @@ const finalDateRangeFilter=async(data)=>{
   setEndDate1(formattedDate)
 }
     if(searchTerm){
-    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
     setRowCount(response.count[0].count)  
   }
     else{
-    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -845,7 +807,7 @@ const clearDateFilter=async()=>{
   if(searchTerm||territoryFilter){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -872,7 +834,7 @@ const clearTerritoryFIlter=async()=>{
   if(searchTerm||startDate||endDate){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
+    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -905,7 +867,7 @@ setCumalativeFilter(true)
 // setLoading(true)
     if(searchTerm||territoryFilter)
   {
-    const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -928,7 +890,7 @@ catch(e){
       {isMobile && <Drawer props={props} />}
       <StaffEditorPageContainer>
         <HeaderContainer>
-          <Typography variant="h5">Farmer Mapping</Typography>
+          <Typography variant="h5">Retailer Mapping</Typography>
           <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:"15%"}}>
             <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
             <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>

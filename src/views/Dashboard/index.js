@@ -8,6 +8,10 @@ import CardContent from "@mui/material/CardContent";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ROLES } from "../../constants";
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
+import BallotIcon from '@mui/icons-material/Ballot';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
+import AgricultureIcon from '@mui/icons-material/Agriculture';
 
 import {
   AddCircle,
@@ -281,21 +285,22 @@ console.log("PROPSSSSS",props)
   const cardData = [
     {
       title: "Category Data",
-      icon: ManageAccounts,
+      icon: BallotIcon,
       link: "/category",
       role: ["SI"],
     },{
       title: "Farmer Mapping",
-      icon: ManageAccounts,
+      icon: AgricultureIcon,
       link: "/farmermapping",
       role: ["SI"],
     },
+    {
+      title: "Retailer Mapping",
+      icon: WarehouseIcon,
+      link: "/retailermapping",
+      role: ["SI"],
+    },
     // {
-    //   title: "Category Data",
-    //   icon: ManageAccounts,
-    //   link: "/category",
-    //   role: ["SI"],
-    // },{
     //   title: "Category Data",
     //   icon: ManageAccounts,
     //   link: "/category",

@@ -17,11 +17,21 @@ import { Avatar, Fab, Tooltip } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { AddCircle, ChargingStationRounded, Email, Engineering, Home, ListAltSharp, ManageAccounts, ManageSearch, ManageSearchTwoTone, Search, Sell, TrackChanges, Warehouse } from "@mui/icons-material";
 import { AuthContext } from "../contextAPI/ContextAPI";
+import BallotIcon from '@mui/icons-material/Ballot';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
+import AgricultureIcon from '@mui/icons-material/Agriculture';
 
 const StyledNavBar = styled(Navbar)`
   font-family: "Montserrat";
   
 `;
+
+const ArrowSeparator = styled.span`
+  margin: 0 8px;
+  color: #777;
+`;
+
 
 const AccountNameContainer = styled.div`
   display: flex;
@@ -52,23 +62,23 @@ export const getNavItems = (auth) => {
   // test = auth?.permissions?.filter((val) => val.role === auth.user.role)[0]
 
   const myItems = [
+    
     {
       title: "Category Data",
-      icon: ManageAccounts,
+      icon: BallotIcon,
       link: "/category",
       role: ["SI"],
+    },{
+      title: "Farmer Mapping",
+      icon: AgricultureIcon,
+      link: "/farmermapping",
+      role: ["SI"],
     },
-    // {
-    //   title: 'Tracking',
-    //   icon: TrackChanges,
-    //   link: '/tracking',
-    //   role: ['admin'],
-    // },
     {
-      title: "Master Management",
-      icon: Engineering,
-      link: "/mastermanager",
-      role: ["AM"],
+      title: "Retailer Mapping",
+      icon: WarehouseIcon,
+      link: "/retailermapping",
+      role: ["SI"],
     },
   ];
 
@@ -101,6 +111,15 @@ const Dot = styled.span`
   }
   
 `;
+
+const Separator = styled.span`
+  height: 1px;
+  width: 15px;
+  background-color: #777;
+  display: inline-block;
+  margin: 0 8px;
+`;
+
 
 const StyledDropdownToggle = styled(DropdownToggle)`
   && {
@@ -174,10 +193,10 @@ const Header = (props) => {
       window.NotificationUtils.showError("Something went wrong");
     }
   };
-
+console.log("PROPPSSS",props)
 
   const getUserName = () => {
-    let name = `${props?.user?.firstName}
+    let name = `${props?.user?.name__c}
    
     `;
     let length = 25;
@@ -198,7 +217,7 @@ const Header = (props) => {
         </Tooltip>
       </NavbarBrand>
       <Nav className="ml-auto" navbar >
-        {navItems.map((navItem) => {
+        {navItems.map((navItem,index) => {
 
           return (
             <li className="nav-item" key={navItem.link}>
@@ -212,7 +231,9 @@ const Header = (props) => {
               >
                 {navItem.title}
               </StyledNavLink>
-              <Dot />
+              {/* <Dot /> */}
+              {/* <Separator/>
+               */}
             </li>
           );
         })}
@@ -224,14 +245,14 @@ const Header = (props) => {
           <DropdownMenu right>
             <DropdownItem style={{ padding: "10px 12px", fontWeight: "600", color: "black" }}>
               <AccountNameContainer>
-                <StyledAvatar height={30} src={props.user?.profilePicURL || ""} />{" "}
+                {/* <StyledAvatar height={30} src={props.user?.profilePicURL || ""} />{" "} */}
                 <div style={{ marginLeft: "10px" }}>
-                  {getUserName()}
+                  {props?.user?.name__c}{"("+props?.user?.profile__c+")"}
                 </div>
               </AccountNameContainer>
             </DropdownItem>
             <DropdownItem divider />
-            <DropdownItem
+            {/* <DropdownItem
               style={{ fontWeight: "600", color: "black" }}
               onClick={() => props.setShowNotifications(true)}
             >
@@ -239,15 +260,9 @@ const Header = (props) => {
               {/* {props.user.notifications && props.user.notifications.length
                 ? `(${props.user.notifications.length})`
                 : ""} */}
-            </DropdownItem>
-            <DropdownItem divider />
-            <DropdownItem
-              style={{ fontWeight: "600", color: "black" }}
-              onClick={onClickForgotPassword}
-            >
-              Change Password
-            </DropdownItem>
-            <DropdownItem divider />
+            {/* </DropdownItem> */}
+            <DropdownItem divider /> 
+            
             <DropdownItem
               style={{ fontWeight: "600", color: "black" }}
               onClick={onClickLogout}

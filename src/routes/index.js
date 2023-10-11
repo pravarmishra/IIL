@@ -2,6 +2,7 @@ import Login from "../views/Login/index.js";
 import Dashboard from "../views/Dashboard/index.js";
 import CategoryPage from "../views/categoryManagement/index.js"
 import FarmerManagement from "../views/farmerManagement/index.js"
+import RetailerManagement from "../views/retailerManagement/index.js";
 // import { createBrowserRouter } from "react-router-dom";
 // import UserManagement from "../views/UserManagement/index.js";
 // import PrivateRoute from "../components/PrivateRoutes/index.js";
@@ -105,6 +106,13 @@ function routes(loggedIn, user){
             path: "/farmermapping",
             name: "Farmer Management",
             component: FarmerManagement,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/retailermapping",
+            name: "Reatailer Mapping",
+            component: RetailerManagement,
              hideNavBar:false,
             //  nodeRef: createRef(),
         },

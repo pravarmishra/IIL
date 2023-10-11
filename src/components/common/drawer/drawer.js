@@ -57,6 +57,13 @@ import {
   Warehouse,
 } from "@mui/icons-material";
 import NotificationsDrawer from "../notificationsDrawer/notificationsDrawer";
+import BallotIcon from '@mui/icons-material/Ballot';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
+import AgricultureIcon from '@mui/icons-material/Agriculture';
+
+
+
 
 const isMobile = window.innerWidth < 900;
 
@@ -238,23 +245,19 @@ useEffect(()=>{
   const drawerData = [
     {
       title: "Category Data",
-      icon: ManageAccounts,
+      icon: BallotIcon,
       link: "/category",
       role: ["SI"],
     },{
-      title: "Category Data",
-      icon: ManageAccounts,
-      link: "/category",
+      title: "Farmer Mapping",
+      icon: AgricultureIcon,
+      link: "/farmermapping",
       role: ["SI"],
-    },{
-      title: "Category Data",
-      icon: ManageAccounts,
-      link: "/category",
-      role: ["SI"],
-    },{
-      title: "Category Data",
-      icon: ManageAccounts,
-      link: "/category",
+    },
+    {
+      title: "Retailer Mapping",
+      icon: WarehouseIcon,
+      link: "/retailermapping",
       role: ["SI"],
     },
     // {
@@ -263,12 +266,7 @@ useEffect(()=>{
     //   link: '/tracking',
     //   role: ['admin'],
     // },
-    {
-      title: "Master Management",
-      icon: Engineering,
-      link: "/mastermanager",
-      role: ["AM"],
-    },
+   
     
   
   ];
