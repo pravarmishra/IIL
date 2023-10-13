@@ -1,9 +1,9 @@
 import * as Parse from "parse";
 
-Parse.initialize("9Ov2ElZ2ecmuJF3ptlUdgMLxiiL");
-Parse.serverURL ="https://iil-dev-64e66426455a.herokuapp.com/parse/";
-// Parse.initialize(process.env.REACT_APP_PARSE_APP_ID);
-// Parse.serverURL = process.env.REACT_APP_SERVER_URL;
+// Parse.initialize("9Ov2ElZ2ecmuJF3ptlUdgMLxiiL");
+// Parse.serverURL ="https://iil-dev-64e66426455a.herokuapp.com/parse/";
+Parse.initialize(process.env.REACT_APP_PARSE_APP_ID);
+Parse.serverURL = process.env.REACT_APP_SERVER_URL;
 
 // console.log("reading env",process.env.REACT_APP_SERVER_URL )
 const logOut = async () => {
@@ -224,6 +224,29 @@ const getRetailerMappingDetailsFilter=async (data)=>{
 }
 
 
+const getMappingDetailsCount=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getMappingDetailsCount",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getMappingDetailsCountFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getMappingDetailsCountFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
 
 const exportedFunction = {
     sendOTP,
@@ -242,7 +265,9 @@ const exportedFunction = {
     getFarmerMappingDetails,
     getFarmerMappingDetailsFilter,
     getRetailerMappingDetails1,
-    getRetailerMappingDetailsFilter
+    getRetailerMappingDetailsFilter,
+    getMappingDetailsCount,
+    getMappingDetailsCountFilter
 }
 
 export default exportedFunction;

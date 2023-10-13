@@ -16,7 +16,6 @@ import {
     Table,
     TableBody,
     TableCell,
-    TableContainer,
     TableHead,
     TablePagination,
     TableRow,
@@ -25,6 +24,8 @@ import {
     
   } from '@mui/material';
   import React, { useEffect, useState } from 'react';
+import Drawer from "../../components/common/drawer/drawer";
+
 //   import Iconify from 'src/components/iconify/Iconify';
 //   import SimpleBackdrop from 'src/components/loader/Loader';
   import PickListPage from '../picklistManagement/index.js';
@@ -35,32 +36,36 @@ import {
   import { GridToolbarFilterButton } from '@mui/x-data-grid';
   import { GridToolbarExport } from '@mui/x-data-grid';
   import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
+import Header from '../../components/header/index.js';
   
   const isMobile = window.innerWidth < 900;
+  const DataGridContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  height:${isMobile?"calc(100vh - 300px)":"calc(100vh - 161px)"};
+  && .highlighted-row {
+    background-color: #ffcccb !important;
+  }
+`;
   const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: ${isMobile ? "flex-start" : "space-between"};
+  margin-bottom: 10px;
+  flex-direction: ${isMobile ? "column" : "row"};
+`;
   
-      display:flex;
-  
-      align-items:center;
-  
-      justify-content:space-between;
-  
-      margin-bottom:10px;
-  
+const StaffEditorPageContainer = styled.div`
+height: ${isMobile ? `auto` : `calc(100vh - 80px)`};
+width: 100%;
+background-color: white;
+padding: 10px 15px;
+${isMobile &&
   `
-  
-  const StaffEditorPageContainer = styled.div`
-    height: ${isMobile ? `100%` : `calc(100vh - 130px)`};
-    width: 100%;
-    // padding: 10px 15px;
-    ${isMobile &&
-    `
-      position: relative;
-      
-      `}
-      display: flex;
-    flex-direction: column;
-  `;
+    position: relative;
+
+    `}
+`;
   
   const ButtonContainer = styled.div`
     display: flex;
@@ -75,11 +80,15 @@ import {
   flex-direction: column;
 `;
 
-const DataGridContainer = styled.div`
-  height: calc(100vh - 159px);
+const TableContainer = styled.div`
+  height: calc(
+    100vh - ${isMobile ? "56px - 29px - 220.23px" : "90px - 20px - 49.77px"}
+  );
   width: 100%;
-  position: relative;
+  border: solid 1px lightGrey;
+  border-radius: 8px;
 `;
+
 
 // const DataGridStyled = styled(DataGrid)`
 //   background: white;
@@ -126,7 +135,7 @@ const Toolbar = styled.div`
   };
   
   
-  const CategoryPage = () => {
+  const CategoryPage = (props) => {
     const [isloader, setIsloader] = React.useState(false);
     const [category, setCategory] = useState('');
     const [openRolePopover, setOpenPopover] = React.useState(null);
@@ -313,9 +322,10 @@ const Toolbar = styled.div`
   
     return (
       <>
+      {isMobile && <Drawer props={props} />}
       {isloader&&<OpaqueLoading/>}
         {view == 0 && (
-          <ContentContainer>
+          <StaffEditorPageContainer>
             <HeaderContainer>
             <Typography  variant="h5">Category List</Typography>
               <Button
@@ -342,28 +352,32 @@ const Toolbar = styled.div`
               </HeaderContainer>
   
             {view === 0 && 
-               <DataGridContainer>
-             <DataGrid autoPageSize rows={rows} columns={handleColumns()} density="standard"
+               <TableContainer>
+                <DataGridContainer>
+
+             <DataGrid autoPageSize  rows={rows} columns={handleColumns()} density="standard"
              checkboxSelection={true}
-                 onRowClick={(params) => {
-                  console.log("RowClick",params)
+             onRowClick={(params) => {
+               console.log("RowClick",params)
                
-                  const newRowId = params.row
+               const newRowId = params.row
                console.log("newRowId",newRowId)
-      // setSelectedRowId(params.row.id)
-      setSelectedRow(newRowId)
-      setView(1)
-                }}
-                disableSelectionOnClick
-          disableRowSelectionOnClick
-                components={{
-                  Toolbar: CustomToolbar,
-                }}
-                />
-             </DataGridContainer>
+               // setSelectedRowId(params.row.id)
+               setSelectedRow(newRowId)
+               setView(1)
+              }}
+              
+              disableSelectionOnClick
+              disableRowSelectionOnClick
+              components={{
+                Toolbar: CustomToolbar,
+              }}
+              />
+              </DataGridContainer>
+             </TableContainer>
               }
             {/* {isloader && <SimpleBackdrop></SimpleBackdrop>} */}
-          </ContentContainer>
+          </StaffEditorPageContainer>
         )}
         {view === 1 && (
           <>
@@ -372,54 +386,7 @@ const Toolbar = styled.div`
             <PickListPage category={selectedRow.cid} name={selectedRow.category} setView={()=>setView(0)} />
           </>
         )}
-        <Dialog open={open} onClose={() => setOpen(false)} PaperProps={{
-          style: {
-            minWidth: 350,
-            maxWidth: 400,
-            minHeight: 300,
-            maxHeight: 350,
-          },
-        }}>
-          <DialogContent>
-          {/* {
-                        isloader && <SimpleBackdrop></SimpleBackdrop>
-                    } */}
-            <Typography variant="h4" color={'#003974'}>
-              Add Category
-            </Typography>
-            <Stack spacing={1} direction={'row'} sx={{ marginTop: '40px' }}>
-              <TextField
-                required
-                fullWidth
-                size="small"
-                type="text"
-                label="Category"
-                autoFocus
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              />
-            </Stack>
-            {/* </Card> */}
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="outlined"
-              sx={{ color: '#003974', borderColor: '#003974', borderRadius: '40px', padding: '5px 10px' }}
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              size="small"
-              variant="outlined"
-              sx={{ color: '#003974', borderColor: '#003974', borderRadius: '40px', padding: '5px 10px' }}
-              onClick={() => handleAddCategory()}
-            >
-              Submit
-            </Button>
-          </DialogActions>
-        </Dialog>
+       
       </>
     );
   };

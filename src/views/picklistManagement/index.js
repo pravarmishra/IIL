@@ -30,7 +30,7 @@ flex-direction: column;
 `;
 
 const DataGridContainer = styled.div`
-height: calc(100vh - 159px);
+height:${isMobile?"calc(100vh - 314px)":"calc(100vh - 204px)"};
 width: 100%;
 position: relative;
 `;
@@ -313,15 +313,15 @@ const rows = filtereCategory.map((item, index) => ({
     <ContentContainer>
     {isloader&&<OpaqueLoading/>}
         <HeaderContainer>
-            <Stack direction="row">
+            <Stack direction={"row"}>
             <Tooltip title=" Back to category management">
-        <Button sx={{ color:  '#85c225','&:hover': {fontSize:"20px",
+        <Button sx={{ color:  '#85c225',marginLeft:isMobile&&"-20px",'&:hover': {fontSize:"20px",
       background: 'transparent', 
     }, }} variant='text' size='large' onClick={() => setView()}>
               <ArrowBackIcon  />
             </Button>
             </Tooltip>
-        <Typography  variant="h5" sx={{marginBottom:"-18px"}}>Picklist Management{"("+category+")"}</Typography>
+        <Typography  variant="h5" sx={{marginBottom:"-18px"}}>Picklist{"("+category+")"}</Typography>
         
             </Stack>
          {/* <ButtonContainer> */}

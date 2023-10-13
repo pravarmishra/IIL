@@ -49,7 +49,7 @@ const StaffEditorPageContainer = styled.div`
   height: ${isMobile ? `auto` : `calc(100vh - 80px)`};
   width: 100%;
   background-color: white;
-  padding: 10px 15px;
+  padding:10px 15px;
   ${isMobile &&
   `
       position: relative;
@@ -59,7 +59,7 @@ const StaffEditorPageContainer = styled.div`
 const DataGridContainer = styled.div`
   width: 100%;
   overflow-x: auto;
-  height: calc(100vh - 204px);
+  height:${isMobile?"calc(100vh - 302px)":"calc(100vh - 204px)"};
   && .highlighted-row {
     background-color: #ffcccb !important;
   }
@@ -72,10 +72,9 @@ const HeaderContainer = styled.div`
   margin-bottom: 10px;
   flex-direction: ${isMobile ? "column" : "row"};
 `;
-
 const TableContainer = styled.div`
   height: calc(
-    100vh - ${isMobile ? "56px - 20px - 82.23px" : "140px - 20px - 41.77px"}
+    100vh - ${isMobile ? "56px - 70px - 175.23px" : "140px - 20px - 41.77px"}
   );
   width: 100%;
   border: solid 1px lightGrey;
@@ -929,7 +928,7 @@ catch(e){
       <StaffEditorPageContainer>
         <HeaderContainer>
           <Typography variant="h5">Farmer Mapping</Typography>
-          <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:"15%"}}>
+          <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%"}}>
             <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
             <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>
             <Button variant="contained" disabled={ftdFilter ||dateRange1||loading} onClick={()=>FTD()} >FTD</Button>
@@ -940,7 +939,7 @@ catch(e){
         {/* <Stack spacing={2} direction={"row"}>
           <Stack direction={"row"} spacing={1}> */}
           <HeaderContainer>
-<div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px"}}>
+<div style={{width:"100%",display:"flex",flexDirection:"row",gap:isMobile?"5px":"20px"}}>
           {/* <Autocomplete
               // value={cityVal.find((city) => city.id === deliveryCity) || ''}
             //   value={deliveryCity || null}
@@ -1037,8 +1036,8 @@ catch(e){
              <TextField
           id="outlined-select-currency"
           select
-          label="Select Territory Type"
-          style={{ width: isMobile ? "40%" : "30%"}}
+          label={isMobile?"Territory Type":"Select Territory Type"}
+          style={{ width: isMobile ? "50%" : "30%"}}
           // defaultValue="EUR"
           // helperText="Please select your currency"
           value={selectedTeritoryType}
@@ -1061,7 +1060,7 @@ catch(e){
           id="outlined-select-currency"
           select
           label="Select Territory"
-          style={{ width: isMobile ? "40%" : "35%"}}
+          style={{ width: isMobile ? "50%" : "35%"}}
           // defaultValue="EUR"
           // helperText="Please select your currency"
           value={territoryFilter}
@@ -1087,7 +1086,7 @@ catch(e){
             </div>
             <Divider orientation="vertical" variant="middle" flexItem sx={{paddingLeft:"1%"}} />
            
-            <div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px",paddingLeft:"15%",paddingTop:"4px"}}>
+            <div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",paddingTop:"4px"}}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
             </LocalizationProvider>

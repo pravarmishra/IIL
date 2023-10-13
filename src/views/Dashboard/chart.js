@@ -1,77 +1,92 @@
+
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
+import "./newCss.css";
 
-const colors = ['#EABE36', '#E62E2A', '#369126', '#3696E6', '#a639b9'];
-
-const ApexChart = ({ data,state }) => {
-  // const { totalSOInHouse, totalPending, expectingDelivery, containerPlanned, containerUnplanned } = data;
-  // console.log("CAHRTDATA",data);
-  // console.log("CAHRTDATA",state);
+const isMobile = window.innerWidth < 900;
 
 
-  const series =state? [{
-    name: 'Count',
-    data: [data.totalSOInHouse, data.totalPending, data.expectingDelivery, data.Delivered, data.DeliveryPendingtoCustomer],
-  }]
-  :[{
-    name: 'Count',
-    data: [data.totalSOInHouse, data.totalPending, data.expectingDelivery, data.Delivered],
-  }];
 
-  const options = {
-    chart: {
-      height: 350,
-      type: 'bar',
-      events: {
-        click: function (chart, w, e) {
-          // console.log(chart, w, e)
+const ApexChart = ({data}) => {
+  const state = {
+    series: data?[data.farmer,data.retailer,data.distributor,data.agriExpert]:[44, 55, 41, 17],
+    options: {
+      chart: {
+        type: 'donut',
+      },
+      labels: ["Farmer   ", "Retailer", "Distributor", "Agri Expert"],
+      plotOptions: {
+        pie: {
+          startAngle: -90,
+          endAngle: 270,
+          donut: {
+            labels: {
+              show: true, // Display labels
+              name: { show: true }, // Show segment names
+              value: { show: true }, // Show segment values
+              
+            },
+          },
         },
       },
-    },
-   
-    
-    colors: colors,
-    plotOptions: {
-      bar: {
-        columnWidth: '28%',
-        distributed: true,
-        borderRadius:4
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    xaxis: {
-      name: 'Count',
-      categories:state? [
-        'Total SO In House',
-        'Total Pending',
-        'Expecting Delivery',
-        'Delivered',
-        'Delivery pending customer',
-      ]
-      :[
-        'Total SO In House',
-        'Total Pending',
-        'Expecting Delivery',
-        'Delivered',
-        // 'Container Unplanned',
-      ],
-      labels: {
+      dataLabels: {
+        enabled: true, 
+        formatter: function (val, opts) {
+          return opts.w.globals.series[opts.seriesIndex];
+        },
         style: {
-          fontSize: '10px',
-          fontFamily: 'Montserrat, sans-serif', 
+          colors: ['#FFFFFF'], // Set data label color to white
         },
+      },
+      fill: {
+        type: 'gradient',
+      },
+      legend: {
+        enabled: true,
+        // formatter: function (val, opts) {
+        //   const labels = ["Farmers  ", "Retailer   ", "Distributor", "Agri Expert "];
+        //   return labels[opts.seriesIndex] ;
+        // },
+        position: 'right',
+        marker: {
+          fillColors: ['#FFFFFF'], // Set legend marker color to white
+        },
+      },
+      title: {
+        text: 'Mapping', // Change the title
+        align: 'center', // Align the title in the center
+        style: {
+          fontSize: '20px', // Change the font size
+          fontFamily: 'Montserrat, sans-serif', // Change the font style
+        },
+      },
+
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            
+            legend: {
+              position: 'top',
+            },
+          },
+        },
+      ],
+      exporting: {
+        enabled: true, // Enable chart exporting
       },
     },
   };
 
+  
+
   return (
-    <div id="chart">
-      <ReactApexChart options={options} series={series} type="bar" height={270} />
+    <div id="chart" style={{ width: '100%' }}>
+      <div className="donut-chart-container">
+        
+      <ReactApexChart options={state.options} series={state.series} type="donut"  />
+      <div className="center-text" style={{marginTop:isMobile&&"-30px"}}><strong>Total : {data?data?.farmer+data?.retailer+data?.distributor+data?.agriExpert:"100"}</strong></div>
+      </div>
     </div>
   );
 };

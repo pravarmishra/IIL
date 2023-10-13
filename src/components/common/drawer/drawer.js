@@ -84,7 +84,7 @@ const Logo = styled.img`
     props.drawerOpen ? (isMobile ? "15px" : "0px") : "0px"};
 
   padding: ${(props) =>
-    props.drawerOpen ? (isMobile ? "0px" : "10px") : "0px"};
+    props.drawerOpen ? (isMobile ? "10px" : "10px") : "0px"};
 
   height: ${(props) =>
     props.drawerOpen ? (isMobile ? "auto" : "60px") : "30px"};
@@ -225,16 +225,13 @@ useEffect(()=>{
 
   const getUserName = () => {
     let result = "";
-
-    if (auth.user) {
-      result = auth.user.firstName + "(" + auth.user.role + ")" || "";
+console.log("PROPSSS",props)
+    if (props) {
+      result =props?.props?.user?.name__c+"("+props?.props?.user?.profile__c+")"
+      ;
     }
 
-    let length = 25;
-
-    if (result.length > length && isMobile) {
-      result = result.slice(0, length - 3) + "...";
-    }
+    
 
     return result;
   };
@@ -445,11 +442,11 @@ useEffect(()=>{
                 style={{ color: "black", textTransform: "initial" }}
                 variant="h6"
               >
-                {/* {getUserName()} */}
-                {props?.user?.name__c}{"("+props?.user?.profile__c+")"}
+                {getUserName()}
+                {/* {props?.user?.name__c}{"("+props?.user?.profile__c+")"} */}
 
               </Typography>
-            <Tooltip title="Click to see Notification" placement="left">
+            {/* <Tooltip title="Click to see Notification" placement="left">
               <IconButton
                onClick={() => {
                 // props.props.setShowNotifications(true)
@@ -464,7 +461,7 @@ useEffect(()=>{
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              </Tooltip>
+              </Tooltip> */}
 
             </div>
           </Toolbar>

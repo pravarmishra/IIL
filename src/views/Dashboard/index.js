@@ -8,10 +8,10 @@ import CardContent from "@mui/material/CardContent";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ROLES } from "../../constants";
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
-import BallotIcon from '@mui/icons-material/Ballot';
-import Diversity3Icon from '@mui/icons-material/Diversity3';
-import WarehouseIcon from '@mui/icons-material/Warehouse';
-import AgricultureIcon from '@mui/icons-material/Agriculture';
+import BallotIcon from "@mui/icons-material/Ballot";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import WarehouseIcon from "@mui/icons-material/Warehouse";
+import AgricultureIcon from "@mui/icons-material/Agriculture";
 
 import {
   AddCircle,
@@ -41,7 +41,7 @@ import {
 import { AuthContext } from "../../components/contextAPI/ContextAPI";
 // import AppCurrentVisits from "./chart";
 // import AppWebsiteVisits from "./chart";
-import { Box, Icon, Stack } from "@mui/material";
+import { Box, Button, Icon, MenuItem, Stack, TextField } from "@mui/material";
 import CabinIcon from "@mui/icons-material/Cabin";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import UpcomingIcon from "@mui/icons-material/Upcoming";
@@ -49,6 +49,8 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import OpenInNewOffIcon from "@mui/icons-material/OpenInNewOff";
 import ApexChart from "./chart";
 import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const isMobile = window.innerWidth < 900;
 const StyledCardHeading1 = ({ icon, children, value, sx, bgColor }) => (
@@ -81,8 +83,8 @@ const StyledCardHeading1 = ({ icon, children, value, sx, bgColor }) => (
   </Box>
 );
 const HoverEffectDiv = styled.div`
-  width:${isMobile ? '90%' : '45%'};
-  // maxWidth:${isMobile ? '90%' : '70%'};
+  width: ${isMobile ? "90%" : "45%"};
+  // maxWidth:${isMobile ? "90%" : "70%"};
 
   padding: 5px;
   border-radius: 10px;
@@ -109,9 +111,9 @@ const ShortcutCard = styled(Card)`
 `;
 const GraphCard = styled(Card)`
   width: ${isMobile ? "95%" : "50%"};
-  margin-left: ${isMobile ? "0%" : "27px"};
-  height: 300px;
-  padding: ${isMobile ? "10px" : "0px"};
+  margin-left: ${isMobile ? "5px" : "0px"};
+  height:${isMobile ? "285px" : "290px"}; 
+  padding: ${isMobile ? "10px" : "5px"};
 `;
 
 const DetailCard = styled(Card)`
@@ -119,13 +121,20 @@ const DetailCard = styled(Card)`
   height: 300px;
   display: ${isMobile ? "flex" : "grid"};
   flex-direction: ${isMobile && "column"};
-  grid-template-columns: repeat(2, 1fr); 
+  grid-template-columns: repeat(2, 1fr);
   align-items: ${isMobile ? "left" : "center"};
   justify-items: ${isMobile ? "left" : "center"};
   &:nth-last-child(-n + 5) {
     grid-column: 1 / span 2; /* Display in a single row */
     /* Adjust the width, height, or any other styles as needed */
   }
+`;
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: ${isMobile ? "flex-start" : "space-between"};
+  margin-bottom: 10px;
+  flex-direction: ${isMobile ? "column" : "row"};
 `;
 
 const StyledCardContent = styled(CardContent)`
@@ -146,7 +155,7 @@ const StyledCardHeading = styled(Typography)`
 
 const CardIcon = styled(ManageAccounts)`
   font-size: 112px;
-  color:#85c225;
+  color: #85c225;
 `;
 
 const ContentContainer = styled.div`
@@ -172,38 +181,73 @@ const Dashboard = (props) => {
   const [containerUnplanned, setContainerUnplanned] = useState(0);
   const [country, setCountry] = useState(false);
 
-
   const { auth, setAuth } = useContext(AuthContext);
   let test = [];
   test = auth?.permissions?.filter((val) => val.role === auth.user.role)[0];
   const [isPageLoaded, setPageLoaded] = useState(false);
   const location = useLocation();
   const [loading, setLoading] = useState(false);
-  const [deliveryPendingtoCustomer, setDeliveryPendingtoCustomer] = useState(0)
-  const [delivered,setDelivered]=useState(false);
-  const [navBar,setNavBar] = useState(false);
-  // Add an event listener to the window object
+ 
+  const [ytdFilter, setYtdFilter] = useState(false);
+  const [mtdFilter, setmtdFilter] = useState(false);
+  const [ftdFilter, setFtdFilter] = useState(false);
+  const [cumalativeFilter, setCumalativeFilter] = useState(false);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [territoryFilter, setTerritoryFilter] = useState();
+  const [territoryType, setTerritoryType] = useState([]);
+  const [territoryOptions, setTerritoryOptions] = useState([]);
+  const [selectedTeritoryType, setSelectedTerritoryType] = useState(null);
+  const [dateRange1, setDateRange1] = useState(false);
+  // const [dateRange2,setDateRange2]=useState('')
+  const [startDate1, setStartDate1] = useState();
+  const [endDate1, setEndDate1] = useState();
+  const [mappingData,setMappingData] = useState()
 
-console.log("PROPSSSSS",props)
-// console.log("NAVBAR",props)
+  console.log("PROPSSSSS", props);
+  // console.log("NAVBAR",props)
 
   const fetchData = async (id) => {
     // console.log(statusInventory, selectedTab)
     try {
       setLoading(true);
-      let results = await window.Platform.database.fetchWarehouse(id);
-      // console.log("rrr", results);
-      if (results.attributes.warehouseCountry === "India") {
-        setCountry(true);
+      setMappingData()
+      // setData([]);
+      setYtdFilter(false)
+      setmtdFilter(false)
+      setFtdFilter(false)
+      setStartDate()
+      setEndDate()
+      setTerritoryFilter()
+      setDateRange1(false)
+      let results = await window.Platform.database.getMappingDetailsCount();
+      console.log("rrr", results);
+      setMappingData(results?.data);
+      const resultMap = {};
+      results?.region?.forEach((item) => {
+        const territoryMapping = item.name;
+        const subDistrictName = item.sub_district_name__c;
 
+        if (!resultMap[territoryMapping]) {
+          resultMap[territoryMapping] = [];
+        }
+
+        resultMap[territoryMapping].push(subDistrictName);
+      });
+
+      const resultArray = [];
+
+      for (const territoryMapping in resultMap) {
+        resultArray.push({
+          territory_mapping1__c: territoryMapping,
+          sub_district_name__c: resultMap[territoryMapping],
+        });
       }
-      setDeliveryPendingtoCustomer(results.attributes.pendingDeliveryToCustomer)
-      setDelivered(results.attributes.soDelivered)
-    
-        setPendingDelivery(results.attributes.pendingDelivery)
-      // setPendingDelivery(results.attributes.pendingDelivery);
-      setSoInHouse(results.attributes.soInHouse);
-      setExpectingDelivery(results.attributes.expectingDelivery);
+
+      console.log(resultArray);
+
+      setTerritoryType(resultArray);
+
       // setContainerPlanned(results.attributes.containerPlanned)
     } catch (err) {
       console.error(err);
@@ -212,45 +256,10 @@ console.log("PROPSSSSS",props)
     }
   };
 
-  // const getInviteId = () => {
-  //   if( test && test?.['warehouse management']?.read)
-  //   {
 
-  //     // console.log("authVal",test?.['warehouse management'])
-  //   let queryParams = "";
-  //   try {
-  //     const url = new URL(window.location.href);
-
-  //     queryParams = url.search.toString().slice(1);
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  //   return queryParams;
-  // }
-  // };
-
-  const getInviteId = () => {
-    if (test && test?.["warehouse management"]?.read) {
-      let queryParams = "";
-      try {
-        const url = new URL(window.location.href);
-        queryParams = url.searchParams.get("warehouseId"); // Get the value of the "warehouseId" parameter
-      } catch (e) {
-        console.error(e);
-      }
-      return queryParams;
-    }
-  };
-
-  // let id = getInviteId();
-  let id = getInviteId();
   useEffect(() => {
-    // console.log("iddd", props.user?.warehouse.objectId);
-    if (id || props.user?.warehouse?.objectId) {
-      fetchData(id || props.user?.warehouse?.objectId);
-      // console.log("id is present", id);
-    }
-  }, [location]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const isLoadedFromStorage = localStorage.getItem("isPageLoaded");
@@ -271,16 +280,9 @@ console.log("PROPSSSSS",props)
     }
   }, []);
 
-  //   useEffect(() => {
-  //     // if(auth.permissions)
 
-  //     console.log("dash", auth?.permissions);
-  // console.log("test",test && test['quotation generation']?.read?[auth.user.role] : [])
-  // console.log("test",test)
-  // // console.log("val",test['quotation generation']?.read[auth.user.role] )
-  //   }, [auth]);
-  console.log('tesssst', props?.user?.profile__c)
-  const access=["category"]
+  console.log("tesssst", props?.user?.profile__c);
+  const access = ["category"];
 
   const cardData = [
     {
@@ -288,7 +290,8 @@ console.log("PROPSSSSS",props)
       icon: BallotIcon,
       link: "/category",
       role: ["SI"],
-    },{
+    },
+    {
       title: "Farmer Mapping",
       icon: AgricultureIcon,
       link: "/farmermapping",
@@ -300,65 +303,32 @@ console.log("PROPSSSSS",props)
       link: "/retailermapping",
       role: ["SI"],
     },
-    // {
-    //   title: "Category Data",
-    //   icon: ManageAccounts,
-    //   link: "/category",
-    //   role: ["SI"],
-    // },
-    // {
-    //   title: 'Tracking',
-    //   icon: TrackChanges,
-    //   link: '/tracking',
-    //   role: ['admin'],
-    // },
+    {
+      title: "Retailer Mapping",
+      icon: WarehouseIcon,
+      link: "/retailermapping",
+      role: ["SI"],
+    },
+    {
+      title: "Retailer Mapping",
+      icon: WarehouseIcon,
+      link: "/retailermapping",
+      role: ["SI"],
+    },
+   
     {
       title: "Master Management",
       icon: Engineering,
       link: "/mastermanager",
       role: ["AM"],
     },
-    
-    
   ];
-  // const chartData = country?
-  // {
-  //   totalSOInHouse: soInHouse===0?0:+soInHouse, // Replace with actual data
-  //   totalPending: pendingDelivery===0?0:+pendingDelivery, // Replace with actual data
-  //   expectingDelivery: expectingDelivery===0?0:+expectingDelivery, // Replace with actual data
-  //   Delivered: delivered===0?0:+delivered, // Replace with actual data
-  //   DeliveryPendingtoCustomer: deliveryPendingtoCustomer===0?0:+deliveryPendingtoCustomer, // Replace with actual data
-  // }:{
-  //   totalSOInHouse: soInHouse===0?0:+soInHouse, // Replace with actual data
-  //   totalPending: pendingDelivery===0?0:+pendingDelivery, // Replace with actual data
-  //   expectingDelivery: expectingDelivery===0?0:+expectingDelivery, // Replace with actual data
-  //   Delivered: delivered===0?0:+delivered,
-  //   // containerUnplanned: 2,
-  // };
 
-  //  const chartData = country?
-  // {
-  //   totalSOInHouse: 0, // Replace with actual data
-  //   totalPending: 0, // Replace with actual data
-  //   expectingDelivery: 0, // Replace with actual data
-  //   Delivered: 0,
-  //   DeliveryPendingtoCustomer: 0,
-  // }:{
-  //   totalSOInHouse: 0, // Replace with actual data
-  //   totalPending: 0, // Replace with actual data
-  //   expectingDelivery: 0, // Replace with actual data
-  //   Delivered: 0,
-  //   containerUnplanned: 2,
-  // };
-  
-
-  // console.log("Container");
 
   const renderCards = () => {
-    const filteredCards = cardData.filter((card) =>
-{
-      return card.role.includes( props?.user?.profile__c)}
-    );
+    const filteredCards = cardData.filter((card) => {
+      return card.role.includes(props?.user?.profile__c);
+    });
     // console.log('ffff', filteredCards)
 
     return filteredCards.map((card, index) => (
@@ -377,6 +347,308 @@ console.log("PROPSSSSS",props)
     ));
   };
 
+  function formatDateToYYYYMMDD(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  }
+  // console.log("CurrentPage",paginationModel.page)
+
+  const YTD=async()=>{
+    try{
+setYtdFilter(true)
+setmtdFilter(false)
+setFtdFilter(false)
+setCumalativeFilter(false)
+setLoading(true)
+
+    const today = new Date();
+const startOfYear = new Date(today.getFullYear(), 0, 1); 
+
+const formattedStartDate = formatDateToYYYYMMDD(startOfYear);
+const formattedCurrentDate = formatDateToYYYYMMDD(today);
+
+console.log("Start of Current Year:", formattedStartDate);
+setStartDate(formattedStartDate)
+console.log("Current Date:", formattedCurrentDate);
+setEndDate(formattedCurrentDate)
+if(territoryFilter){
+console.log("Current Date:check1");
+
+  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  setMappingData(response?.data)
+  // setData(response.items);
+  // setRowCount(response.count[0].count)  
+}else{
+console.log("Current Date:check2");
+
+  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedStartDate,endDate:formattedCurrentDate })
+
+  setMappingData(response?.data)
+     
+  }
+  setLoading(false)
+}
+catch(err){
+  console.log(err);
+  setYtdFilter(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+  setLoading(false)
+  fetchData()
+}
+  
+  }
+const MTD=async()=>{
+  try{
+    setmtdFilter(true)
+    setYtdFilter(false)
+    setFtdFilter(false)
+    setCumalativeFilter(false)
+    setLoading(true)
+  const today = new Date();
+const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+const formattedStartOfMonth = formatDateToYYYYMMDD(startOfMonth);
+const formattedCurrentDate = formatDateToYYYYMMDD(today);
+
+console.log("Start of Current Month:", formattedStartOfMonth);
+setStartDate(formattedStartOfMonth)
+console.log("Current Date:", formattedCurrentDate);
+setEndDate(formattedCurrentDate)
+if(territoryFilter){
+  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  setMappingData(response?.data)
+}else{
+  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedStartOfMonth,endDate:formattedCurrentDate})
+  setMappingData(response?.data)
+  }
+  setLoading(false)
+}
+catch(err){
+  console.log(err);
+  setmtdFilter(false)
+  setLoading(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again")
+  fetchData()
+}
+}
+const FTD=async()=>{
+  try{
+    setFtdFilter(true)
+    setmtdFilter(false)
+    setYtdFilter(false)
+    setCumalativeFilter(false)
+    setLoading(true)
+  const today = new Date();
+
+const formattedCurrentDate = formatDateToYYYYMMDD(today);
+setStartDate("2023-10-06")
+
+console.log("Current Date:", formattedCurrentDate);
+if(territoryFilter){
+const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:"2023-10-06",territoryName:territoryFilter })
+      setMappingData(response.data)
+     
+}else{
+const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:"2023-10-06" })
+setMappingData(response.data)
+      
+}
+console.log("Response")
+setLoading(false)
+  }
+  catch(err){
+    console.log(err)
+    setLoading(false)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+
+    setFtdFilter(false)
+    fetchData()
+  }
+}
+
+const fetchTerritoryFilter=async(data)=>{
+try{
+  setLoading(true)
+
+  // console.log("SEARCH",searchTerm)
+  if(startDate||endDate){
+    console.log("CHECKFILTER1")
+  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:startDate,endDate:endDate,territoryName:data })
+  setMappingData(response.data)  
+}
+  else{
+    console.log("CHECKFILTER2")
+
+  const response = await window.Platform.database.getMappingDetailsCountFilter({territoryName:data })
+  setMappingData(response.data)
+  }
+  setLoading(false)
+}
+catch(err){
+  console.log(err)
+  setLoading(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+  fetchData()
+
+}
+}
+const formatDate=async(data)=>{
+  setDateRange1(true)
+  const datePickerResponse = new Date(data);
+
+const year = datePickerResponse.getFullYear();
+const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
+const day = String(datePickerResponse.getDate()).padStart(2, '0');
+
+const formattedDate = `${year}/${month}/${day}`;
+setStartDate1(formattedDate)
+setStartDate(formattedDate)
+console.log("CHECK!!")
+console.log("CHECKENDDATE",endDate)
+if(endDate){
+  setLoading(true)
+  try{
+console.log("checkFirstDate1")
+if(territoryFilter){
+  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  setMappingData(response.data)
+}
+else{
+console.log("checkFirstDate1")
+
+  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedDate,endDate:endDate })
+  setMappingData(response.data)
+}
+setLoading(false)
+}
+catch(e){
+  console.log(e)
+  setLoading(false)
+  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+
+  fetchData()
+}
+}
+
+}
+const finalDateRangeFilter=async(data)=>{
+  try{
+    setLoading(true)
+    
+  const datePickerResponse = new Date(data);
+
+  const year = datePickerResponse.getFullYear();
+  const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
+  const day = String(datePickerResponse.getDate()).padStart(2, '0');
+  
+  const formattedDate = `${year}/${month}/${day}`;
+  if (data){
+  setEndDate(formattedDate)
+  setEndDate1(formattedDate)
+}
+    if(territoryFilter){
+    const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    setMappingData(response.data)  
+  }
+    else{
+    const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:startDate,endDate:data?formattedDate:endDate})
+    setMappingData(response.data) 
+    }
+    setLoading(false)
+
+  }
+  catch(err){
+    console.log(err)
+    setLoading(false)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+
+    fetchData()
+  
+  }
+}
+
+const clearDateFilter=async()=>{
+  setStartDate(null)
+  setEndDate(null)
+  setStartDate1(null)
+  setEndDate1(null)
+  setDateRange1(false)
+  if(territoryFilter){
+    try{
+    setLoading(true)
+    const response = await window.Platform.database.getMappingDetailsCountFilter({territoryName:territoryFilter })
+    const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+    setMappingData(response.data)
+    setLoading(false)
+  }
+  catch(e){
+    console.log(e)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+    fetchData()  
+
+    }
+  }
+else{
+  fetchData()
+}
+}
+
+const clearTerritoryFIlter=async()=>{
+  setTerritoryFilter(null)
+  setSelectedTerritoryType(null)
+  setTerritoryOptions(null)
+  console.log(territoryFilter,selectedTeritoryType)
+  if(startDate||endDate){
+    try{
+    setLoading(true)
+    const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:startDate,endDate:endDate,territoryName:'' })
+   setMappingData(response.data)
+    setLoading(false)
+  }
+  catch(e){
+    console.log(e)
+    window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+    fetchData()  
+
+    }
+  }
+else{
+  fetchData()
+}
+
+
+}
+const CumulativeFiltefunctionr=async()=>{
+  try{
+    setLoading(true)
+    setStartDate(null)
+    setEndDate(null)
+    setYtdFilter(false)
+setmtdFilter(false)
+setFtdFilter(false)
+setCumalativeFilter(true)
+// setLoading(true)
+    if(territoryFilter)
+  {
+    const response = await window.Platform.database.getMappingDetailsCountFilter({territoryName:territoryFilter })
+    const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
+   setMappingData(response.data)
+    setLoading(false)
+  }
+  else{
+    fetchData()
+  }
+}
+catch(e){
+  console.log(e)
+  fetchData()
+  setLoading(false)
+
+}
+}
+
   return (
     <div
       style={{
@@ -387,15 +659,131 @@ console.log("PROPSSSSS",props)
       }}
     >
       <CssBaseline />
-      {loading && <OpaqueLoading/>}
+      {loading && <OpaqueLoading />}
 
       <Drawer props={props}>
-       
-
         <ContentContainer>
-        { renderCards()}
-                    {/* {id && renderCards()} */}
-                    {/* {(props.user?.warehouse?.objectId && !id) && renderCards()} */}
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: isMobile?"10px":"20px",
+              paddingTop: "4px",
+              justifyContent: "center",
+            }}
+          >
+            <TextField
+              id="outlined-select-currency"
+              select
+              label={isMobile ? "Territory Type" : "Select Territory Type"}
+              style={{ width: isMobile ? "52%" : "20%" }}
+              // defaultValue="EUR"
+              // helperText="Please select your currency"
+              value={selectedTeritoryType}
+              onChange={async (event, value) => {
+                console.log("Autocomplete", event?.target?.value);
+                setSelectedTerritoryType(event?.target?.value);
+                let filterData = territoryType?.filter(
+                  (select) =>
+                    select.territory_mapping1__c === event?.target?.value
+                );
+                console.log("Autocomplete", filterData);
+                setTerritoryOptions(filterData[0].sub_district_name__c);
+              }}
+            >
+              {territoryType?.map((option) => (
+                <MenuItem
+                  key={option.territory_mapping1__c}
+                  value={option.territory_mapping1__c}
+                >
+                  {option.territory_mapping1__c}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="outlined-select-currency"
+              select
+              label="Select Territory"
+              style={{ width: isMobile ? "52%" : "25%" }}
+              // defaultValue="EUR"
+              // helperText="Please select your currency"
+              value={territoryFilter}
+              disabled={!territoryOptions?.length || loading}
+              onChange={async (event, value) => {
+                console.log("valueAuto", event?.target?.value);
+                setTerritoryFilter(event?.target?.value);
+                fetchTerritoryFilter(event?.target?.value)
+              }}
+            >
+              {territoryOptions &&
+                territoryOptions?.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+            </TextField>
+
+            <Button
+              variant="contained"
+              disabled={!territoryOptions || loading}
+              onClick={()=>clearTerritoryFIlter()}
+            >
+              Clear
+            </Button>
+          </div>
+          <Stack
+            direction={isMobile ? "column" : "row"}
+            sx={{
+              // marginLeft: isMobile && "1%",
+              marginTop: "10px",
+              width: "100%",
+              justifyContent: "center",
+            }}
+            spacing={isMobile ? 3 : 8}
+          >
+            <Stack direction="row" spacing={2}>
+            <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
+            <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>
+            <Button variant="contained" disabled={ftdFilter ||dateRange1||loading} onClick={()=>FTD()} >FTD</Button>
+            <Button variant="contained" disabled={cumalativeFilter ||dateRange1||loading} onClick={()=>CumulativeFiltefunctionr()}>Cumulative</Button>
+
+            </Stack>
+            <Stack direction="row" spacing={1} width={isMobile?324:500}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
+            </LocalizationProvider>
+            <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
+            </Stack>
+          </Stack>
+          <Stack
+            direction={isMobile ? "column" : "row"}
+            sx={{
+              // marginLeft: isMobile && "1%",
+              marginTop: "10px",
+              width: "100%",
+              justifyContent: "center",
+            }}
+            spacing={isMobile ? 3 : 1}
+          >
+            <GraphCard
+              sx={{
+                borderRadius: "20px",
+                width: isMobile ? "95%" : "28%",
+                
+              }}
+            >
+              {/* <CardHeaderContainer><StyledCardHeading variant="h5" align="center">Heading</StyledCardHeading></CardHeaderContainer> */}
+                <ApexChart data={mappingData} />
+            </GraphCard>
+          
+          </Stack>
+          {renderCards()}
+          {/* {id && renderCards()} */}
+          {/* {(props.user?.warehouse?.objectId && !id) && renderCards()} */}
         </ContentContainer>
       </Drawer>
     </div>
@@ -403,5 +791,3 @@ console.log("PROPSSSSS",props)
 };
 
 export default Dashboard;
-
-
