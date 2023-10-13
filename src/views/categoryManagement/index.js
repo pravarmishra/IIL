@@ -37,6 +37,7 @@ import Drawer from "../../components/common/drawer/drawer";
   import { GridToolbarExport } from '@mui/x-data-grid';
   import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
 import Header from '../../components/header/index.js';
+import AddCategoryModal from '../../components/modals/addCategory';
   
   const isMobile = window.innerWidth < 900;
   const DataGridContainer = styled.div`
@@ -386,7 +387,7 @@ const Toolbar = styled.div`
             <PickListPage category={selectedRow.cid} name={selectedRow.category} setView={()=>setView(0)} />
           </>
         )}
-       
+       {open && <AddCategoryModal onClose={()=>setOpen(false)} fetchData={()=>getCategoryData()}/>}
       </>
     );
   };
