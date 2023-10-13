@@ -663,7 +663,7 @@ catch(e){
 
       <Drawer props={props}>
         <ContentContainer>
-          {/* <div
+           <div
             style={{
               width: "100%",
               display: "flex",
@@ -775,12 +775,12 @@ catch(e){
                 width: isMobile ? "95%" : "28%",
                 
               }}
-            >
+            > 
               {/* <CardHeaderContainer><StyledCardHeading variant="h5" align="center">Heading</StyledCardHeading></CardHeaderContainer> */}
-                {/* <ApexChart data={mappingData} />
+                 <ApexChart data={mappingData} />
             </GraphCard>
           
-          </Stack> */} 
+          </Stack> 
           {renderCards()}
           {/* {id && renderCards()} */}
           {/* {(props.user?.warehouse?.objectId && !id) && renderCards()} */}
