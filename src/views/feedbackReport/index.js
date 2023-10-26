@@ -12,7 +12,6 @@ import {
 } from "@mui/x-data-grid";
 import styled from "styled-components";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
 import Drawer from "../../components/common/drawer/drawer";
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import {
@@ -97,7 +96,7 @@ const StyledCardHeading = styled(Typography)`
 
 
 
-export default function RetailerManagement(props) {
+export default function FeedbackReport(props) {
   const [loading, setLoading] = useState(false);
 
   const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -139,12 +138,17 @@ useEffect(() => {
 useEffect(() => {
   // console.log('check page', paginationModel)
 if(!searchTerm&&!startDate&&!endDate&&!territoryFilter){
+  // fetchData1()
 fetchData()}
   // if(!queryOptions)
   // fetchData(activeTab);
 }, [paginationModel.page]);
 
 
+// const fetchData1=async()=>{
+// let results = await window.Platform.database.getKrishiMela1({pageNumber:paginationModel.page});
+// console.log("APIRESPONSE",results)
+// }
 
 
 
@@ -159,7 +163,8 @@ fetchData()}
       setEndDate()
       setTerritoryFilter()
       setDateRange1(false)
-      let results = await window.Platform.database.getRetailerMappingDetails1({pageNumber:paginationModel.page});
+  let results = await window.Platform.database.getFeedback({pageNumber:paginationModel.page});
+    
       console.log("RESPONSE", results);
       const jsonArrayWithId = results?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
 
@@ -222,14 +227,14 @@ console.log(resultArray);
       setLoading(true);
       console.log(filterModel,'................................................................')
       if(filterModel){
-      const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+      const response = await window.Platform.database.getFeedbackFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       setRowCount(response.count[0].count)
       }
       else{
-        const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+        const response = await window.Platform.database.getFeedbackFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
@@ -251,17 +256,17 @@ console.log(resultArray);
           const stringOperators = getGridStringOperators().filter((op => ['contains'].includes(op.value)));
         let result= [
             {
-              field: "sfid",
-              headerName: "SF ID",
+              field: "heroku_id__c",
+              headerName: " ID",
               sortable: false,
               width: 250,
               filterable: false,
               // editable: true,
-              valueGetter:(params)=>params.row?.sfid
+              valueGetter:(params)=>params.row?.heroku_id__c
               ,
               renderCell: (params) => {
                 // console.log("PARAMS",params)
-                let val = params.row?.sfid
+                let val = params.row?.heroku_id__c
                 ;
                 return <Tooltip title={val}>{val}</Tooltip>;
 
@@ -270,14 +275,14 @@ console.log(resultArray);
               // filterOperators: ['Contains'],
             },
             {
-              field: "retailer_shop_name__c",
-              headerName: "Shop Name",
+              field: "firm_name__c",
+              headerName: "Distributor Name",
               sortable: false,
               width: 200,
               filterable: false,
-              valueGetter:(params)=>params.row?.retailer_shop_name__c,
+              valueGetter:(params)=>params.row?.firm_name__c,
               renderCell: (params) => {
-                let val = params.row?.retailer_shop_name__c||"N/A";
+                let val = params.row?.firm_name__c||"N/A";
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },
@@ -286,35 +291,38 @@ console.log(resultArray);
 
             },
             {
-              field: "retailer_category__c",
-              headerName: "Retailer Category",
-              width: 200,
-      filterable: false, 
-
-              sortable: false,
-              valueGetter: params => params.row?.retailer_category__c || 'N/A',
-              renderCell: params => {
-                // console.log(params.row?.container?.id)
-                const value = params.row?.retailer_category__c || 'N/A'
-                return <Tooltip title={value}>{value}</Tooltip>
-              },
-              filterOperators: stringOperators 
-            },
-              {
-                field: "mobile__c",
-                headerName: "Mobile Number",
-                width: 200,
-      filterable: false, 
-
+                field: "retailer_shop_name__c",
+                headerName: "Retailer Name",
                 sortable: false,
-                valueGetter: params => params.row?.mobile__c|| 'N/A',
-                renderCell: params => {
-                  // console.log(params.row?.container?.id)
-                  const value = params.row?.mobile__c|| 'N/A'
-                  return <Tooltip title={value}>{value}</Tooltip>
+                width: 200,
+                filterable: false,
+                valueGetter:(params)=>params.row?.retailer_shop_name__c,
+                renderCell: (params) => {
+                  let val = params.row?.retailer_shop_name__c||"N/A";
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
                 },
                 filterOperators: stringOperators 
+                // filterOperators: ['Contains'],
+  
               },
+            {
+                field: "mobile__c",
+                headerName: "Mobile No",
+                sortable: false,
+                width: 200,
+                filterable: false,
+                valueGetter:(params)=>params.row?.mobile__c,
+                renderCell: (params) => {
+                  let val = params.row?.mobile__c||"N/A";
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },
+                filterOperators: stringOperators 
+                // filterOperators: ['Contains'],
+  
+              },
+             
                 {
                   field: "createddate",
                   headerName: "Created Date",
@@ -335,15 +343,15 @@ console.log(resultArray);
               },
            
             {
-              field: "name__c",
+              field: "state_name__c",
               headerName: "State",
               sortable: false,
               width: 200,
       // filterable: false, 
 
-              valueGetter:(params)=>params.row?.name__c   ||"N/A",
+              valueGetter:(params)=>params.row?.state_name__c   ||"N/A",
               renderCell: (params) => {
-                let val = params.row?.name__c ||"N/A";
+                let val = params.row?.state_name__c ||"N/A";
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },
@@ -369,7 +377,7 @@ console.log(resultArray);
               headerName: "Tehsil",
               sortable: false,
               width: 200,
-      // filterable: false, 
+    //   filterable: false, 
 
               valueGetter: (params) =>params.row?.sub_district_name__c||"N/A",
               filterOperators: stringOperators 
@@ -378,7 +386,7 @@ console.log(resultArray);
               field: "village_name__c",
               headerName: "Village",
               sortable: false,
-      // filterable: false, 
+    //   filterable: false, 
 
               width: 200,
               valueGetter:(params)=>params.row?.village_name__c||"N/A"              ,
@@ -389,63 +397,66 @@ console.log(resultArray);
               },filterOperators: stringOperators 
             },
             {
-              field: "iil_category__c",
-              headerName: "IIL Category",
-              sortable: false,
-      filterable: false, 
-
-              width: 200,
-              valueGetter:(params)=>params.row?.iil_category__c||"N/A",
-              renderCell: (params) => {
-                let val =  params.row?.iil_category__c ||"N/A" ;
-                return <Tooltip title={val}>{val}</Tooltip>;
-
-              },filterOperators: stringOperators 
-            }, 
-            {
-              field: "pesticide_sale__c",
-              headerName: "Pest Sale",
-              width: 200,
-      filterable: false, 
-
-              sortable: false,
-              valueGetter: params => {
-                  const value =  params.row?.pesticide_sale__c||"N/A"
-                  return value
+                field: "complaint_type__c",
+                headerName: "Complaint Type",
+                sortable: false,
+        // filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.complaint_type__c||"N/A"              ,
+                renderCell: (params) => {
+                  let val = params.row?.complaint_type__c;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
               },
-              renderCell: params => {
-                // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row?.pesticide_sale__c||"N/A"
-                return <Tooltip title={value}>{value}</Tooltip>
-              },filterOperators: stringOperators 
-          }, 
             {
-              field: "pesticide_turnover__c",
-              headerName: "Pest Turnover",
-              width: 200,
-              sortable: false,
-              filterable: false, 
-              valueGetter: params => params.row?.pesticide_turnover__c || 'N/A',
-              renderCell: params => {
-                const value = params.row?.pesticide_turnover__c|| 'N/A'
-                return <Tooltip title={value}>{value}</Tooltip>
-              },filterOperators: stringOperators 
-        
-            },
-            {
-              field: "iil_business__c",
-              headerName: "IIL Business",
-              width: 200,
-              sortable: false,
-              filterable: false, 
-              valueGetter: params => params.row?.iil_business__c || 'N/A',
-              renderCell: params => {
-                const value = params.row?.iil_business__c || 'N/A'
-                return <Tooltip title={value}>{value}</Tooltip>
+                field: "subject__c",
+                headerName: "Subject",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.subject__c||"N/A",
+                renderCell: (params) => {
+                  let val =  params.row?.subject__c ||"N/A" ;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
               },
-              filterOperators: stringOperators 
-        
-            },
+              {
+                field: "description__c",
+                headerName: "Description",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.description__c||"N/A",
+                renderCell: (params) => {
+                  let val =  params.row?.description__c ||"N/A" ;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
+              },
+              {
+                field: "status__c",
+                headerName: "Staus",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.status__c||"N/A",
+                renderCell: (params) => {
+                  let val =  params.row?.status__c ||"N/A" ;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
+              }, 
+            
+           
+            
+            
+              
   ];
 
     return result;
@@ -579,7 +590,7 @@ setEndDate(formattedCurrentDate)
 if(searchTerm  ){
 console.log("Current Date:check1");
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -587,7 +598,7 @@ console.log("Current Date:check1");
 }else{
 console.log("Current Date:check2");
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -622,13 +633,13 @@ setStartDate(formattedStartOfMonth)
 console.log("Current Date:", formattedCurrentDate);
 setEndDate(formattedCurrentDate)
 if(searchTerm){
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)  
 }else{
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -658,13 +669,13 @@ setStartDate(formattedCurrentDate)
 
 console.log("Current Date:", formattedCurrentDate);
 if(searchTerm){
-const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
+const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
       setRowCount(response.count[0].count)
 }else{
-const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
+const response = await window.Platform.database.getFeedbackFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -690,7 +701,7 @@ try{
   console.log("SEARCH",searchTerm)
   if(searchTerm){
     console.log("CHECKFILTER1")
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -699,7 +710,7 @@ try{
   else{
     console.log("CHECKFILTER2")
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -731,14 +742,14 @@ if(endDate){
   try{
 console.log("checkFirstDate")
 if(searchTerm){
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)
 }
 else{
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getFeedbackFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -772,14 +783,14 @@ const finalDateRangeFilter=async(data)=>{
   setEndDate1(formattedDate)
 }
     if(searchTerm){
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
     setRowCount(response.count[0].count)  
   }
     else{
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getFeedbackFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -807,7 +818,7 @@ const clearDateFilter=async()=>{
   if(searchTerm||territoryFilter){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -834,7 +845,7 @@ const clearTerritoryFIlter=async()=>{
   if(searchTerm||startDate||endDate){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
+    const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -867,7 +878,7 @@ setCumalativeFilter(true)
 // setLoading(true)
     if(searchTerm||territoryFilter)
   {
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getFeedbackFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -890,7 +901,7 @@ catch(e){
       {isMobile && <Drawer props={props} />}
       <StaffEditorPageContainer>
         <HeaderContainer>
-          <Typography variant="h5">Retailer Mapping</Typography>
+          <Typography variant="h5">Feedback Report</Typography>
           <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",marginTop:isMobile&&"5px"}}>
             <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
             <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>

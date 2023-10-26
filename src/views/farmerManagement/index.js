@@ -591,7 +591,7 @@ console.log(resultArray);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `${year}/${month}/${day}`;
+    return `${year}-${month}-${day}`;
   }
   console.log("CurrentPage",paginationModel.page)
 
@@ -691,17 +691,17 @@ const FTD=async()=>{
   const today = new Date();
 
 const formattedCurrentDate = formatDateToYYYYMMDD(today);
-setStartDate("2023-10-06")
+setStartDate(formattedCurrentDate)
 
 console.log("Current Date:", formattedCurrentDate);
 if(searchTerm){
-const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryName:territoryFilter })
+const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
       setRowCount(response.count[0].count)
 }else{
-const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:"2023-10-06",territoryName:territoryFilter })
+const response = await window.Platform.database.getFarmerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);

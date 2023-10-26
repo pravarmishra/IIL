@@ -12,7 +12,6 @@ import {
 } from "@mui/x-data-grid";
 import styled from "styled-components";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
 import Drawer from "../../components/common/drawer/drawer";
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import {
@@ -97,7 +96,7 @@ const StyledCardHeading = styled(Typography)`
 
 
 
-export default function RetailerManagement(props) {
+export default function VanCampaign(props) {
   const [loading, setLoading] = useState(false);
 
   const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -139,12 +138,17 @@ useEffect(() => {
 useEffect(() => {
   // console.log('check page', paginationModel)
 if(!searchTerm&&!startDate&&!endDate&&!territoryFilter){
+  fetchData1()
 fetchData()}
   // if(!queryOptions)
   // fetchData(activeTab);
 }, [paginationModel.page]);
 
 
+const fetchData1=async()=>{
+  let results = await window.Platform.database.getSpotDemoActivity({pageNumber:paginationModel.page});
+console.log("APIRESPONSE",results)
+}
 
 
 
@@ -159,7 +163,8 @@ fetchData()}
       setEndDate()
       setTerritoryFilter()
       setDateRange1(false)
-      let results = await window.Platform.database.getRetailerMappingDetails1({pageNumber:paginationModel.page});
+  let results = await window.Platform.database.getVanCampaignDetails1({pageNumber:paginationModel.page});
+    
       console.log("RESPONSE", results);
       const jsonArrayWithId = results?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
 
@@ -222,14 +227,14 @@ console.log(resultArray);
       setLoading(true);
       console.log(filterModel,'................................................................')
       if(filterModel){
-      const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+      const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       setRowCount(response.count[0].count)
       }
       else{
-        const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+        const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
@@ -251,17 +256,17 @@ console.log(resultArray);
           const stringOperators = getGridStringOperators().filter((op => ['contains'].includes(op.value)));
         let result= [
             {
-              field: "sfid",
-              headerName: "SF ID",
+              field: "heroku_id__c",
+              headerName: " ID",
               sortable: false,
               width: 250,
               filterable: false,
               // editable: true,
-              valueGetter:(params)=>params.row?.sfid
+              valueGetter:(params)=>params.row?.heroku_id__c
               ,
               renderCell: (params) => {
                 // console.log("PARAMS",params)
-                let val = params.row?.sfid
+                let val = params.row?.heroku_id__c
                 ;
                 return <Tooltip title={val}>{val}</Tooltip>;
 
@@ -270,47 +275,94 @@ console.log(resultArray);
               // filterOperators: ['Contains'],
             },
             {
-              field: "retailer_shop_name__c",
-              headerName: "Shop Name",
+              field: "name_of_distributors__c",
+              headerName: "Distributor Name",
               sortable: false,
               width: 200,
-              filterable: false,
-              valueGetter:(params)=>params.row?.retailer_shop_name__c,
+            //   filterable: false,
+              valueGetter:(params)=>params.row?.name_of_distributors__c,
               renderCell: (params) => {
-                let val = params.row?.retailer_shop_name__c||"N/A";
+                let val = params.row?.name_of_distributors__c||"N/A";
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },
               filterOperators: stringOperators 
               // filterOperators: ['Contains'],
 
-            },
+            },{
+                field: "crop__c",
+                headerName: "Product",
+                sortable: false,
+                width: 200,
+              //   filterable: false,
+                valueGetter:(params)=>params.row?.crop__c,
+                renderCell: (params) => {
+                  let val = params.row?.crop__c||"N/A";
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },
+                filterOperators: stringOperators 
+                // filterOperators: ['Contains'],
+  
+              },
             {
-              field: "retailer_category__c",
-              headerName: "Retailer Category",
+                field: "team_leader__c",
+                headerName: "Team Leader",
+                sortable: false,
+                width: 200,
+                filterable: false,
+                valueGetter:(params)=>params.row?.team_leader__c,
+                renderCell: (params) => {
+                  let val = params.row?.team_leader__c||"N/A";
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },
+                filterOperators: stringOperators 
+                // filterOperators: ['Contains'],
+  
+              },
+              {
+                field: "concerned_territory_head__c",
+                headerName: "Territory Head",
+                sortable: false,
+                width: 200,
+                filterable: false,
+                valueGetter:(params)=>params.row?.concerned_territory_head__c,
+                renderCell: (params) => {
+                  let val = params.row?.concerned_territory_head__c||"N/A";
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },
+                filterOperators: stringOperators 
+                // filterOperators: ['Contains'],
+  
+              },
+            {
+              field: "demo_start_date__c",
+              headerName: "Start Date",
               width: 200,
       filterable: false, 
 
               sortable: false,
-              valueGetter: params => params.row?.retailer_category__c || 'N/A',
+              valueGetter: params => params.row?.demo_start_date__c || 'N/A',
               renderCell: params => {
                 // console.log(params.row?.container?.id)
-                const value = params.row?.retailer_category__c || 'N/A'
+                const value = params.row?.demo_start_date__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 
             },
               {
-                field: "mobile__c",
-                headerName: "Mobile Number",
+                field: "demo_end_date__c",
+                headerName: "End Date",
                 width: 200,
       filterable: false, 
 
                 sortable: false,
-                valueGetter: params => params.row?.mobile__c|| 'N/A',
+                valueGetter: params => params.row?.demo_end_date__c|| 'N/A',
                 renderCell: params => {
                   // console.log(params.row?.container?.id)
-                  const value = params.row?.mobile__c|| 'N/A'
+                  const value = params.row?.demo_end_date__c|| 'N/A'
                   return <Tooltip title={value}>{value}</Tooltip>
                 },
                 filterOperators: stringOperators 
@@ -369,7 +421,7 @@ console.log(resultArray);
               headerName: "Tehsil",
               sortable: false,
               width: 200,
-      // filterable: false, 
+    //   filterable: false, 
 
               valueGetter: (params) =>params.row?.sub_district_name__c||"N/A",
               filterOperators: stringOperators 
@@ -378,7 +430,7 @@ console.log(resultArray);
               field: "village_name__c",
               headerName: "Village",
               sortable: false,
-      // filterable: false, 
+    //   filterable: false, 
 
               width: 200,
               valueGetter:(params)=>params.row?.village_name__c||"N/A"              ,
@@ -389,63 +441,298 @@ console.log(resultArray);
               },filterOperators: stringOperators 
             },
             {
-              field: "iil_category__c",
-              headerName: "IIL Category",
+                field: "event_status__c",
+                headerName: "Event Status",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.event_status__c||"N/A"              ,
+                renderCell: (params) => {
+                  let val = params.row?.event_status__c;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
+              },
+            {
+                field: "number_of_days__c",
+                headerName: "Total no of days(Campaign)",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.number_of_days__c||"N/A",
+                renderCell: (params) => {
+                  let val =  params.row?.number_of_days__c ||"N/A" ;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
+              }, 
+              {
+                field: "select_market__c",
+                headerName: "Selected Market",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.select_market__c||"N/A",
+                renderCell: (params) => {
+                  let val = params.row?.select_market__c||"N/A" ;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
+              }, 
+            {
+              field: "number_of_village_covered__c",
+              headerName: "No of villages Covered",
               sortable: false,
       filterable: false, 
 
               width: 200,
-              valueGetter:(params)=>params.row?.iil_category__c||"N/A",
+              valueGetter:(params)=>params.row?.number_of_village_covered__c||"N/A",
               renderCell: (params) => {
-                let val =  params.row?.iil_category__c ||"N/A" ;
+                let val =  params.row?.number_of_village_covered__c ||"N/A" ;
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },filterOperators: stringOperators 
+            },
+            {
+              field: "Number_of_farmers_covered__c",
+              headerName: "No of farmers Covered",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.Number_of_farmers_covered__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.Number_of_farmers_covered__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+                field: "product_plan_a__c",
+                headerName: "Product Plan A",
+                width: 200,
+        filterable: false, 
+  
+                sortable: false,
+                valueGetter: params => {
+                    const value =  params.row?.product_plan_a__c||"N/A"
+                    return value
+                },
+                renderCell: params => {
+                  // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+                  const value =  params.row?.product_plan_a__c||"N/A"
+                  return <Tooltip title={value}>{value}</Tooltip>
+                },filterOperators: stringOperators 
             }, 
             {
-              field: "pesticide_sale__c",
-              headerName: "Pest Sale",
+              field: "product_quantity_plan_a__c",
+              headerName: "Product Quantity Plan A",
               width: 200,
       filterable: false, 
 
               sortable: false,
               valueGetter: params => {
-                  const value =  params.row?.pesticide_sale__c||"N/A"
+                  const value =  params.row?.product_quantity_plan_a__c||"N/A"
                   return value
               },
               renderCell: params => {
                 // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row?.pesticide_sale__c||"N/A"
+                const value =  params.row?.product_quantity_plan_a__c||"N/A"
                 return <Tooltip title={value}>{value}</Tooltip>
               },filterOperators: stringOperators 
-          }, 
-            {
-              field: "pesticide_turnover__c",
-              headerName: "Pest Turnover",
-              width: 200,
-              sortable: false,
-              filterable: false, 
-              valueGetter: params => params.row?.pesticide_turnover__c || 'N/A',
-              renderCell: params => {
-                const value = params.row?.pesticide_turnover__c|| 'N/A'
-                return <Tooltip title={value}>{value}</Tooltip>
-              },filterOperators: stringOperators 
-        
+          },
+          {
+            field: "product_plan_unit_a__c",
+            headerName: "Product Unit Plan A",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value =  params.row?.product_plan_unit_a__c||"N/A"
+                return value
             },
-            {
-              field: "iil_business__c",
-              headerName: "IIL Business",
-              width: 200,
-              sortable: false,
-              filterable: false, 
-              valueGetter: params => params.row?.iil_business__c || 'N/A',
-              renderCell: params => {
-                const value = params.row?.iil_business__c || 'N/A'
-                return <Tooltip title={value}>{value}</Tooltip>
-              },
-              filterOperators: stringOperators 
-        
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value =  params.row?.product_plan_unit_a__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+          {
+            field: "product_plan_b__c",
+            headerName: "Product Plan B",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_plan_b__c||"N/A"
+                return value
             },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_plan_b__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        {
+            field: "product_quantity_plan_b__c",
+            headerName: "Product Quantity Plan B",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_quantity_plan_b__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_quantity_plan_b__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+         {
+            field: "product_plan_unit_b__c",
+            headerName: "Product Unit Plan B",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_plan_unit_b__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_plan_unit_b__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        
+        {
+            field: "product_plan_c__c",
+            headerName: "Product Plan C",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_plan_c__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_plan_c__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        {
+            field: "product_quantity_plan_c__c",
+            headerName: "Product Quantity Plan C",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_quantity_plan_c__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_quantity_plan_c__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        {
+            field: "product_plan_unit_c__c",
+            headerName: "Product Unit Plan C",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_plan_unit_c__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_plan_unit_c__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        {
+            field: "product_quantity_liquidation_a__c",
+            headerName: "Product Liquidation A",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_quantity_liquidation_a__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_quantity_liquidation_a__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        {
+            field: "product_quantity_liquidation_b__c",
+            headerName: "Product Liquidation B",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_quantity_liquidation_b__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_quantity_liquidation_b__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        {
+            field: "product_quantity_liquidation_c__",
+            headerName: "Product Liquidation C",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.product_quantity_liquidation_c__||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.product_quantity_liquidation_c__||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+        {
+            field: "farmer_interested_in_which_product__c",
+            headerName: "Product Intrested",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value = params.row?.farmer_interested_in_which_product__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.farmer_interested_in_which_product__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        },
+              
   ];
 
     return result;
@@ -579,7 +866,7 @@ setEndDate(formattedCurrentDate)
 if(searchTerm  ){
 console.log("Current Date:check1");
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -587,7 +874,7 @@ console.log("Current Date:check1");
 }else{
 console.log("Current Date:check2");
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -622,13 +909,13 @@ setStartDate(formattedStartOfMonth)
 console.log("Current Date:", formattedCurrentDate);
 setEndDate(formattedCurrentDate)
 if(searchTerm){
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)  
 }else{
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -658,13 +945,13 @@ setStartDate(formattedCurrentDate)
 
 console.log("Current Date:", formattedCurrentDate);
 if(searchTerm){
-const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
+const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
       setRowCount(response.count[0].count)
 }else{
-const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
+const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -690,7 +977,7 @@ try{
   console.log("SEARCH",searchTerm)
   if(searchTerm){
     console.log("CHECKFILTER1")
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -699,7 +986,7 @@ try{
   else{
     console.log("CHECKFILTER2")
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -731,14 +1018,14 @@ if(endDate){
   try{
 console.log("checkFirstDate")
 if(searchTerm){
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)
 }
 else{
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -772,14 +1059,14 @@ const finalDateRangeFilter=async(data)=>{
   setEndDate1(formattedDate)
 }
     if(searchTerm){
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
     setRowCount(response.count[0].count)  
   }
     else{
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -807,7 +1094,7 @@ const clearDateFilter=async()=>{
   if(searchTerm||territoryFilter){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -834,7 +1121,7 @@ const clearTerritoryFIlter=async()=>{
   if(searchTerm||startDate||endDate){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
+    const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -867,7 +1154,7 @@ setCumalativeFilter(true)
 // setLoading(true)
     if(searchTerm||territoryFilter)
   {
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getVanCampaignDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -890,7 +1177,7 @@ catch(e){
       {isMobile && <Drawer props={props} />}
       <StaffEditorPageContainer>
         <HeaderContainer>
-          <Typography variant="h5">Retailer Mapping</Typography>
+          <Typography variant="h5">Van Campaign</Typography>
           <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",marginTop:isMobile&&"5px"}}>
             <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
             <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>

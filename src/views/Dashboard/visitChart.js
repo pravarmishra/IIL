@@ -7,7 +7,7 @@ const isMobile = window.innerWidth < 900;
 
 
 
-const ApexChart = ({data}) => {
+const PieChart = ({data}) => {
   const state = {
     series: data?[data.farmer,data.retailer,data.distributor,data.agriExpert]:[44, 55, 41, 17],
     options: {
@@ -53,7 +53,7 @@ const ApexChart = ({data}) => {
         },
       },
       title: {
-        text: 'Mapping', // Change the title
+        text: 'Visit', // Change the title
         align: 'center', // Align the title in the center
         style: {
           fontSize: '20px', // Change the font size
@@ -63,7 +63,7 @@ const ApexChart = ({data}) => {
 
       responsive: [
         {
-          breakpoint: 550,
+          breakpoint: 480,
           options: {
             
             legend: {
@@ -91,4 +91,4 @@ const ApexChart = ({data}) => {
   );
 };
 
-export default ApexChart;
+export default PieChart;

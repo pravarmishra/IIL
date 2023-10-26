@@ -61,6 +61,15 @@ import BallotIcon from '@mui/icons-material/Ballot';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import AgricultureIcon from '@mui/icons-material/Agriculture';
+// import AgricultureIcon from "@mui/icons-material/Agriculture";
+import FactoryIcon from '@mui/icons-material/Factory';
+import GroupIcon from '@mui/icons-material/Group';
+import StoreIcon from '@mui/icons-material/Store';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
+import StreetviewIcon from '@mui/icons-material/Streetview';
+import Groups3Icon from '@mui/icons-material/Groups3';
 
 
 
@@ -257,6 +266,67 @@ console.log("PROPSSS",props)
       link: "/retailermapping",
       role: ["SI"],
     },
+    {
+      title: "Distributor Mapping",
+      icon: FactoryIcon,
+      link: "/distributormapping",
+      role: ["SI"],
+    },
+    {
+      title: "Agri-Expert Mapping",
+      icon: Diversity3Icon,
+      link: "/agriexpertmapping",
+      role: ["SI"],
+    },
+  //   {
+  //     link: "/farmervisit",
+  //     title: "Farmer Visit",
+  //     icon: GroupIcon,
+  //     role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/retailervisit",
+  //   title: "Retailer Visits",
+  //   icon: StoreIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/distributorvisit",
+  //   title: "Distributor Visits",
+  //   icon: StorefrontIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/vancampaign",
+  //   title: "Van Campaign",
+  //     icon: Groups3Icon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  //  {
+  //   link: "/spotDemo",
+  //     title: "Spot Demo ",
+  //     icon: PersonPinCircleIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/normalDemo",
+  //   title: "Normal Demo ",
+  //     icon: StreetviewIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/lpdActivity",
+  //     title: "Large Plot Demo",
+  //     icon: CampaignIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
     // {
     //   title: 'Tracking',
     //   icon: TrackChanges,

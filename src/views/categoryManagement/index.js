@@ -318,7 +318,7 @@ const Toolbar = styled.div`
       
     }));
   
-  console.log(rows);
+  console.log("MODAL",open);
   
   
     return (
@@ -387,7 +387,7 @@ const Toolbar = styled.div`
             <PickListPage category={selectedRow.cid} name={selectedRow.category} setView={()=>setView(0)} />
           </>
         )}
-       {open && <AddCategoryModal onClose={()=>setOpen(false)} fetchData={()=>getCategoryData()}/>}
+       {open && (<AddCategoryModal onClose={()=>setOpen(false)} fetchData={()=>getCategoryData()}/>)}
       </>
     );
   };

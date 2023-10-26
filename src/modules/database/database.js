@@ -1,9 +1,9 @@
 import * as Parse from "parse";
 
-Parse.initialize("9Ov2ElZ2ecmuJF3ptlUdgMLxiiL");
-Parse.serverURL ="https://iil-dev-64e66426455a.herokuapp.com/parse/";
-// Parse.initialize(process.env.REACT_APP_PARSE_APP_ID);
-// Parse.serverURL = process.env.REACT_APP_SERVER_URL;
+// Parse.initialize("9Ov2ElZ2ecmuJF3ptlUdgMLxiiL");
+// Parse.serverURL ="https://iil-dev-64e66426455a.herokuapp.com/parse/";
+Parse.initialize(process.env.REACT_APP_PARSE_APP_ID);
+Parse.serverURL = process.env.REACT_APP_SERVER_URL;
 
 // console.log("reading env",process.env.REACT_APP_SERVER_URL )
 const logOut = async () => {
@@ -246,7 +246,295 @@ const getMappingDetailsCountFilter=async (data)=>{
     }
 }
 
+const getDistributorMappingDetails=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getDistributorMappingDetails1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
 
+const getDistributorMappingDetailsFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getDistributorMappingDetailsFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+const getAgriExpertMappingDetails1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getAgriExpertMappingDetails1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getAgriExpertMappingDetailsFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getAgriExpertMappingDetailsFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getFarmerVisit1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getFarmerVisit1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getFarmerVisitFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getFarmerVisitFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getRetailerVisit1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getRetailerVisit1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getRetailerVisitFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getRetailerVisitFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getDistributorVisit1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getDistributorVisit1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getDistributorVisitFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getDistributorVisitFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getVanCampaignDetails1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getVanCampaignDetails1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+const getVanCampaignDetailsFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getVanCampaignDetailsFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getSpotDemoActivity=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getSpotDemoActivity",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getSpotDemoActivityFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getSpotDemoActivityFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getNormalDemoActivity=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getNormalDemoActivity",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getNormalDemoActivityFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getNormalDemoActivityFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+const getDemoLpdActivity1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getDemoLpdActivity1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getDemoLpdActivityFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getDemoLpdActivityFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getFarmerMeetingDetails1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getFarmerMeetingDetails1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getFarmerMeetingDetailsFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getFarmerMeetingDetailsFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+const getKvkVisitDetails1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getKvkVisitDetails1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getKvkVisitDetailsFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getKvkVisitDetailsFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+
+const getKrishiMela1=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getKrishiMela1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getKrishiMelaFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getKrishiMelaFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getFeedback=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getFeedback1",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
+
+const getFeedbackFilter=async (data)=>{
+    try{
+        const user= await Parse.Cloud.run("getFeedbackFilter",data)
+        return user;
+    }
+    catch (error){
+        console.error(error);
+        throw error;
+    }
+}
 
 const exportedFunction = {
     sendOTP,
@@ -267,7 +555,33 @@ const exportedFunction = {
     getRetailerMappingDetails1,
     getRetailerMappingDetailsFilter,
     getMappingDetailsCount,
-    getMappingDetailsCountFilter
+    getMappingDetailsCountFilter,
+    getDistributorMappingDetails,
+    getDistributorMappingDetailsFilter,
+    getAgriExpertMappingDetails1,
+    getAgriExpertMappingDetailsFilter,
+    getFarmerVisit1,
+    getFarmerVisitFilter,
+    getRetailerVisit1,
+    getRetailerVisitFilter,
+    getDistributorVisit1,
+    getDistributorVisitFilter,
+    getVanCampaignDetails1,
+    getVanCampaignDetailsFilter,
+    getSpotDemoActivity,
+    getSpotDemoActivityFilter,
+    getNormalDemoActivity,
+    getNormalDemoActivityFilter,
+    getDemoLpdActivity1,
+    getDemoLpdActivityFilter,
+    getFarmerMeetingDetails1,
+    getFarmerMeetingDetailsFilter,
+    getKvkVisitDetails1,
+    getKvkVisitDetailsFilter,
+    getKrishiMela1,
+    getKrishiMelaFilter,
+    getFeedback,
+    getFeedbackFilter
 }
 
 export default exportedFunction;

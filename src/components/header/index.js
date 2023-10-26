@@ -21,6 +21,8 @@ import BallotIcon from '@mui/icons-material/Ballot';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import AgricultureIcon from '@mui/icons-material/Agriculture';
+import FactoryIcon from '@mui/icons-material/Factory';
+
 
 const StyledNavBar = styled(Navbar)`
   font-family: "Montserrat";
@@ -78,6 +80,18 @@ export const getNavItems = (auth) => {
       title: "Retailer Mapping",
       icon: WarehouseIcon,
       link: "/retailermapping",
+      role: ["SI"],
+    },
+    {
+      title: "Distributor Mapping",
+      icon: FactoryIcon,
+      link: "/distributormapping",
+      role: ["SI"],
+    },
+    {
+      title: "Agri-Expert Mapping",
+      icon: Diversity3Icon,
+      link: "/agriexpertmapping",
       role: ["SI"],
     },
   ];

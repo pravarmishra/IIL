@@ -97,7 +97,7 @@ const StyledCardHeading = styled(Typography)`
 
 
 
-export default function RetailerManagement(props) {
+export default function AgriExpertManagement(props) {
   const [loading, setLoading] = useState(false);
 
   const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -139,12 +139,17 @@ useEffect(() => {
 useEffect(() => {
   // console.log('check page', paginationModel)
 if(!searchTerm&&!startDate&&!endDate&&!territoryFilter){
+  fetchData1()
 fetchData()}
   // if(!queryOptions)
   // fetchData(activeTab);
 }, [paginationModel.page]);
 
 
+const fetchData1=async()=>{
+  let results = await window.Platform.database.getFarmerVisit1({pageNumber:paginationModel.page});
+console.log("APIRESPONSE",results)
+}
 
 
 
@@ -159,7 +164,8 @@ fetchData()}
       setEndDate()
       setTerritoryFilter()
       setDateRange1(false)
-      let results = await window.Platform.database.getRetailerMappingDetails1({pageNumber:paginationModel.page});
+    
+      let results = await window.Platform.database.getAgriExpertMappingDetails1({pageNumber:paginationModel.page});
       console.log("RESPONSE", results);
       const jsonArrayWithId = results?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
 
@@ -222,14 +228,14 @@ console.log(resultArray);
       setLoading(true);
       console.log(filterModel,'................................................................')
       if(filterModel){
-      const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+      const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:filterModel.field,filterValue:filterModel.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       setRowCount(response.count[0].count)
       }
       else{
-        const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
+        const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:"territory",filterValue:"",pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:territoryFilter })
       console.log("respponse",response);
       const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
@@ -270,14 +276,14 @@ console.log(resultArray);
               // filterOperators: ['Contains'],
             },
             {
-              field: "retailer_shop_name__c",
-              headerName: "Shop Name",
+              field: "agri_expert_name",
+              headerName: "Name",
               sortable: false,
               width: 200,
-              filterable: false,
-              valueGetter:(params)=>params.row?.retailer_shop_name__c,
+            //   filterable: false,
+              valueGetter:(params)=>params.row?.agri_expert_name,
               renderCell: (params) => {
-                let val = params.row?.retailer_shop_name__c||"N/A";
+                let val = params.row?.agri_expert_name||"N/A";
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },
@@ -286,16 +292,16 @@ console.log(resultArray);
 
             },
             {
-              field: "retailer_category__c",
-              headerName: "Retailer Category",
+              field: "type_of_agri_expert__c",
+              headerName: "Category",
               width: 200,
-      filterable: false, 
+      // filterable: false, 
 
               sortable: false,
-              valueGetter: params => params.row?.retailer_category__c || 'N/A',
+              valueGetter: params => params.row?.type_of_agri_expert__c || 'N/A',
               renderCell: params => {
                 // console.log(params.row?.container?.id)
-                const value = params.row?.retailer_category__c || 'N/A'
+                const value = params.row?.type_of_agri_expert__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 
@@ -389,63 +395,164 @@ console.log(resultArray);
               },filterOperators: stringOperators 
             },
             {
-              field: "iil_category__c",
-              headerName: "IIL Category",
+                field: "pesticide_sale__c",
+                headerName: "Pest Sale",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.pesticide_sale__c===0?0:params.row?.pesticide_sale__c||"N/A",
+                renderCell: (params) => {
+                  let val =  params.row?.pesticide_sale__c===0?0:params.row?.pesticide_sale__c ||"N/A" ;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
+              }, 
+              {
+                field: "total_annual_turnover_in_lacs_iil__c",
+                headerName: "Distributor Turnover",
+                sortable: false,
+        filterable: false, 
+  
+                width: 200,
+                valueGetter:(params)=>params.row?.total_annual_turnover_in_lacs_iil__c===0?0:params.row?.total_annual_turnover_in_lacs_iil__c||"N/A",
+                renderCell: (params) => {
+                  let val = params.row?.total_annual_turnover_in_lacs_iil__c===0?0:params.row?.total_annual_turnover_in_lacs_iil__c||"N/A" ;
+                  return <Tooltip title={val}>{val}</Tooltip>;
+  
+                },filterOperators: stringOperators 
+              }, 
+            {
+              field: "company__c",
+              headerName: "Company Name",
               sortable: false,
-      filterable: false, 
+      // filterable: false, 
 
               width: 200,
-              valueGetter:(params)=>params.row?.iil_category__c||"N/A",
+              valueGetter:(params)=>params.row?.company__c||"N/A",
               renderCell: (params) => {
-                let val =  params.row?.iil_category__c ||"N/A" ;
+                let val =  params.row?.company__c ||"N/A" ;
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },filterOperators: stringOperators 
             }, 
             {
-              field: "pesticide_sale__c",
-              headerName: "Pest Sale",
+              field: "no_of_retailers__c",
+              headerName: "No of Retailers",
               width: 200,
       filterable: false, 
 
               sortable: false,
               valueGetter: params => {
-                  const value =  params.row?.pesticide_sale__c||"N/A"
+                  const value =  params.row?.no_of_retailers__c===0?0:params.row?.no_of_retailers__c||"N/A"
                   return value
               },
               renderCell: params => {
                 // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row?.pesticide_sale__c||"N/A"
+                const value =  params.row?.no_of_retailers__c===0?0:params.row?.no_of_retailers__c||"N/A"
                 return <Tooltip title={value}>{value}</Tooltip>
               },filterOperators: stringOperators 
-          }, 
+          },
+          {
+            field: "no_of_distributors__c",
+            headerName: "No of Distributors",
+            width: 200,
+    filterable: false, 
+
+            sortable: false,
+            valueGetter: params => {
+                const value =  params.row?.no_of_distributors__c===0?0:params.row?.no_of_distributors__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value = params.row?.no_of_distributors__c===0?0:params.row?.no_of_distributors__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },filterOperators: stringOperators 
+        }, 
             {
-              field: "pesticide_turnover__c",
-              headerName: "Pest Turnover",
+              field: "business_value__c",
+              headerName: "Total Business",
               width: 200,
               sortable: false,
               filterable: false, 
-              valueGetter: params => params.row?.pesticide_turnover__c || 'N/A',
+              valueGetter: params => params.row?.business_value__c===0?0:params.row?.business_value__c || 'N/A',
               renderCell: params => {
-                const value = params.row?.pesticide_turnover__c|| 'N/A'
+                const value =  params.row?.business_value__c===0?0:params.row?.business_value__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },filterOperators: stringOperators 
         
             },
             {
-              field: "iil_business__c",
-              headerName: "IIL Business",
+              field: "territory_looking__c",
+              headerName: "Territory",
               width: 200,
               sortable: false,
-              filterable: false, 
-              valueGetter: params => params.row?.iil_business__c || 'N/A',
+              // filterable: false, 
+              valueGetter: params => params.row?.territory_looking__c || 'N/A',
               renderCell: params => {
-                const value = params.row?.iil_business__c || 'N/A'
+                const value = params.row?.territory_looking__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 
         
             },
+            {
+                field: "experience__c",
+                headerName: "Experience",
+                width: 200,
+                sortable: false,
+                filterable: false, 
+                valueGetter: params => params.row?.experience__c===0?0:params.row?.experience__c || 'N/A',
+                renderCell: params => {
+                  const value = params.row?.experience__c===0?0:params.row?.experience__c || 'N/A'
+                  return <Tooltip title={value}>{value}</Tooltip>
+                },
+                filterOperators: stringOperators 
+          
+              },
+              {
+                field: "influencer_name_agriexpert__c",
+                headerName: "Influencer Name",
+                width: 200,
+                sortable: false,
+                filterable: false, 
+                valueGetter: params => params.row?.influencer_name_agriexpert__c || 'N/A',
+                renderCell: params => {
+                  const value = params.row?.influencer_name_agriexpert__c || 'N/A'
+                  return <Tooltip title={value}>{value}</Tooltip>
+                },
+                filterOperators: stringOperators 
+          
+              },
+              {
+                field: "crop__c",
+                headerName: "Crop",
+                width: 200,
+                sortable: false,
+                // filterable: false, 
+                valueGetter: params => params.row?.crop__c || 'N/A',
+                renderCell: params => {
+                  const value = params.row?.crop__c || 'N/A'
+                  return <Tooltip title={value}>{value}</Tooltip>
+                },
+                filterOperators: stringOperators 
+          
+              },
+              {
+                field: "no_of_farmers_associated_with_him__c",
+                headerName: "Total No of farmers",
+                width: 200,
+                sortable: false,
+                filterable: false, 
+                valueGetter: params => params.row?.no_of_farmers_associated_with_him__c || 'N/A',
+                renderCell: params => {
+                  const value = params.row?.no_of_farmers_associated_with_him__c===0?0:params.row?.no_of_farmers_associated_with_him__c || 'N/A'
+                  return <Tooltip title={value}>{value}</Tooltip>
+                },
+                filterOperators: stringOperators 
+          
+              },
   ];
 
     return result;
@@ -579,7 +686,7 @@ setEndDate(formattedCurrentDate)
 if(searchTerm  ){
 console.log("Current Date:check1");
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm?.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -587,7 +694,7 @@ console.log("Current Date:check1");
 }else{
 console.log("Current Date:check2");
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:"ytd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartDate,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -622,13 +729,13 @@ setStartDate(formattedStartOfMonth)
 console.log("Current Date:", formattedCurrentDate);
 setEndDate(formattedCurrentDate)
 if(searchTerm){
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)  
 }else{
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:"mtd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedStartOfMonth,endDate:formattedCurrentDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -658,13 +765,13 @@ setStartDate(formattedCurrentDate)
 
 console.log("Current Date:", formattedCurrentDate);
 if(searchTerm){
-const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
+const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm.value,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
       setRowCount(response.count[0].count)
 }else{
-const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
+const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:"ftd",filterValue:searchTerm,pageNumber:paginationModel.page,startDate:formattedCurrentDate,territoryName:territoryFilter })
 const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
       setData(jsonArrayWithId)
       // setData(response.items);
@@ -690,7 +797,7 @@ try{
   console.log("SEARCH",searchTerm)
   if(searchTerm){
     console.log("CHECKFILTER1")
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -699,7 +806,7 @@ try{
   else{
     console.log("CHECKFILTER2")
 
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:data })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -731,14 +838,14 @@ if(endDate){
   try{
 console.log("checkFirstDate")
 if(searchTerm){
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
   setRowCount(response.count[0].count)
 }
 else{
-  const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
+  const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
   const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
   setData(jsonArrayWithId)
   // setData(response.items);
@@ -772,14 +879,14 @@ const finalDateRangeFilter=async(data)=>{
   setEndDate1(formattedDate)
 }
     if(searchTerm){
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
     setRowCount(response.count[0].count)  
   }
     else{
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
+    const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:data?formattedDate:endDate,territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -807,7 +914,7 @@ const clearDateFilter=async()=>{
   if(searchTerm||territoryFilter){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -834,7 +941,7 @@ const clearTerritoryFIlter=async()=>{
   if(searchTerm||startDate||endDate){
     try{
     setLoading(true)
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
+    const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm?searchTerm.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:startDate,endDate:endDate,territoryName:'' })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -867,7 +974,7 @@ setCumalativeFilter(true)
 // setLoading(true)
     if(searchTerm||territoryFilter)
   {
-    const response = await window.Platform.database.getRetailerMappingDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
+    const response = await window.Platform.database.getAgriExpertMappingDetailsFilter({filterField:searchTerm?searchTerm?.field:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:'',endDate:'',territoryName:territoryFilter })
     const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
     setData(jsonArrayWithId)
     // setData(response.items);
@@ -890,7 +997,7 @@ catch(e){
       {isMobile && <Drawer props={props} />}
       <StaffEditorPageContainer>
         <HeaderContainer>
-          <Typography variant="h5">Retailer Mapping</Typography>
+          <Typography variant="h5">Agri-Expert Mapping</Typography>
           <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",marginTop:isMobile&&"5px"}}>
             <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
             <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>

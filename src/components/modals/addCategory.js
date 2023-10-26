@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 // import { MuiOtpInput } from 'mui-one-time-password-input';
 import { useNavigate } from 'react-router-dom';
-import { Stack, styled } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 // import SimpleBackdrop from '../loader/Loader';
 
 import { useContext } from 'react';
@@ -23,6 +23,11 @@ import {
 } from "@mui/material";
 import { LOCAL_STORAGE_KEYS } from "../../constants";
 import OpaqueLoading from '../opaqueLoading/opaqueLoading';
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import styled from '@emotion/styled';
+
+const isMobile = window.innerWidth < 900;
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -36,6 +41,14 @@ const StyledOtpInput = styled(TextField)({
     height: '18px', // Adjust the height as per your requirement
   },
 });
+
+
+const ModalHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+`;
 
 export default function AddCategoryModal({ onClose,fetchData }) {
   const [open, setOpen] = React.useState(true);
@@ -93,15 +106,23 @@ export default function AddCategoryModal({ onClose,fetchData }) {
           minHeight: 300,
           maxHeight: 350,
         },
-      }}>
+      }}
+      open={open}>
         {/* <DialogTitle>Apply For Leave</DialogTitle> */}
         <DialogContent>
           {/* <Card sx={{ width: "100%",minHeight:200 }}> */}
-
-          <Typography variant="h4" >
+<ModalHeaderContainer>
+<Typography variant="h5" >
             Add Category
           </Typography>
-          <Stack spacing={1} direction={'row'} sx={{ marginTop: '40px' }}>
+
+          <IconButton disabled={loading} onClick={onClose}>
+            <CloseOutlinedIcon />
+          </IconButton>
+
+</ModalHeaderContainer>
+          
+          <Stack spacing={1} direction={'row'} sx={{ paddingTop:isMobile?"20px":"50px" }}>
             <TextField
               required
               fullWidth
@@ -116,19 +137,20 @@ export default function AddCategoryModal({ onClose,fetchData }) {
           {/* </Card> */}
         </DialogContent>
         <DialogActions>
-          <Button
+          {/* <Button
             variant="outlined"
             sx={{ borderRadius: '40px', padding: '5px 10px' }}
-            onClick={onClose()}
+            onClick={onClose}
           >
             Cancel
-          </Button>
+          </Button> */}
           <Button
             type="submit"
             size="small"
-            variant="outlined"
-            sx={{ borderRadius: '40px', padding: '5px 10px' }}
+            variant="contained"
+            sx={{ borderRadius: '5px', padding: '5px 10px' }}
             onClick={() => handleAddCategory()}
+            disabled={loading}
           >
             Submit
           </Button>

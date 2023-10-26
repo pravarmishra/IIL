@@ -3,6 +3,20 @@ import Dashboard from "../views/Dashboard/index.js";
 import CategoryPage from "../views/categoryManagement/index.js"
 import FarmerManagement from "../views/farmerManagement/index.js"
 import RetailerManagement from "../views/retailerManagement/index.js";
+import DistributorManagement from "../views/distributorManagement/index.js";
+import AgriExpertManagement from "../views/agriExpertManagement/index.js";
+import FarmerVisit from "../views/farmerVisits/index.js";
+import RetailerVisit from "../views/retailerVisits/index.js";
+import DistributorVisit from "../views/distributorVisits/index.js";
+import VanCampaign from "../views/vanCampaign/index.js";
+import SpotDemo from "../views/spotDemo/index.js";
+import NormalDemo from "../views/normalDemo/index.js";
+import LpdDemoActivity from "../views/lpdDemoActivity/index.js";
+import FarmerMeet from "../views/farmerMeet/index.js";
+import KvkVisit from "../views/kvkVisit/index.js";
+import KrishiMela from "../views/krishiMela/index.js";
+import FeedbackReport from "../views/feedbackReport/index.js";
+import TestDashboard from "../views/testDashboard/index.js";
 // import { createBrowserRouter } from "react-router-dom";
 // import UserManagement from "../views/UserManagement/index.js";
 // import PrivateRoute from "../components/PrivateRoutes/index.js";
@@ -116,7 +130,103 @@ function routes(loggedIn, user){
              hideNavBar:false,
             //  nodeRef: createRef(),
         },
-      
+        {
+            path: "/distributormapping",
+            name: "Reatailer Mapping",
+            component: DistributorManagement,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        }, {
+            path: "/agriexpertmapping",
+            name: "Agri-Expert Mapping",
+            component: AgriExpertManagement,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/farmervisit",
+            name: "Farmer Visits",
+            component: FarmerVisit,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/retailervisit",
+            name: "Retailer Visits",
+            component: RetailerVisit,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/distributorvisit",
+            name: "Distributor Visits",
+            component: DistributorVisit,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/vancampaign",
+            name: "Van Campaign",
+            component: VanCampaign,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+         {
+            path: "/spotDemo",
+            name: "Spot Demo ",
+            component: SpotDemo,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/normalDemo",
+            name: "Normal Demo ",
+            component: NormalDemo,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/lpdActivity",
+            name: "LPD Activity ",
+            component: LpdDemoActivity,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/farmermeet",
+            name: "Farmer Meet ",
+            component: FarmerMeet,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/kvkvisit",
+            name: "KVK Visit",
+            component: KvkVisit,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/krishimela",
+            name: "Krishi Mela",
+            component: KrishiMela,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/feedbackreport",
+            name: "Feedback Report",
+            component: FeedbackReport,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/testDashboard",
+            name: "Feedback Report",
+            component: TestDashboard,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
         
     ]
 }

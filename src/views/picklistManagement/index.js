@@ -13,6 +13,8 @@ import Tooltip from "@mui/material/Tooltip";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AppsIcon from '@mui/icons-material/Apps';
 import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 
 
 
@@ -20,7 +22,12 @@ import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
 // import SimpleBackdrop from 'src/components/loader/Loader'
 
 
-
+const ModalHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+`;
 const isMobile = window.innerWidth < 900;
 const ContentContainer = styled.div`
 display: flex;
@@ -131,7 +138,7 @@ const PickListPage = ({category,name,setView}) => {
   const [categoryData, setCategoryData] = useState([])
 
   const [perticularCategory, setPerticularCategory] = useState([])
-  const [Name, setName] = useState("")
+  const [Name, setName] = useState()
   const [open,setOpen]=useState(false);
 
 
@@ -141,7 +148,7 @@ const PickListPage = ({category,name,setView}) => {
         })
         console.log("SHOW data..=>", categorySingle)
         setPerticularCategory(categorySingle);
-  })
+  },[picklistData])
 
  
   const getCategoryData = async () => {
@@ -165,7 +172,7 @@ const PickListPage = ({category,name,setView}) => {
   const handleAddPicklist = async () => {
     console.log("DATA to be send: ", Name, categoryID);
     setIsloader(true)
-    if (Name === "") {
+    if (Name.length === 0) {
       setIsloader(false)
       window.NotificationUtils.showWarning("Field is Empty, Please fill the field")
     }
@@ -376,9 +383,14 @@ const rows = filtereCategory.map((item, index) => ({
           {/* {
                       isloader && <SimpleBackdrop></SimpleBackdrop>
                   } */}
-              <Typography variant="h4" color={'#003974'}>
+                  <ModalHeaderContainer>
+              <Typography variant="h5">
                 Add Picklist
               </Typography>
+              <IconButton disabled={isloader} onClick={()=>setOpen(false)}>
+            <CloseOutlinedIcon />
+          </IconButton>
+          </ModalHeaderContainer>
               <Stack spacing={1} direction={'column'} sx={{marginTop:"35px"}}>
              
           <TextField name="clientName"
@@ -402,18 +414,19 @@ const rows = filtereCategory.map((item, index) => ({
           {/* </Card> */}
         </DialogContent>
         <DialogActions>
-          <Button
+          {/* <Button
             variant="outlined"
             sx={{ color: '#003974', borderColor: '#003974', borderRadius: '40px', padding: '5px 10px' }}
             onClick={() => setOpen(false)}
           >
             Cancel
-          </Button>
+          </Button> */}
           <Button
             type="submit"
-            sx={{ color: '#003974', borderColor: '#003974', borderRadius: '40px', padding: '5px 10px' }}
+            sx={{ borderRadius: '5px', padding: '5px 10px' }}
             size='small'
-            variant="outlined"
+            variant="contained"
+            disabled={isloader||!Name}
             onClick={() => handleAddPicklist()}
           >
             Submit
