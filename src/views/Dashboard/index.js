@@ -211,7 +211,7 @@ const Dashboard = (props) => {
   const [cumalativeFilter, setCumalativeFilter] = useState(false);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [territoryFilter, setTerritoryFilter] = useState();
+  const [territoryFilter, setTerritoryFilter] = useState(null);
   const [territoryType, setTerritoryType] = useState([]);
   const [territoryOptions, setTerritoryOptions] = useState([]);
   const [selectedTeritoryType, setSelectedTerritoryType] = useState(null);

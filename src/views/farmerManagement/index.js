@@ -116,7 +116,7 @@ const [ftdFilter,setFtdFilter]=useState(false)
 const [cumalativeFilter,setCumalativeFilter]=useState(false)
 const [startDate,setStartDate]=useState()
 const [endDate,setEndDate]=useState()
-const [territoryFilter,setTerritoryFilter]=useState()
+const [territoryFilter,setTerritoryFilter]=useState(null)
 const [territoryType,setTerritoryType]=useState([])
 const [territoryOptions,setTerritoryOptions]=useState([])
 const [selectedTeritoryType,setSelectedTerritoryType]=useState(null)
@@ -862,11 +862,13 @@ else{
   fetchData()
 }
 }
-
 const clearTerritoryFIlter=async()=>{
-  setTerritoryFilter(null)
+  setTerritoryFilter()
   setSelectedTerritoryType(null)
   setTerritoryOptions(null)
+  
+  console.log("territoryFilter",territoryFilter)
+  
   console.log(territoryFilter,selectedTeritoryType)
   if(searchTerm||startDate||endDate){
     try{
