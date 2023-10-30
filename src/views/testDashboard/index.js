@@ -55,12 +55,12 @@ import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import UpcomingIcon from "@mui/icons-material/Upcoming";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import OpenInNewOffIcon from "@mui/icons-material/OpenInNewOff";
-import ApexChart from "./chart";
 import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import PieChart from "./visitChart";
-import EventChart from "./eventChart";
+import PieChart from "../Dashboard/visitChart";
+import EventChart from "../Dashboard/eventChart";
+import ApexChart from "../Dashboard/chart";
 
 const isMobile = window.innerWidth < 900;
 const StyledCardHeading1 = ({ icon, children, value, sx, bgColor }) => (

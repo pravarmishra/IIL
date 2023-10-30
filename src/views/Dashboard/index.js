@@ -794,7 +794,7 @@ catch(e){
 
       <Drawer props={props}>
         <ContentContainer>
-             <div
+             {/* <div
             style={{
               width: "100%",
               display: "flex",
@@ -929,7 +929,7 @@ catch(e){
                  <EventChart  data={eventData} /> 
             </GraphCard1>
           
-          </Stack>   
+          </Stack>    */}
           {renderCards()}
           {/* {id && renderCards()} */}
           {/* {(props.user?.warehouse?.objectId && !id) && renderCards()} */}
