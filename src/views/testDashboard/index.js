@@ -393,6 +393,34 @@ const TestDashboard = (props) => {
     role: ["SI"],
       //  nodeRef: createRef(),
   },
+  {
+    link: "/farmermeet",
+    title: "Farmer Meet ",
+    icon: CampaignIcon,
+     role: ["SI"],
+    //  nodeRef: createRef(),
+},
+{
+    link: "/kvkvisit",
+    title: "KVK Visit",
+    icon: CampaignIcon,
+     role: ["SI"],
+    //  nodeRef: createRef(),
+},
+{
+    link: "/krishimela",
+    title: "Krishi Mela",
+    icon: CampaignIcon,
+     role: ["SI"],
+    //  nodeRef: createRef(),
+},
+{
+  link: "/feedbackreport",
+  title: "Feedback Report",
+  icon: CampaignIcon,
+  role: ["SI"],
+  //  nodeRef: createRef(),
+},
   ];
 
 
