@@ -401,8 +401,8 @@ console.log(resultArray);
               },filterOperators: stringOperators 
             }, 
             {
-              field: "category__c",
-              headerName: "Category",
+              field: "farmer_range__c",
+              headerName: "Range",
               width: 200,
               sortable: false,
               valueGetter: params => {
@@ -459,6 +459,23 @@ console.log(resultArray);
               },
               filterOperators: stringOperators 
           },
+          {
+            field: "Payment Method",
+            headerName: "Payment Method",
+            width: 200,
+            sortable: false,
+            filterable: false, 
+            valueGetter: params => {
+                const value =  params.row?.method__c||"N/A"
+                return value
+            },
+            renderCell: params => {
+              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+              const value =  params.row.method__c||"N/A"
+              return <Tooltip title={value}>{value}</Tooltip>
+            },
+            filterOperators: stringOperators 
+        },
    
 
           
