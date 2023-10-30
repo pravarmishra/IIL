@@ -397,7 +397,7 @@ console.log(resultArray);
                 field: "method__c",
                 headerName: "Payment Mode",
                 sortable: false,
-        filterable: false, 
+        // filterable: false, 
   
                 width: 200,
                 valueGetter:(params)=>params.row?.method__c||"N/A",
