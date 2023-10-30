@@ -63,7 +63,7 @@ const PieChart = ({data}) => {
 
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 550,
           options: {
             
             legend: {

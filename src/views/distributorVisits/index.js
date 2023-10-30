@@ -874,7 +874,7 @@ const year = datePickerResponse.getFullYear();
 const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
 const day = String(datePickerResponse.getDate()).padStart(2, '0');
 
-const formattedDate = `${year}/${month}/${day}`;
+const formattedDate = `${year}-${month}-${day}`;
 setStartDate1(formattedDate)
 setStartDate(formattedDate)
 if(endDate){
@@ -917,7 +917,7 @@ const finalDateRangeFilter=async(data)=>{
   const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
   const day = String(datePickerResponse.getDate()).padStart(2, '0');
   
-  const formattedDate = `${year}/${month}/${day}`;
+  const formattedDate = `${year}-${month}-${day}`;
   if (data){
   setEndDate(formattedDate)
   setEndDate1(formattedDate)

@@ -55,12 +55,12 @@ import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import UpcomingIcon from "@mui/icons-material/Upcoming";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import OpenInNewOffIcon from "@mui/icons-material/OpenInNewOff";
+import ApexChart from "./chart";
 import OpaqueLoading from "../../components/opaqueLoading/opaqueLoading";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import ApexChart from "../Dashboard/chart";
-import EventChart from "../Dashboard/eventChart";
-import PieChart from "../Dashboard/visitChart";
+import PieChart from "./visitChart";
+import EventChart from "./eventChart";
 
 const isMobile = window.innerWidth < 900;
 const StyledCardHeading1 = ({ icon, children, value, sx, bgColor }) => (
@@ -129,7 +129,7 @@ const GraphCard = styled(Card)`
 const GraphCard1 = styled(Card)`
   width: ${isMobile ? "95%" : "50%"};
   margin-left: ${isMobile ? "5px" : "0px"};
-  height:${isMobile ? "300px" : "290px"}; 
+  height:${isMobile ? "285px" : "350px"}; 
   padding: ${isMobile ? "10px" : "5px"};
 `;
 
@@ -344,83 +344,55 @@ const TestDashboard = (props) => {
       link: "/mastermanager",
       role: ["AM"],
     },
-    {
-      link: "/farmervisit",
-      title: "Farmer Visit",
-      icon: GroupIcon,
-      role: ["SI"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/retailervisit",
-    title: "Retailer Visits",
-    icon: StoreIcon,
-    role: ["SI"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/distributorvisit",
-    title: "Distributor Visits",
-    icon: StorefrontIcon,
-    role: ["SI"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/vancampaign",
-    title: "Van Campaign",
-      icon: Groups3Icon,
-    role: ["SI"],
-      //  nodeRef: createRef(),
-  },
-   {
-    link: "/spotDemo",
-      title: "Spot Demo ",
-      icon: PersonPinCircleIcon,
-    role: ["SI"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/normalDemo",
-    title: "Normal Demo ",
-      icon: StreetviewIcon,
-    role: ["SI"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/lpdActivity",
-      title: "Large Plot Demo",
-      icon: CampaignIcon,
-    role: ["SI"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/farmermeet",
-    title: "Farmer Meet ",
-    icon: CampaignIcon,
-    role: ["SI"],
-    //  nodeRef: createRef(),
-},
-{
-    link: "/kvkvisit",
-    title: "KVK Visit",
-    icon: CampaignIcon,
-    role: ["SI"],
-    //  nodeRef: createRef(),
-},
-{
-    link: "/krishimela",
-    title: "Krishi Mela",
-    icon: CampaignIcon,
-    role: ["SI"],
-    //  nodeRef: createRef(),
-},
-{
-    link: "/feedbackreport",
-    title: "Feedback Report",
-    icon: CampaignIcon,
-    role: ["SI"],
-    //  nodeRef: createRef(),
-},
+  //   {
+  //     link: "/farmervisit",
+  //     title: "Farmer Visit",
+  //     icon: GroupIcon,
+  //     role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/retailervisit",
+  //   title: "Retailer Visits",
+  //   icon: StoreIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/distributorvisit",
+  //   title: "Distributor Visits",
+  //   icon: StorefrontIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/vancampaign",
+  //   title: "Van Campaign",
+  //     icon: Groups3Icon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  //  {
+  //   link: "/spotDemo",
+  //     title: "Spot Demo ",
+  //     icon: PersonPinCircleIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/normalDemo",
+  //   title: "Normal Demo ",
+  //     icon: StreetviewIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
+  // {
+  //   link: "/lpdActivity",
+  //     title: "Large Plot Demo",
+  //     icon: CampaignIcon,
+  //   role: ["SI"],
+  //     //  nodeRef: createRef(),
+  // },
   ];
 
 

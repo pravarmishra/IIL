@@ -129,7 +129,7 @@ const GraphCard = styled(Card)`
 const GraphCard1 = styled(Card)`
   width: ${isMobile ? "95%" : "50%"};
   margin-left: ${isMobile ? "5px" : "0px"};
-  height:${isMobile ? "285px" : "350px"}; 
+  height:${isMobile ? "340px" : "290px"}; 
   padding: ${isMobile ? "10px" : "5px"};
 `;
 
@@ -794,7 +794,7 @@ catch(e){
 
       <Drawer props={props}>
         <ContentContainer>
-             {/* <div
+             <div
             style={{
               width: "100%",
               display: "flex",
@@ -862,7 +862,7 @@ catch(e){
             >
               Clear
             </Button>
-          </div> */}
+          </div>
           <Stack
             direction={isMobile ? "column" : "row"}
             sx={{
@@ -873,14 +873,14 @@ catch(e){
             }}
             spacing={isMobile ? 3 : 8}
           >
-            {/* <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={2}>
             <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
             <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>
             <Button variant="contained" disabled={ftdFilter ||dateRange1||loading} onClick={()=>FTD()} >FTD</Button>
             <Button variant="contained" disabled={cumalativeFilter ||dateRange1||loading} onClick={()=>CumulativeFiltefunctionr()}>Cumulative</Button>
 
-            </Stack> */}
-            {/* <Stack direction="row" spacing={1} width={isMobile?324:500}>
+            </Stack>
+            <Stack direction="row" spacing={1} width={isMobile?324:500}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
             </LocalizationProvider>
@@ -888,9 +888,9 @@ catch(e){
             <DatePicker label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
             </LocalizationProvider>
             <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
-            </Stack> */}
+            </Stack>
           </Stack>
-          {/* <Stack
+          <Stack
             direction={isMobile ? "column" : "row"}
             sx={{
               // marginLeft: isMobile && "1%",
@@ -929,7 +929,7 @@ catch(e){
                  <EventChart  data={eventData} /> 
             </GraphCard1>
           
-          </Stack>    */}
+          </Stack>   
           {renderCards()}
           {/* {id && renderCards()} */}
           {/* {(props.user?.warehouse?.objectId && !id) && renderCards()} */}
