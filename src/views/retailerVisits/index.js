@@ -276,7 +276,7 @@ console.log(resultArray);
             },
             {
               field: "retailer_shop_name",
-              headerName: "Retailer Shop Name",
+              headerName: "Retailer Name",
               sortable: false,
               width: 200,
             //   filterable: false,

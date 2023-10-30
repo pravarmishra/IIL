@@ -294,7 +294,7 @@ console.log(resultArray);
                 headerName: "Product Name",
                 sortable: false,
                 width: 200,
-                filterable: false,
+                // filterable: false,
                 valueGetter:(params)=>params.row?.product_name__c,
                 renderCell: (params) => {
                   let val = params.row?.product_name__c||"N/A";
