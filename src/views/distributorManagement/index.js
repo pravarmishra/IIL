@@ -420,7 +420,7 @@ console.log(resultArray);
               }, 
             {
               field: "no_of_districts_covered__c",
-              headerName: "Districts Covered",
+              headerName: "No of Districts Covered",
               sortable: false,
       filterable: false, 
 

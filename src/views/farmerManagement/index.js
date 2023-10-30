@@ -460,11 +460,11 @@ console.log(resultArray);
               filterOperators: stringOperators 
           },
           {
-            field: "Payment Method",
+            field: "method__c",
             headerName: "Payment Method",
             width: 200,
             sortable: false,
-            filterable: false, 
+            // filterable: false, 
             valueGetter: params => {
                 const value =  params.row?.method__c||"N/A"
                 return value

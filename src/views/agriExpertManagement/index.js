@@ -469,8 +469,24 @@ console.log(resultArray);
               const value = params.row?.no_of_distributors__c===0?0:params.row?.no_of_distributors__c||"N/A"
               return <Tooltip title={value}>{value}</Tooltip>
             },filterOperators: stringOperators 
-        }, 
-            {
+        },{
+          field: "working_with__c",
+          headerName: "Employee Name",
+          width: 200,
+  filterable: false, 
+
+          sortable: false,
+          valueGetter: params => {
+              const value =  params.row?.working_with__c===0?0:params.row?.working_with__c||"N/A"
+              return value
+          },
+          renderCell: params => {
+            // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
+            const value = params.row?.working_with__c===0?0:params.row?.working_with__c||"N/A"
+            return <Tooltip title={value}>{value}</Tooltip>
+          },filterOperators: stringOperators 
+      },
+             {
               field: "business_value__c",
               headerName: "Total Business",
               width: 200,
