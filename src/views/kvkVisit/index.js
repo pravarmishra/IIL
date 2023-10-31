@@ -438,14 +438,14 @@ console.log(formattedDate);
               width: 200,
               valueGetter:(params)=>params.row?.name_of_scientist__c||"N/A"              ,
               renderCell: (params) => {
-                let val = params.row?.name_of_scientist__c;
+                let val = params.row?.name_of_scientist__c||"N/A";
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },filterOperators: stringOperators 
             },
             {
               field: "discussion__c",
-              headerName: "Discusiion",
+              headerName: "Discussion",
               sortable: false,
     //   filterable: false, 
 
