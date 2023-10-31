@@ -552,7 +552,7 @@ console.log(resultArray);
               }, 
             {
               field: "plot_name__c",
-              headerName: "Area Covered",
+              headerName: "Demo plot area",
               sortable: false,
       filterable: false, 
 
@@ -650,7 +650,7 @@ console.log(resultArray);
             },
             {
               field: "farmer_used_product__c",
-              headerName: "Value delivery to customer on product usage",
+              headerName: "Farmer used product",
               sortable: false,
       filterable: false, 
 

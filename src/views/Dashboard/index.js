@@ -316,7 +316,7 @@ const Dashboard = (props) => {
       title: "Farmer Mapping",
       icon: AgricultureIcon,
       link: "/farmermapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Retailer Mapping",

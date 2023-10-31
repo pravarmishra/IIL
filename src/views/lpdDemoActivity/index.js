@@ -566,7 +566,7 @@ console.log(resultArray);
             },
             {
                 field: "demo_plot_size_acre__c",
-                headerName: "Area Covered",
+                headerName: "Demo plot size",
                 sortable: false,
         filterable: false, 
   

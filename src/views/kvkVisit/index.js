@@ -431,7 +431,7 @@ console.log(formattedDate);
             },
             {
               field: "name_of_scientist__c",
-              headerName: "Discusiion",
+              headerName: "Name of scientist",
               sortable: false,
     //   filterable: false, 
 
