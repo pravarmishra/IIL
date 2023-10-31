@@ -310,7 +310,7 @@ const Dashboard = (props) => {
       title: "Category Data",
       icon: BallotIcon,
       link: "/category",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Farmer Mapping",
@@ -322,13 +322,13 @@ const Dashboard = (props) => {
       title: "Retailer Mapping",
       icon: WarehouseIcon,
       link: "/retailermapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Distributor Mapping",
       icon: FactoryIcon,
       link: "/distributormapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Agri-Expert Mapping",
@@ -336,14 +336,7 @@ const Dashboard = (props) => {
       link: "/agriexpertmapping",
       role: ["SI"],
     },
-   
-   
-    {
-      title: "Master Management",
-      icon: Engineering,
-      link: "/mastermanager",
-      role: ["AM"],
-    },
+
   //   {
   //     link: "/farmervisit",
   //     title: "Farmer Visit",

@@ -433,7 +433,7 @@ console.log(formattedDate);
               field: "name_of_scientist__c",
               headerName: "Name of scientist",
               sortable: false,
-    //   filterable: false, 
+      filterable: false, 
 
               width: 200,
               valueGetter:(params)=>params.row?.name_of_scientist__c||"N/A"              ,
@@ -447,7 +447,7 @@ console.log(formattedDate);
               field: "discussion__c",
               headerName: "Discussion",
               sortable: false,
-    //   filterable: false, 
+      filterable: false, 
 
               width: 200,
               valueGetter:(params)=>params.row?.discussion__c||"N/A"              ,

@@ -69,24 +69,24 @@ export const getNavItems = (auth) => {
       title: "Category Data",
       icon: BallotIcon,
       link: "/category",
-      role: ["SI"],
+      role: ["SI","AM"],
     },{
       title: "Farmer Mapping",
       icon: AgricultureIcon,
       link: "/farmermapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Retailer Mapping",
       icon: WarehouseIcon,
       link: "/retailermapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Distributor Mapping",
       icon: FactoryIcon,
       link: "/distributormapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Agri-Expert Mapping",
@@ -260,9 +260,9 @@ console.log("PROPPSSS",props)
             <DropdownItem style={{ padding: "10px 12px", fontWeight: "600", color: "black" }}>
               <AccountNameContainer>
                 {/* <StyledAvatar height={30} src={props.user?.profilePicURL || ""} />{" "} */}
-                <div style={{ marginLeft: "10px" }}>
+               {props && <div style={{ marginLeft: "10px" }}>
                   {props?.user?.name__c}{"("+props?.user?.profile__c+")"}
-                </div>
+                </div>}
               </AccountNameContainer>
             </DropdownItem>
             <DropdownItem divider />

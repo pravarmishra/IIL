@@ -235,9 +235,12 @@ useEffect(()=>{
   const getUserName = () => {
     let result = "";
 console.log("PROPSSS",props)
-    if (props) {
+    if (props.props) {
       result =props?.props?.user?.name__c+"("+props?.props?.user?.profile__c+")"
       ;
+    }
+    else{
+      result=""
     }
 
     
@@ -253,24 +256,24 @@ console.log("PROPSSS",props)
       title: "Category Data",
       icon: BallotIcon,
       link: "/category",
-      role: ["SI"],
+      role: ["SI","AM"],
     },{
       title: "Farmer Mapping",
       icon: AgricultureIcon,
       link: "/farmermapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Retailer Mapping",
       icon: WarehouseIcon,
       link: "/retailermapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Distributor Mapping",
       icon: FactoryIcon,
       link: "/distributormapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
     {
       title: "Agri-Expert Mapping",
@@ -507,7 +510,7 @@ console.log("PROPSSS",props)
                   <MenuIcon />
                 </IconButton>
               )}
-
+             {props?.props&&
               <Typography
                 style={{ color: "black", textTransform: "initial" }}
                 variant="h6"
@@ -515,7 +518,7 @@ console.log("PROPSSS",props)
                 {getUserName()}
                 {/* {props?.user?.name__c}{"("+props?.user?.profile__c+")"} */}
 
-              </Typography>
+              </Typography>}
             {/* <Tooltip title="Click to see Notification" placement="left">
               <IconButton
                onClick={() => {
