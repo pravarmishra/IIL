@@ -222,6 +222,7 @@ const TestDashboard = (props) => {
   const [mappingData,setMappingData] = useState()
   const [visitData,setVisitedData] = useState()
   const [eventData,setEventData] = useState()
+  const [minDate,setMinDate]=useState()
 
   console.log("PROPSSSSS", props);
   // console.log("NAVBAR",props)
@@ -626,50 +627,23 @@ catch(err){
 }
 }
 const formatDate=async(data)=>{
+  setMinDate(data)
   setDateRange1(true)
-  const datePickerResponse = new Date(data);
+  setEndDate1(null)
+  setEndDate(null)
+  const datePickerResponse = new Date(data.$d);
 
 const year = datePickerResponse.getFullYear();
 const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
 const day = String(datePickerResponse.getDate()).padStart(2, '0');
+const formattedDate = `${year}-${month}-${day}`;
 
-const formattedDate = `${year}/${month}/${day}`;
 setStartDate1(formattedDate)
 setStartDate(formattedDate)
 console.log("CHECK!!")
 console.log("CHECKENDDATE",endDate)
-if(endDate){
-  setLoading(true)
-  try{
-console.log("checkFirstDate1")
-if(territoryFilter){
-  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
-  setMappingData(response.data)
-  setVisitedData(response?.count);
-  setEventData(response?.region)
 
 
-}
-else{
-console.log("checkFirstDate1")
-
-  const response = await window.Platform.database.getMappingDetailsCountFilter({startDate:formattedDate,endDate:endDate })
-  setMappingData(response.data)
-  setVisitedData(response?.count);
-  setEventData(response?.region)
-
-
-}
-setLoading(false)
-}
-catch(e){
-  console.log(e)
-  setLoading(false)
-  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
-
-  fetchData()
-}
-}
 
 }
 const finalDateRangeFilter=async(data)=>{
@@ -910,10 +884,10 @@ catch(e){
             </Stack>
             <Stack direction="row" spacing={1} width={isMobile?324:500}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
+            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data)} />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
+            <DatePicker label="End Date"  minDate={minDate} value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
             </LocalizationProvider>
             <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
             </Stack>

@@ -124,6 +124,8 @@ const [dateRange1,setDateRange1]=useState(false)
 // const [dateRange2,setDateRange2]=useState('')
 const [startDate1,setStartDate1]=useState()
 const [endDate1,setEndDate1]=useState()
+const [minDate,setMinDate]=useState()
+
 
 
 
@@ -279,7 +281,7 @@ console.log(resultArray);
               headerName: "KVK Name",
               sortable: false,
               width: 200,
-            //   filterable: false,
+              filterable: false,
               valueGetter:(params)=>params.row?.name_of_kvk__c,
               renderCell: (params) => {
                 let val = params.row?.name_of_kvk__c||"N/A";
@@ -423,6 +425,34 @@ console.log(formattedDate);
               valueGetter:(params)=>params.row?.village_name__c||"N/A"              ,
               renderCell: (params) => {
                 let val = params.row?.village_name__c;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "name_of_scientist__c",
+              headerName: "Discusiion",
+              sortable: false,
+    //   filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.name_of_scientist__c||"N/A"              ,
+              renderCell: (params) => {
+                let val = params.row?.name_of_scientist__c;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "discussion__c",
+              headerName: "Discusiion",
+              sortable: false,
+    //   filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.discussion__c||"N/A"              ,
+              renderCell: (params) => {
+                let val = params.row?.discussion__c;
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },filterOperators: stringOperators 
@@ -717,8 +747,11 @@ catch(err){
 }
 }
 const formatDate=async(data)=>{
+  setMinDate(data)
   setDateRange1(true)
-  const datePickerResponse = new Date(data);
+  setEndDate1(null)
+  setEndDate(null)
+  const datePickerResponse = new Date(data.$d);
 
 const year = datePickerResponse.getFullYear();
 const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
@@ -727,34 +760,10 @@ const formattedDate = `${year}-${month}-${day}`;
 
 setStartDate1(formattedDate)
 setStartDate(formattedDate)
-if(endDate){
-  setLoading(true)
-  try{
-console.log("checkFirstDate")
-if(searchTerm){
-  const response = await window.Platform.database.getKvkVisitDetailsFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
-  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
-  setData(jsonArrayWithId)
-  // setData(response.items);
-  setRowCount(response.count[0].count)
-}
-else{
-  const response = await window.Platform.database.getKvkVisitDetailsFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
-  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
-  setData(jsonArrayWithId)
-  // setData(response.items);
-  setRowCount(response.count[0].count)
-}
-setLoading(false)
-}
-catch(e){
-  console.log(e)
-  setLoading(false)
-  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+console.log("CHECK!!")
+console.log("CHECKENDDATE",endDate)
 
-  fetchData()
-}
-}
+
 
 }
 const finalDateRangeFilter=async(data)=>{
@@ -1052,10 +1061,10 @@ catch(e){
            
             <div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",paddingTop:"4px"}}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
+            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data)} />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
+            <DatePicker label="End Date"  minDate={minDate} value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
             </LocalizationProvider>
             <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
 

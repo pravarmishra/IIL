@@ -124,6 +124,8 @@ const [dateRange1,setDateRange1]=useState(false)
 // const [dateRange2,setDateRange2]=useState('')
 const [startDate1,setStartDate1]=useState()
 const [endDate1,setEndDate1]=useState()
+const [minDate,setMinDate]=useState()
+
 
 
 
@@ -577,6 +579,118 @@ console.log(resultArray);
               },filterOperators: stringOperators 
             },
             {
+              field: "product_superiority_over_competition__c",
+              headerName: "Product superiority over competition",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.product_superiority_over_competition__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.product_superiority_over_competition__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "cost_benefit_to_farmer__c",
+              headerName: "Cost benifit to farmer",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.cost_benefit_to_farmer__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.cost_benefit_to_farmer__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "customer_satisfaction__c",
+              headerName: "Customer satisfaction",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.customer_satisfaction__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.customer_satisfaction__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "ease_of_application__c",
+              headerName: "Ease of application",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.ease_of_application__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.ease_of_application__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "value_delivery_to_customer_on_product_us__c",
+              headerName: "Value delivery to customer on product usage",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.value_delivery_to_customer_on_product_us__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.value_delivery_to_customer_on_product_us__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "farmer_used_product__c",
+              headerName: "Value delivery to customer on product usage",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.farmer_used_product__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.farmer_used_product__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "number_of_farmers__c",
+              headerName: "No of farmers attended",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.number_of_farmers__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.number_of_farmers__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
+              field: "rating_for_demo_given_by_farmer__c",
+              headerName: "Rating given by farmer",
+              sortable: false,
+      filterable: false, 
+
+              width: 200,
+              valueGetter:(params)=>params.row?.rating_for_demo_given_by_farmer__c||"N/A",
+              renderCell: (params) => {
+                let val =  params.row?.rating_for_demo_given_by_farmer__c ||"N/A" ;
+                return <Tooltip title={val}>{val}</Tooltip>;
+
+              },filterOperators: stringOperators 
+            },
+            {
                 field: "severity__c",
                 headerName: "Severity",
                 sortable: false,
@@ -862,8 +976,11 @@ catch(err){
 }
 }
 const formatDate=async(data)=>{
+  setMinDate(data)
   setDateRange1(true)
-  const datePickerResponse = new Date(data);
+  setEndDate1(null)
+  setEndDate(null)
+  const datePickerResponse = new Date(data.$d);
 
 const year = datePickerResponse.getFullYear();
 const month = String(datePickerResponse.getMonth() + 1).padStart(2, '0');
@@ -872,34 +989,10 @@ const formattedDate = `${year}-${month}-${day}`;
 
 setStartDate1(formattedDate)
 setStartDate(formattedDate)
-if(endDate){
-  setLoading(true)
-  try{
-console.log("checkFirstDate")
-if(searchTerm){
-  const response = await window.Platform.database.getNormalDemoActivityFilter({filterField:searchTerm.field,filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
-  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
-  setData(jsonArrayWithId)
-  // setData(response.items);
-  setRowCount(response.count[0].count)
-}
-else{
-  const response = await window.Platform.database.getNormalDemoActivityFilter({filterField:"territory",filterValue:searchTerm?.value,pageNumber:paginationModel.page,startDate:formattedDate,endDate:endDate,territoryName:territoryFilter })
-  const jsonArrayWithId = response?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
-  setData(jsonArrayWithId)
-  // setData(response.items);
-  setRowCount(response.count[0].count)
-}
-setLoading(false)
-}
-catch(e){
-  console.log(e)
-  setLoading(false)
-  window.NotificationUtils.showError("Error While Recieving Data Please Wait and try again");
+console.log("CHECK!!")
+console.log("CHECKENDDATE",endDate)
 
-  fetchData()
-}
-}
+
 
 }
 const finalDateRangeFilter=async(data)=>{
@@ -1197,10 +1290,10 @@ catch(e){
            
             <div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",paddingTop:"4px"}}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
+            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data)} />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
+            <DatePicker label="End Date"  minDate={minDate} value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
             </LocalizationProvider>
             <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
 
