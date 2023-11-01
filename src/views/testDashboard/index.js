@@ -129,7 +129,7 @@ const GraphCard = styled(Card)`
 const GraphCard1 = styled(Card)`
   width: ${isMobile ? "95%" : "50%"};
   margin-left: ${isMobile ? "5px" : "0px"};
-  height:${isMobile ? "285px" : "350px"}; 
+  height:${isMobile ? "315px" : "290px"}; 
   padding: ${isMobile ? "10px" : "5px"};
 `;
 

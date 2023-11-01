@@ -422,14 +422,14 @@ console.log(resultArray);
               },filterOperators: stringOperators 
           }, 
             {
-              field: "pesticide_turnover__c",
-              headerName: "Pest Turnover",
+              field: "fertilizer_salles__c",
+              headerName: "Fertilizer Sale",
               width: 200,
               sortable: false,
               filterable: false, 
-              valueGetter: params => params.row?.pesticide_turnover__c || 'N/A',
+              valueGetter: params => params.row?.fertilizer_salles__c || 'N/A',
               renderCell: params => {
-                const value = params.row?.pesticide_turnover__c|| 'N/A'
+                const value = params.row?.fertilizer_salles__c|| 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },filterOperators: stringOperators 
         

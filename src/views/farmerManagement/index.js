@@ -451,12 +451,12 @@ console.log(resultArray);
               sortable: false,
               // filterable: false, 
               valueGetter: params => {
-                  const value =  params.row?.acreage__c||"N/A"
+                  const value =  params.row?.total_crop_acreage__c||"N/A"
                   return value
               },
               renderCell: params => {
                 // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row.acreage__c||"N/A"
+                const value =  params.row.total_crop_acreage__c||"N/A"
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 

@@ -282,7 +282,7 @@ console.log(resultArray);
               headerName: "Name",
               sortable: false,
               width: 200,
-            //   filterable: false,
+              filterable: false,
               valueGetter:(params)=>params.row?.agri_expert_name,
               renderCell: (params) => {
                 let val = params.row?.agri_expert_name||"N/A";
