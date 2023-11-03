@@ -30,6 +30,7 @@ const EventChart = ({ data }) => {
          
         },
       },
+      colors: customColors, // Use the custom colors
       dataLabels: {
         enabled: true,
         formatter: function (val, opts) {
