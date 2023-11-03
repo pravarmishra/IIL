@@ -27,13 +27,7 @@ const EventChart = ({ data }) => {
         pie: {
           startAngle: -90,
           endAngle: 270,
-          donut: {
-            labels: {
-              show: true, // Display labels
-              name: { show: true }, // Show segment names
-              value: { show: true }, // Show segment values
-            },
-          },
+         
         },
       },
       dataLabels: {
