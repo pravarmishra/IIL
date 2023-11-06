@@ -183,36 +183,55 @@ const EventManager = (props) => {
   // console.log('tessst',test)
 
  const cardData = [
-   
-    {
-        title: "Category Data",
-        icon: BallotIcon,
-        link: "/category",
-        role: ["SI","AM"],
-      },
-  
-      {
-        link: "/mappingreport",
-        title: "Mapping Report",
-        icon: farmervisit,
-        role: ["SI","AM"],
-        //  nodeRef: createRef(),
-    },
-      {
-        link: "/visitreport",
-        title: "Visit Report",
-        icon: farmervisit,
-        role: ["SI","AM"],
-        //  nodeRef: createRef(),
-    },
-  
   {
-    link: "/feedbackreport",
-    title: "Feedback Report",
-    icon: Feedback,
+    link: "/vancampaign",
+    title: "Van Campaign",
+      icon: vanCampaign,
     role: ["SI","AM"],
-    //  nodeRef: createRef(),
+      //  nodeRef: createRef(),
   },
+   {
+    link: "/spotDemo",
+      title: "Spot Demo ",
+      icon: spotDemo,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/normalDemo",
+    title: "Normal Demo ",
+      icon: NormalDemo,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/lpdActivity",
+      title: "Large Plot Demo",
+      icon: LpdDemo,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/farmermeet",
+    title: "Farmer Meet ",
+    icon: FarmerMeet,
+     role: ["SI","AM"],
+    //  nodeRef: createRef(),
+},
+{
+    link: "/kvkvisit",
+    title: "KVK Visit",
+    icon: Kvkvisit,
+     role: ["SI","AM"],
+    //  nodeRef: createRef(),
+},
+{
+    link: "/krishimela",
+    title: "Krishi Mela",
+    icon: KrishiMela,
+     role: ["SI","AM"],
+    //  nodeRef: createRef(),
+},
   ];
 
 

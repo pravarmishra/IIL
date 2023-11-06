@@ -70,8 +70,12 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import StreetviewIcon from '@mui/icons-material/Streetview';
 import Groups3Icon from '@mui/icons-material/Groups3';
-import { ReactComponent as farmervisit } from "../../../icons/Farmer visit.svg"
-import { ReactComponent as Feedback } from "../../../icons/Feedback.svg"
+import { ReactComponent as Mapping } from "../../../icons/Mapping1.svg"
+import { ReactComponent as Feedback } from "../../../icons/Feedback1.svg"
+import { ReactComponent as Visit } from "../../../icons/Visits1.svg"
+import { ReactComponent as Event } from "../../../icons/Events1.svg"
+
+
 
 
 
@@ -263,14 +267,14 @@ console.log("PROPSSS",props)
     {
       link: "/mappingreport",
       title: "Mapping Report",
-      icon: BallotIcon,
+      icon: Mapping,
       role: ["SI","AM"],
       //  nodeRef: createRef(),
   },
     {
       link: "/visitreport",
       title: "Visit Report",
-      icon: BallotIcon,
+      icon: Visit,
       role: ["SI","AM"],
       //  nodeRef: createRef(),
   },
@@ -278,7 +282,7 @@ console.log("PROPSSS",props)
   {
     link: "/eventreport",
     title: "Event Report",
-      icon: BallotIcon,
+      icon: Event,
     role: ["SI","AM"],
       //  nodeRef: createRef(),
   },
@@ -286,7 +290,7 @@ console.log("PROPSSS",props)
 {
   link: "/feedbackreport",
   title: "Feedback Report",
-  icon: BallotIcon,
+  icon: Feedback,
   role: ["SI","AM"],
   //  nodeRef: createRef(),
 },
