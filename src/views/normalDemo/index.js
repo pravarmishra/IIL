@@ -140,17 +140,17 @@ useEffect(() => {
 useEffect(() => {
   // console.log('check page', paginationModel)
 if(!searchTerm&&!startDate&&!endDate&&!territoryFilter){
-  fetchData1()
+  // fetchData1()
 fetchData()}
   // if(!queryOptions)
   // fetchData(activeTab);
 }, [paginationModel.page]);
 
 
-const fetchData1=async()=>{
-let results = await window.Platform.database.getFarmerMeetingDetails1({pageNumber:paginationModel.page});
-console.log("APIRESPONSE",results)
-}
+// const fetchData1=async()=>{
+// let results = await window.Platform.database.getFarmerMeetingDetails1({pageNumber:paginationModel.page});
+// console.log("APIRESPONSE",results)
+// }
 
 
 

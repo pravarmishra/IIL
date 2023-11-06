@@ -476,7 +476,7 @@ console.log(resultArray);
                 field: "pest_type__c",
                 headerName: "Pest Type",
                 sortable: false,
-        // filterable: false, 
+        filterable: false, 
   
                 width: 200,
                 valueGetter:(params)=>params.row?.pest_type__c||"N/A",

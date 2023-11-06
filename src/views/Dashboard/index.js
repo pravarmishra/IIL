@@ -61,6 +61,21 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import PieChart from "./visitChart";
 import EventChart from "./eventChart";
+import { ReactComponent as FarmerMapping } from "../../icons/Farmer Mapping.svg"
+import { ReactComponent as RetailerMapping } from "../../icons/Retailer Mapping.svg"
+import { ReactComponent as DistributorMapping } from "../../icons/Distributor Mapping.svg"
+import { ReactComponent as AgriExpertMapping } from "../../icons/Agri Expert Mapping.svg"
+import { ReactComponent as farmervisit } from "../../icons/Farmer visit.svg"
+import { ReactComponent as Retailervisit } from "../../icons/Retailer visit.svg"
+import { ReactComponent as Distributorvisit } from "../../icons/Distributor visit.svg"
+import { ReactComponent as vanCampaign } from "../../icons/Van Campaign.svg"
+import { ReactComponent as spotDemo } from "../../icons/Spot demo.svg"
+import { ReactComponent as NormalDemo } from "../../icons/Normal demo.svg"
+import { ReactComponent as LpdDemo } from "../../icons/Large plot demo.svg"
+import { ReactComponent as FarmerMeet } from "../../icons/Farmer Meet.svg"
+import { ReactComponent as Kvkvisit } from "../../icons/kvkvisit.svg"
+import { ReactComponent as KrishiMela } from "../../icons/krishimela.svg"
+import { ReactComponent as Feedback } from "../../icons/Feedback.svg"
 
 const isMobile = window.innerWidth < 900;
 const StyledCardHeading1 = ({ icon, children, value, sx, bgColor }) => (
@@ -314,78 +329,108 @@ const Dashboard = (props) => {
     },
     {
       title: "Farmer Mapping",
-      icon: AgricultureIcon,
+      icon: FarmerMapping,
+  
       link: "/farmermapping",
       role: ["SI","AM"],
     },
     {
       title: "Retailer Mapping",
-      icon: WarehouseIcon,
+      icon: RetailerMapping,
       link: "/retailermapping",
       role: ["SI","AM"],
     },
     {
       title: "Distributor Mapping",
-      icon: FactoryIcon,
+      icon: DistributorMapping,
       link: "/distributormapping",
       role: ["SI","AM"],
     },
     {
       title: "Agri-Expert Mapping",
-      icon: Diversity3Icon,
+      icon: AgriExpertMapping,
       link: "/agriexpertmapping",
-      role: ["SI"],
+      role: ["SI","AM"],
     },
+   
 
-  //   {
-  //     link: "/farmervisit",
-  //     title: "Farmer Visit",
-  //     icon: GroupIcon,
-  //     role: ["SI"],
-  //     //  nodeRef: createRef(),
-  // },
-  // {
-  //   link: "/retailervisit",
-  //   title: "Retailer Visits",
-  //   icon: StoreIcon,
-  //   role: ["SI"],
-  //     //  nodeRef: createRef(),
-  // },
-  // {
-  //   link: "/distributorvisit",
-  //   title: "Distributor Visits",
-  //   icon: StorefrontIcon,
-  //   role: ["SI"],
-  //     //  nodeRef: createRef(),
-  // },
-  // {
-  //   link: "/vancampaign",
-  //   title: "Van Campaign",
-  //     icon: Groups3Icon,
-  //   role: ["SI"],
-  //     //  nodeRef: createRef(),
-  // },
-  //  {
-  //   link: "/spotDemo",
-  //     title: "Spot Demo ",
-  //     icon: PersonPinCircleIcon,
-  //   role: ["SI"],
-  //     //  nodeRef: createRef(),
-  // },
-  // {
-  //   link: "/normalDemo",
-  //   title: "Normal Demo ",
-  //     icon: StreetviewIcon,
-  //   role: ["SI"],
-  //     //  nodeRef: createRef(),
-  // },
-  // {
-  //   link: "/lpdActivity",
-  //     title: "Large Plot Demo",
-  //     icon: CampaignIcon,
-  //   role: ["SI"],
-  //     //  nodeRef: createRef(),
-  // },
+    {
+      link: "/farmervisit",
+      title: "Farmer Visit",
+      icon: farmervisit,
+      role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/retailervisit",
+    title: "Retailer Visits",
+    icon: Retailervisit,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/distributorvisit",
+    title: "Distributor Visits",
+    icon: Distributorvisit,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/vancampaign",
+    title: "Van Campaign",
+      icon: vanCampaign,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+   {
+    link: "/spotDemo",
+      title: "Spot Demo ",
+      icon: spotDemo,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/normalDemo",
+    title: "Normal Demo ",
+      icon: NormalDemo,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/lpdActivity",
+      title: "Large Plot Demo",
+      icon: LpdDemo,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/farmermeet",
+    title: "Farmer Meet ",
+    icon: FarmerMeet,
+     role: ["SI","AM"],
+    //  nodeRef: createRef(),
+},
+{
+    link: "/kvkvisit",
+    title: "KVK Visit",
+    icon: Kvkvisit,
+     role: ["SI","AM"],
+    //  nodeRef: createRef(),
+},
+{
+    link: "/krishimela",
+    title: "Krishi Mela",
+    icon: KrishiMela,
+     role: ["SI","AM"],
+    //  nodeRef: createRef(),
+},
+{
+  link: "/feedbackreport",
+  title: "Feedback Report",
+  icon: Feedback,
+  role: ["SI","AM"],
+  //  nodeRef: createRef(),
+},
   ];
 
 
