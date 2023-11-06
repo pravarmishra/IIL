@@ -58,7 +58,7 @@ const StaffEditorPageContainer = styled.div`
 const DataGridContainer = styled.div`
   width: 100%;
   overflow-x: auto;
-  height:${isMobile?"calc(100vh - 302px)":"calc(100vh - 204px)"};
+  height:${isMobile?"calc(100vh - 302px)":"calc(100vh - 154px)"};
   && .highlighted-row {
     background-color: #ffcccb !important;
   }
@@ -74,7 +74,7 @@ const HeaderContainer = styled.div`
 
 const TableContainer = styled.div`
   height: calc(
-    100vh - ${isMobile ? "56px - 70px - 175.23px" : "140px - 20px - 41.77px"}
+    100vh - ${isMobile ? "56px - 70px - 175.23px" : "140px - 6px - 5.77px"}
   );
   width: 100%;
   border: solid 1px lightGrey;
@@ -96,7 +96,7 @@ const StyledCardHeading = styled(Typography)`
 
 
 
-export default function RetailerVisit(props) {
+export default function OrderManagement(props) {
   const [loading, setLoading] = useState(false);
 
   const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -129,28 +129,28 @@ const [minDate,setMinDate]=useState()
 
 
 
-useEffect(() => {
-  // console.log('check page', paginationModel)
-  // if(searchTerm){
-    onFilterChange1(searchTerm)
-  // }
+// useEffect(() => {
+//   // console.log('check page', paginationModel)
+//   // if(searchTerm){
+//     onFilterChange1(searchTerm)
+//   // }
 
-}, [paginationModel.page]);
+// }, [paginationModel.page]);
 
 useEffect(() => {
   // console.log('check page', paginationModel)
 if(!searchTerm&&!startDate&&!endDate&&!territoryFilter){
-  fetchData1()
+//   fetchData1()
 fetchData()}
   // if(!queryOptions)
   // fetchData(activeTab);
 }, [paginationModel.page]);
 
 
-const fetchData1=async()=>{
-  let results = await window.Platform.database.getAllOrderDetails();
-console.log("APIRESPONSE",results)
-}
+// const fetchData1=async()=>{
+//   let results = await window.Platform.database.getAllOrderDetails();
+// console.log("APIRESPONSE",results)
+// }
 
 
 
@@ -165,7 +165,7 @@ console.log("APIRESPONSE",results)
       setEndDate()
       setTerritoryFilter()
       setDateRange1(false)
-  let results = await window.Platform.database.getRetailerVisit1({pageNumber:paginationModel.page});
+  let results = await window.Platform.database.getAllOrderDetails({pageNumber:paginationModel.page});
     
       console.log("RESPONSE", results);
       const jsonArrayWithId = results?.data?.map((obj, index) => ({ ...obj, id: index + 1 }));
@@ -277,14 +277,14 @@ console.log(resultArray);
               // filterOperators: ['Contains'],
             },
             {
-              field: "retailer_shop_name",
-              headerName: "Retailer Name",
+              field: "name",
+              headerName: " Name",
               sortable: false,
               width: 200,
-            //   filterable: false,
-              valueGetter:(params)=>params.row?.retailer_shop_name,
+              filterable: false,
+              valueGetter:(params)=>params.row?.name,
               renderCell: (params) => {
-                let val = params.row?.retailer_shop_name||"N/A";
+                let val = params.row?.name||"N/A";
                 return <Tooltip title={val}>{val}</Tooltip>;
 
               },
@@ -293,184 +293,55 @@ console.log(resultArray);
 
             },
             {
-              field: "retailer_category__c",
-              headerName: "Category",
+              field: "mobile__c",
+              headerName: "Mobile No",
               width: 200,
-      // filterable: false, 
+      filterable: false, 
 
               sortable: false,
-              valueGetter: params => params.row?.retailer_category__c || 'N/A',
+              valueGetter: params => params.row?.mobile__c || 'N/A',
               renderCell: params => {
                 // console.log(params.row?.container?.id)
-                const value = params.row?.retailer_category__c || 'N/A'
+                const value = params.row?.mobile__c || 'N/A'
                 return <Tooltip title={value}>{value}</Tooltip>
               },
               filterOperators: stringOperators 
             },
               {
-                field: "mobile__c",
-                headerName: "Mobile Number",
+                field: "effectivedate",
+                headerName: "Effective Date",
                 width: 200,
       filterable: false, 
 
                 sortable: false,
-                valueGetter: params => params.row?.mobile__c|| 'N/A',
+                valueGetter: params => params.row?.effectivedate|| 'N/A',
                 renderCell: params => {
                   // console.log(params.row?.container?.id)
-                  const value = params.row?.mobile__c|| 'N/A'
+                  const value = params.row?.effectivedate|| 'N/A'
                   return <Tooltip title={value}>{value}</Tooltip>
                 },
                 filterOperators: stringOperators 
               },
                 {
-                  field: "createddate",
-                  headerName: "Visit Date",
+                  field: "totalamount",
+                  headerName: "Total Amount",
                   width: 200,
                   sortable: false,
                   filterable: false, 
                   valueGetter: params => {
-                      const value =  params.row?.createddate ||"N/A"
+                      const value =  params.row?.totalamount ||"N/A"
                       return value
                   },
                   renderCell: params => {
                     // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                    const value =  params.row.createddate||"N/A"
+                    const value =  params.row.totalamount||"N/A"
                     return <Tooltip title={value}>{value}</Tooltip>
                   },
                   filterOperators: stringOperators,
                   filterable: false, 
               },
            
-            {
-              field: "name__c",
-              headerName: "State",
-              sortable: false,
-              width: 200,
-      // filterable: false, 
-
-              valueGetter:(params)=>params.row?.name__c   ||"N/A",
-              renderCell: (params) => {
-                let val = params.row?.name__c ||"N/A";
-                return <Tooltip title={val}>{val}</Tooltip>;
-
-              },
-              filterOperators: stringOperators 
-            },
-            {
-              field: "district_name__c",
-              headerName: "District",
-              sortable: false,
-              width: 200,
-      // filterable: false, 
-
-              valueGetter:(params)=>params.row?.district_name__c||"N/A" ,
-              renderCell: (params) => {
-                let val = params.row?.district_name__c||"N/A";
-                return <Tooltip title={val}>{val}</Tooltip>;
-
-              },
-              filterOperators: stringOperators 
-            },
-            {
-              field: "sub_district_name__c",
-              headerName: "Tehsil",
-              sortable: false,
-              width: 200,
-    //   filterable: false, 
-
-              valueGetter: (params) =>params.row?.sub_district_name__c||"N/A",
-              filterOperators: stringOperators 
-            },
-            {
-              field: "village_name__c",
-              headerName: "Village",
-              sortable: false,
-    //   filterable: false, 
-
-              width: 200,
-              valueGetter:(params)=>params.row?.village_name__c||"N/A"              ,
-              renderCell: (params) => {
-                let val = params.row?.village_name__c;
-                return <Tooltip title={val}>{val}</Tooltip>;
-
-              },filterOperators: stringOperators 
-            },
-            {
-                field: "method__c",
-                headerName: "Payment Mode",
-                sortable: false,
-        // filterable: false, 
-  
-                width: 200,
-                valueGetter:(params)=>params.row?.method__c||"N/A",
-                renderCell: (params) => {
-                  let val =  params.row?.method__c ||"N/A" ;
-                  return <Tooltip title={val}>{val}</Tooltip>;
-  
-                },filterOperators: stringOperators 
-              }, 
-              {
-                field: "high_moving_iil_products__c",
-                headerName: "IIL Product",
-                sortable: false,
-        filterable: false, 
-  
-                width: 200,
-                valueGetter:(params)=>params.row?.high_moving_iil_products__c||"N/A",
-                renderCell: (params) => {
-                  let val = params.row?.high_moving_iil_products__c||"N/A" ;
-                  return <Tooltip title={val}>{val}</Tooltip>;
-  
-                },filterOperators: stringOperators 
-              }, 
-            {
-              field: "unit__c",
-              headerName: "Quantity",
-              sortable: false,
-      filterable: false, 
-
-              width: 200,
-              valueGetter:(params)=>params.row?.unit__c||"N/A",
-              renderCell: (params) => {
-                let val =  params.row?.unit__c ||"N/A" ;
-                return <Tooltip title={val}>{val}</Tooltip>;
-
-              },filterOperators: stringOperators 
-            }, 
-            {
-              field: "at_shop__c",
-              headerName: "Visit at shop",
-              width: 200,
-      filterable: false, 
-
-              sortable: false,
-              valueGetter: params => {
-                  const value =  params.row?.at_shop__c||"N/A"
-                  return value
-              },
-              renderCell: params => {
-                // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-                const value =  params.row?.at_shop__c||"N/A"
-                return <Tooltip title={value}>{value}</Tooltip>
-              },filterOperators: stringOperators 
-          },
-          {
-            field: "comments__c",
-            headerName: "Comments",
-            width: 200,
-    filterable: false, 
-
-            sortable: false,
-            valueGetter: params => {
-                const value = params.row?.comments__c||"N/A"
-                return value
-            },
-            renderCell: params => {
-              // console.log(params.row.quotation.attributes.shippingOrders.parent.id)
-              const value = params.row?.comments__c||"N/A"
-              return <Tooltip title={value}>{value}</Tooltip>
-            },filterOperators: stringOperators 
-        }
+          
               
   ];
 
@@ -896,19 +767,19 @@ catch(e){
       {isMobile && <Drawer props={props} />}
       <StaffEditorPageContainer>
         <HeaderContainer>
-          <Typography variant="h5">Retailer Visits</Typography>
-          <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",marginTop:isMobile&&"5px"}}>
+          <Typography variant="h5">Order Management</Typography>
+          {/* <div style={{display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",marginTop:isMobile&&"5px"}}>
             <Button variant="contained" disabled={ytdFilter||dateRange1||loading} onClick={()=>YTD()}>YTD</Button>
             <Button variant="contained" disabled={mtdFilter ||dateRange1||loading} onClick={()=>MTD()}>MTD</Button>
             <Button variant="contained" disabled={ftdFilter ||dateRange1||loading} onClick={()=>FTD()} >FTD</Button>
             <Button variant="contained" disabled={cumalativeFilter ||dateRange1||loading} onClick={()=>CumulativeFiltefunctionr()}>Cumulative</Button>
 
-          </div>
+          </div> */}
         </HeaderContainer>
         {/* <Stack spacing={2} direction={"row"}>
           <Stack direction={"row"} spacing={1}> */}
           <HeaderContainer>
-<div style={{width:"100%",display:"flex",flexDirection:"row",gap:isMobile?"10px":"20px"}}>
+{/* <div style={{width:"100%",display:"flex",flexDirection:"row",gap:isMobile?"10px":"20px"}}>
           {/* <Autocomplete
               // value={cityVal.find((city) => city.id === deliveryCity) || ''}
             //   value={deliveryCity || null}
@@ -1002,7 +873,7 @@ catch(e){
                 />
               )}
             /> */}
-             <TextField
+             {/* <TextField
           id="outlined-select-currency"
           select
           label={isMobile?"Territory Type":"Select Territory Type"}
@@ -1052,8 +923,8 @@ catch(e){
         </TextField>
           
             <Button variant="contained"     disabled={!territoryOptions||loading}   onClick={()=>clearTerritoryFIlter()} >Clear</Button>
-            </div>
-            <Divider orientation="vertical" variant="middle" flexItem sx={{paddingLeft:"1%"}} />
+            </div> */}
+            {/* <Divider orientation="vertical" variant="middle" flexItem sx={{paddingLeft:"1%"}} />
            
             <div style={{width:"100%",display:"flex",flexDirection:"row",gap:"20px",paddingLeft:!isMobile&&"15%",paddingTop:"4px"}}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -1065,7 +936,7 @@ catch(e){
             <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
 
 
-            </div>
+            </div> */}
             
 </HeaderContainer>
           {/* </Stack>

@@ -70,7 +70,8 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import StreetviewIcon from '@mui/icons-material/Streetview';
 import Groups3Icon from '@mui/icons-material/Groups3';
-
+import { ReactComponent as farmervisit } from "../../../icons/Farmer visit.svg"
+import { ReactComponent as Feedback } from "../../../icons/Feedback.svg"
 
 
 
@@ -257,30 +258,38 @@ console.log("PROPSSS",props)
       icon: BallotIcon,
       link: "/category",
       role: ["SI","AM"],
-    },{
-      title: "Farmer Mapping",
-      icon: AgricultureIcon,
-      link: "/farmermapping",
-      role: ["SI","AM"],
     },
+
     {
-      title: "Retailer Mapping",
-      icon: WarehouseIcon,
-      link: "/retailermapping",
+      link: "/mappingreport",
+      title: "Mapping Report",
+      icon: BallotIcon,
       role: ["SI","AM"],
-    },
+      //  nodeRef: createRef(),
+  },
     {
-      title: "Distributor Mapping",
-      icon: FactoryIcon,
-      link: "/distributormapping",
+      link: "/visitreport",
+      title: "Visit Report",
+      icon: BallotIcon,
       role: ["SI","AM"],
-    },
-    {
-      title: "Agri-Expert Mapping",
-      icon: Diversity3Icon,
-      link: "/agriexpertmapping",
-      role: ["SI"],
-    },
+      //  nodeRef: createRef(),
+  },
+ 
+  {
+    link: "/eventreport",
+    title: "Event Report",
+      icon: BallotIcon,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+  
+{
+  link: "/feedbackreport",
+  title: "Feedback Report",
+  icon: BallotIcon,
+  role: ["SI","AM"],
+  //  nodeRef: createRef(),
+},
   //   {
   //     link: "/farmervisit",
   //     title: "Farmer Visit",

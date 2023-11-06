@@ -17,6 +17,11 @@ import KvkVisit from "../views/kvkVisit/index.js";
 import KrishiMela from "../views/krishiMela/index.js";
 import FeedbackReport from "../views/feedbackReport/index.js";
 import TestDashboard from "../views/testDashboard/index.js";
+import MappingManager from "../views/mappingManagement/index.js";
+import VisitManager from "../views/visitManagement/index.js";
+import EventManager from "../views/eventManagement/index.js";
+import OrderManagement from "../views/orderManagement/index.js";
+
 // import { createBrowserRouter } from "react-router-dom";
 // import UserManagement from "../views/UserManagement/index.js";
 // import PrivateRoute from "../components/PrivateRoutes/index.js";
@@ -224,6 +229,34 @@ function routes(loggedIn, user){
             path: "/testDashboard",
             name: "Feedback Report",
             component: TestDashboard,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/mappingreport",
+            name: "Mapping Report",
+            component: MappingManager,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/visitreport",
+            name: "Visit Report",
+            component: VisitManager,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/eventreport",
+            name: "Visit Report",
+            component: EventManager,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/orderreport",
+            name: "Order Report",
+            component: OrderManagement,
              hideNavBar:false,
             //  nodeRef: createRef(),
         },

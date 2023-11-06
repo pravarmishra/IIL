@@ -22,7 +22,8 @@ import Diversity3Icon from '@mui/icons-material/Diversity3';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import AgricultureIcon from '@mui/icons-material/Agriculture';
 import FactoryIcon from '@mui/icons-material/Factory';
-
+import { ReactComponent as farmervisit } from "../../icons/Farmer visit.svg"
+import { ReactComponent as Feedback } from "../../icons/Feedback.svg"
 
 const StyledNavBar = styled(Navbar)`
   font-family: "Montserrat";
@@ -70,30 +71,37 @@ export const getNavItems = (auth) => {
       icon: BallotIcon,
       link: "/category",
       role: ["SI","AM"],
-    },{
-      title: "Farmer Mapping",
-      icon: AgricultureIcon,
-      link: "/farmermapping",
-      role: ["SI","AM"],
     },
+
     {
-      title: "Retailer Mapping",
-      icon: WarehouseIcon,
-      link: "/retailermapping",
+      link: "/mappingreport",
+      title: "Mapping Report",
+      icon: farmervisit,
       role: ["SI","AM"],
-    },
+      //  nodeRef: createRef(),
+  },
     {
-      title: "Distributor Mapping",
-      icon: FactoryIcon,
-      link: "/distributormapping",
+      link: "/visitreport",
+      title: "Visit Report",
+      icon: farmervisit,
       role: ["SI","AM"],
-    },
-    {
-      title: "Agri-Expert Mapping",
-      icon: Diversity3Icon,
-      link: "/agriexpertmapping",
-      role: ["SI"],
-    },
+      //  nodeRef: createRef(),
+  },
+  {
+    link: "/eventreport",
+    title: "Event Report",
+      icon: farmervisit,
+    role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+
+{
+  link: "/feedbackreport",
+  title: "Feedback Report",
+  icon: Feedback,
+  role: ["SI","AM"],
+  //  nodeRef: createRef(),
+},
   ];
 
   const filteredCards = myItems.filter((card) =>

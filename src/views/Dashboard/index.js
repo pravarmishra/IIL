@@ -76,6 +76,12 @@ import { ReactComponent as FarmerMeet } from "../../icons/Farmer Meet.svg"
 import { ReactComponent as Kvkvisit } from "../../icons/kvkvisit.svg"
 import { ReactComponent as KrishiMela } from "../../icons/krishimela.svg"
 import { ReactComponent as Feedback } from "../../icons/Feedback.svg"
+import { ReactComponent as Mapping } from "../../icons/Mapping.svg"
+import { ReactComponent as Visit } from "../../icons/Visits.svg"
+import { ReactComponent as Event } from "../../icons/Events.svg"
+
+
+
 
 const isMobile = window.innerWidth < 900;
 const StyledCardHeading1 = ({ icon, children, value, sx, bgColor }) => (
@@ -327,103 +333,30 @@ const Dashboard = (props) => {
       link: "/category",
       role: ["SI","AM"],
     },
-    {
-      title: "Farmer Mapping",
-      icon: FarmerMapping,
-  
-      link: "/farmermapping",
-      role: ["SI","AM"],
-    },
-    {
-      title: "Retailer Mapping",
-      icon: RetailerMapping,
-      link: "/retailermapping",
-      role: ["SI","AM"],
-    },
-    {
-      title: "Distributor Mapping",
-      icon: DistributorMapping,
-      link: "/distributormapping",
-      role: ["SI","AM"],
-    },
-    {
-      title: "Agri-Expert Mapping",
-      icon: AgriExpertMapping,
-      link: "/agriexpertmapping",
-      role: ["SI","AM"],
-    },
-   
 
     {
-      link: "/farmervisit",
-      title: "Farmer Visit",
-      icon: farmervisit,
+      link: "/mappingreport",
+      title: "Mapping Report",
+      icon: Mapping,
       role: ["SI","AM"],
       //  nodeRef: createRef(),
   },
+    {
+      link: "/visitreport",
+      title: "Visit Report",
+      icon: Visit,
+      role: ["SI","AM"],
+      //  nodeRef: createRef(),
+  },
+ 
   {
-    link: "/retailervisit",
-    title: "Retailer Visits",
-    icon: Retailervisit,
+    link: "/eventreport",
+    title: "Event Report",
+      icon: Event,
     role: ["SI","AM"],
       //  nodeRef: createRef(),
   },
-  {
-    link: "/distributorvisit",
-    title: "Distributor Visits",
-    icon: Distributorvisit,
-    role: ["SI","AM"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/vancampaign",
-    title: "Van Campaign",
-      icon: vanCampaign,
-    role: ["SI","AM"],
-      //  nodeRef: createRef(),
-  },
-   {
-    link: "/spotDemo",
-      title: "Spot Demo ",
-      icon: spotDemo,
-    role: ["SI","AM"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/normalDemo",
-    title: "Normal Demo ",
-      icon: NormalDemo,
-    role: ["SI","AM"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/lpdActivity",
-      title: "Large Plot Demo",
-      icon: LpdDemo,
-    role: ["SI","AM"],
-      //  nodeRef: createRef(),
-  },
-  {
-    link: "/farmermeet",
-    title: "Farmer Meet ",
-    icon: FarmerMeet,
-     role: ["SI","AM"],
-    //  nodeRef: createRef(),
-},
-{
-    link: "/kvkvisit",
-    title: "KVK Visit",
-    icon: Kvkvisit,
-     role: ["SI","AM"],
-    //  nodeRef: createRef(),
-},
-{
-    link: "/krishimela",
-    title: "Krishi Mela",
-    icon: KrishiMela,
-     role: ["SI","AM"],
-    //  nodeRef: createRef(),
-},
+  
 {
   link: "/feedbackreport",
   title: "Feedback Report",
@@ -832,7 +765,7 @@ catch(e){
 
       <Drawer props={props}>
         <ContentContainer>
-             {/* <div
+             <div
             style={{
               width: "100%",
               display: "flex",
@@ -967,7 +900,7 @@ catch(e){
                  <EventChart  data={eventData} /> 
             </GraphCard1>
           
-          </Stack>    */}
+          </Stack>   
           {renderCards()}
           {/* {id && renderCards()} */}
           {/* {(props.user?.warehouse?.objectId && !id) && renderCards()} */}
