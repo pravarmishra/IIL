@@ -49,7 +49,7 @@ import {
 import { AuthContext } from "../../components/contextAPI/ContextAPI";
 // import AppCurrentVisits from "./chart";
 // import AppWebsiteVisits from "./chart";
-import { Box, Button, Icon, MenuItem, Stack, TextField } from "@mui/material";
+import { Box, Button, Icon, MenuItem, Stack, TextField, makeStyles } from "@mui/material";
 import CabinIcon from "@mui/icons-material/Cabin";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import UpcomingIcon from "@mui/icons-material/Upcoming";
@@ -211,6 +211,12 @@ const ContentContainer = styled.div`
   flex-wrap:wrap;
 `;
 
+const StyledDatePicker = styled(DatePicker)`
+  .MuiInputBase-input {
+    background: white; // Set the background color of the input field to white
+  }
+`;
+
 const Dashboard = (props) => {
   const [soInHouse, setSoInHouse] = useState(0);
   const [pendingDelivery, setPendingDelivery] = useState(0);
@@ -244,6 +250,7 @@ const Dashboard = (props) => {
   const [visitData,setVisitedData] = useState()
   const [eventData,setEventData] = useState()
 
+  const whiteBackground = { background: 'white' };
   console.log("PROPSSSSS", props);
   // console.log("NAVBAR",props)
 
@@ -782,6 +789,7 @@ catch(e){
               style={{ width: isMobile ? "52%" : "20%" }}
               // defaultValue="EUR"
               // helperText="Please select your currency"
+              InputProps={{ style: whiteBackground }}
               value={selectedTeritoryType}
               onChange={async (event, value) => {
                 console.log("Autocomplete", event?.target?.value);
@@ -810,6 +818,7 @@ catch(e){
               style={{ width: isMobile ? "52%" : "25%" }}
               // defaultValue="EUR"
               // helperText="Please select your currency"
+              InputProps={{ style: whiteBackground }}
               value={territoryFilter}
               disabled={!territoryOptions?.length || loading}
               onChange={async (event, value) => {
@@ -853,10 +862,10 @@ catch(e){
             </Stack>
             <Stack direction="row" spacing={1} width={isMobile?324:500}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
+            <StyledDatePicker InputProps={{ style: whiteBackground }} label="Start Date" value={startDate1} disabled={ftdFilter||mtdFilter||ytdFilter||loading} format="YYYY/MM/DD" onChange={(data)=>formatDate(data.$d)} />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
+            <StyledDatePicker  label="End Date" value={endDate1} disabled={ftdFilter||mtdFilter||ytdFilter||!dateRange1||loading} format="YYYY/MM/DD" onChange={(data)=>finalDateRangeFilter(data.$d)} />
             </LocalizationProvider>
             <Button variant="contained" onClick={()=>clearDateFilter()} disabled={!dateRange1||loading} >Clear</Button>
             </Stack>
