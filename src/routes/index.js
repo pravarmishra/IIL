@@ -21,6 +21,7 @@ import MappingManager from "../views/mappingManagement/index.js";
 import VisitManager from "../views/visitManagement/index.js";
 import EventManager from "../views/eventManagement/index.js";
 import OrderManagement from "../views/orderManagement/index.js";
+import Consolidated from "../views/consolidated/index.js";
 
 // import { createBrowserRouter } from "react-router-dom";
 // import UserManagement from "../views/UserManagement/index.js";
@@ -257,6 +258,13 @@ function routes(loggedIn, user){
             path: "/orderreport",
             name: "Order Report",
             component: OrderManagement,
+             hideNavBar:false,
+            //  nodeRef: createRef(),
+        },
+        {
+            path: "/consolidated",
+            name: "Consolidated",
+            component: Consolidated,
              hideNavBar:false,
             //  nodeRef: createRef(),
         },

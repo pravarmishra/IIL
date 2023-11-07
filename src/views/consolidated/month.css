@@ -1,0 +1,20 @@
+.month-calendar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .month {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .month:hover {
+    background-color: #e0e0e0;
+  }
+  
